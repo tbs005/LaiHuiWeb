@@ -1,0 +1,46 @@
+@charset "utf-8";
+/*
+ *@media (max-width: 400px; m:480px; m:600px; .... m:920px; m: )
+ *
+ */
+/*宽度*/
+@media screen and (max-width: 1204px) {
+    .header_container{
+        width: 100%;
+    }
+    .header_right{
+        margin-right: 20px;
+    }
+    .ui_left{
+        display: block;
+        position: fixed;
+        left: -300px;
+        background-color: #fff;
+        z-index: 10;
+        top: 0;
+        height: 100%;
+        overflow: auto;
+    }
+    .ui_body{
+        width: 94%;
+    }
+    #ui_right{
+        width: 100%;
+        display: block;
+    }
+    .fixed_menu{
+        display: block;
+        cursor: pointer;
+    }
+
+}
+
+@media screen and (max-width: 1000px) {
+    .ui_body {
+        width: 100%;
+    }
+}
+@media screen and (max-width: 922px) {
+
+
+}

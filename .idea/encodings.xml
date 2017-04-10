@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/.gitignore" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/LaiHui项目文档.docx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/controller/CampainController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/controller/CarouselController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/controller/DepartureInfoController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/controller/IndexController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/controller/ManagerController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/controller/PassengerOrdersController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/controller/PayController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/controller/UserController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/controller/ValidateController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/db/LaiHuiDB.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/AppOrder.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/CarOwnerInfo.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/Code.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/DepartureInfo.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/ErrorCode.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/Manager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/OrderOf76.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/PassengerOrder.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/PassengerPublishInfo.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/PayBack.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/PayLog.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/User.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/domain/UserCount.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/APPDriverDepartureInfoMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/CarOwnerMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/CarOwnerTokenMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/CarouselMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/CodeMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/ManagerAreaLocationMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/ManagerInfoMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/ManagerMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/PassengerOrdersMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/PassengerPublishInfoMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/PayOrderMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/PlaceCodeMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/TotalPayOrderMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/UserCountMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/UserIDMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/UserMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/mapper/UserSuggestionMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/ConfigUtils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/GetIPLocation.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/IDSNCheck.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/IDTransform.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/OssConfigure.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/OssUtil.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/ReturnJsonUtil.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/SendSMSUtil.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/UrlInterceptor.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/Utils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/cyparty/laihui/utilities/WXUtils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/DispatcherServlet-context.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/web.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/resource/js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/upload" charset="UTF-8" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>

@@ -1,0 +1,36 @@
+
+/*¿í¶È*/
+@media screen and (max-width: 2000px) {
+    body{
+        max-width: 1080px;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+
+
+}
+@media screen and (max-width: 1080px) {
+    body{
+        max-width: 1080px;
+        transform: none;
+        -webkit-transform: none;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .right_slip_img {
+        width: 5rem;
+    }
+}
+@media screen and (max-width: 321px) {
+    .right_slip_img {
+        width: 4.2rem;
+    }
+}
+/*¸ß¶È*/
+@media screen and (max-height: 480px) {
+    .image_tips{
+        top:9rem;
+    }
+
+}
