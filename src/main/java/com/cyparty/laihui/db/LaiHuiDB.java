@@ -624,5 +624,46 @@ public class LaiHuiDB {
         });
         return orderList;
     }
+    //生成最上级的推广人的推广码
+    public boolean createPopularize(int popularize_id,int popularize_parent_id,String popularize_parents_id,String popularize_code,int is_enable,int level){
+        boolean is_success = true;
+        String SQL = "insert into pc_popularize (popularize_id,popularize_parent_id,popularize_parents_id,popularize_code,create_time,update_time,is_enable,level) VALUES(?,?,?,?,?,?,?,?)";
+        int count=jdbcTemplateObject.update(SQL, new Object[]{popularize_id,popularize_parent_id,popularize_parents_id,popularize_code,Utils.getCurrentTime(),Utils.getCurrentTime(),is_enable,level});
+        if (count<1){
+            is_success = false;
+        }
+        return is_success;
+    }
+    //查询获取当前推广员的推广码
+    public List<Popularize> getPopular(int user_id){
+        String SQL = "select * from pc_popularize where popularize_id ="+user_id;
+        List<Popularize> popularizeList = jdbcTemplateObject.query(SQL,new PopularizeMapper());
+        return popularizeList;
+    }
+
+    //查询车主认证状态
+    public List<UserDriverLicenseInfo> getDriverLicense(){
+        String SQL = "select * from pc_user_driver_license_info where is_enable=1 order by create_time limit 1 ";
+        List<UserDriverLicenseInfo> driverLicenseInfos = jdbcTemplateObject.query(SQL,new UserDriverLicenseInfoMapper());
+        return driverLicenseInfos;
+    }
+    //查询车主行驶证认证状态
+    public List<UserTravelCardInfo> getTravelCard(){
+        String SQL = "select * from pc_user_travel_card_info where is_enable=1 order by create_time limit 1 ";
+        List<UserTravelCardInfo> userTravelCardInfos = jdbcTemplateObject.query(SQL,new UserTravelCardInfoMapper());
+        return userTravelCardInfos;
+    }
+    //根据用户id查询车主驾证认证状态
+    public List<UserDriverLicenseInfo> getDriver(int user_id){
+        String SQL = "select * from pc_user_driver_license_info where user_id ="+user_id;
+        List<UserDriverLicenseInfo> driverLicenseInfos = jdbcTemplateObject.query(SQL,new UserDriverLicenseInfoMapper());
+        return driverLicenseInfos;
+    }
+    //根据用户id查询车主行驶证认证状态
+    public List<UserTravelCardInfo> getTravel(int user_id){
+        String SQL = "select * from pc_user_travel_card_info where user_id ="+user_id;
+        List<UserTravelCardInfo> userTravelCardInfos = jdbcTemplateObject.query(SQL,new UserTravelCardInfoMapper());
+        return userTravelCardInfos;
+    }
 }
 

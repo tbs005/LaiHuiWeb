@@ -57,6 +57,12 @@
                     <li class="menu_context_li db_validate_passenger_list">
                         <a href="/db/validate/passenger_list">乘客认证</a>
                     </li>
+                    <li class="menu_context_li db_driver_check">
+                        <a href="/db/driver/check">驾驶证认证</a>
+                    </li>
+                    <li class="menu_context_li db_travel_card_check">
+                        <a href="/db/travel/card/check">行驶证认证</a>
+                    </li>
             </ul>
         </div>
     </c:if>
@@ -191,6 +197,17 @@
             </ul>
         </div>
     </c:if>
+    <div class="menu_context">
+        <div class="menu_context_tittle">
+            <img src="/resource/images/pch_menu_super.png" alt="">
+            <span>推广管理</span>
+        </div>
+        <ul class="menu_context_ul">
+            <li class="menu_context_li reset_password">
+                <a href="/db/popularize">新增专业推广员</a>
+            </li>
+        </ul>
+    </div>
     <div class="menu_context">
         <div class="menu_context_tittle">
             <img src="/resource/images/pc_icon_menu_role.png" alt="">

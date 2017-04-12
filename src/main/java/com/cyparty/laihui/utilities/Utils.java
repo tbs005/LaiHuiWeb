@@ -374,5 +374,10 @@ public class Utils {
         boolean send_isSuccess= SendSMSUtil.sendSMS(d_mobile, 8193, typ_val);
         return send_isSuccess;
     }
-
+    //获取生日格式 0406
+    public static  String  getBrithDay(Date date){
+        SimpleDateFormat format = new SimpleDateFormat("MMdd");
+        String time = format.format(date);
+        return  time;
+    }
 }
