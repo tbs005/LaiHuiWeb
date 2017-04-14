@@ -207,6 +207,11 @@
                 <a href="/db/popularize">新增专业推广员</a>
             </li>
         </ul>
+        <ul class="menu_context_ul">
+            <li class="menu_context_li reset_password">
+                <a href="/db/merchant/join">招商加盟</a>
+            </li>
+        </ul>
     </div>
     <div class="menu_context">
         <div class="menu_context_tittle">

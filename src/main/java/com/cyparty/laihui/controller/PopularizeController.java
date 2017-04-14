@@ -27,7 +27,7 @@ public class PopularizeController {
     @Autowired
     LaiHuiDB laiHuiDB;
     /**
-     * Ìí¼Ó´úÀíÉÌ
+     * æ·»åŠ ä»£ç†å•†
      *
      * */
     @ResponseBody
@@ -44,29 +44,29 @@ public class PopularizeController {
             if(userList.size()>0){
                 User user = userList.get(0);
                 int user_id = user.getUser_id();
-                //ÊÖ»úºÅÖØ¸´Ôò²»ÔÙÉú³ÉÍÆ¹ãÂë
+                //æ‰‹æœºå·é‡å¤åˆ™ä¸å†ç”Ÿæˆæ¨å¹¿ç 
                 List<Popularize> popularizeList = laiHuiDB.getPopular(user_id);
                 if(popularizeList.size() ==0 ){
                     String popularize_code = SerialNumberUtil.toSerialNumber(user_id);
                     boolean is_true =  false;
                     is_true = laiHuiDB.createPopularize(user_id, 0, null, popularize_code, 1, 0);
                     if(is_true){
-                        json = ReturnJsonUtil.returnSuccessJsonString(result, "ÍÆ¹ãÈËÍÆ¹ãÂëÉú³É³É¹¦");
+                        json = ReturnJsonUtil.returnSuccessJsonString(result, "æ¨å¹¿äººæ¨å¹¿ç ç”ŸæˆæˆåŠŸ");
                         return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                     }else{
-                        json = ReturnJsonUtil.returnFailJsonString(result, "ÍÆ¹ãÈËÍÆ¹ãÂëÉú³ÉÊ§°Ü");
+                        json = ReturnJsonUtil.returnFailJsonString(result, "æ¨å¹¿äººæ¨å¹¿ç ç”Ÿæˆå¤±è´¥");
                         return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                     }
                 }else{
-                    json = ReturnJsonUtil.returnFailJsonString(result, "ÍÆ¹ãÈËÍÆ¹ãÂëÒÑ´æÔÚ");
+                    json = ReturnJsonUtil.returnFailJsonString(result, "æ¨å¹¿äººæ¨å¹¿ç å·²å­˜åœ¨");
                     return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                 }
             }else{
-                json = ReturnJsonUtil.returnFailJsonString(result, "²ÎÊı´íÎó");
+                json = ReturnJsonUtil.returnFailJsonString(result, "å‚æ•°é”™è¯¯");
                 return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
             }
         }else{
-            json = ReturnJsonUtil.returnFailJsonString(result, "²ÎÊı´íÎó");
+            json = ReturnJsonUtil.returnFailJsonString(result, "å‚æ•°é”™è¯¯");
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
     }

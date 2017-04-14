@@ -16,6 +16,7 @@ public class User {
     private String user_idsn;
     private String reason;
     private String avatar;
+    private int flag;
 
     public String getUser_nick_name() {
         return user_nick_name;
@@ -112,4 +113,8 @@ public class User {
     public void setUser_idsn(String user_idsn) {
         this.user_idsn = user_idsn;
     }
+
+    public int getFlag() {return flag;}
+
+    public void setFlag(int flag) {this.flag = flag;}
 }

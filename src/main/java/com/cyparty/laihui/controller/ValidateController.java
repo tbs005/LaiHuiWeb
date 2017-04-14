@@ -310,7 +310,7 @@ public class ValidateController {
             if(userTravelCardInfos.size()>0){
                 UserTravelCardInfo userTravelCardInfo = userTravelCardInfos.get(0);
                 if(userTravelCardInfo.getIs_enable().equals("3")){
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =1 where _id ="+Integer.parseInt(id));
+                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =1 ,flag=1 where _id ="+Integer.parseInt(id));
                     if(is_success){
                         String content = "恭喜您成功通过车主认证，现在可以接单了！";
                         JSONObject driverInfo = new JSONObject();
@@ -353,7 +353,7 @@ public class ValidateController {
                     is_success = laiHuiDB.update("pc_user"," set is_car_owner =0 where _id ="+Integer.parseInt(id));
                 }
                 if(is_true && is_success){
-                    String content = "很抱歉，您提交的驾驶证信息未通过审核，是因为"+reason;
+                    String content = "很抱歉，您提交的驾驶证信息未通过审核。原因："+reason;
                     JSONObject driverInfo = new JSONObject();
                     driverInfo.put("mobile",user.getUser_mobile());
                     driverInfo.put("content",content);
@@ -396,7 +396,7 @@ public class ValidateController {
             if(userDriverLicenseInfoList.size()>0){
                 UserDriverLicenseInfo userDriverLicenseInfo = userDriverLicenseInfoList.get(0);
                 if(userDriverLicenseInfo.getIs_enable().equals("3")){
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =1 where _id ="+Integer.parseInt(id));
+                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =1,flag=1  where _id ="+Integer.parseInt(id));
                     if(is_success){
                         String content = "恭喜您成功通过车主认证，现在可以接单了！";
                         JSONObject driverInfo = new JSONObject();
@@ -438,7 +438,7 @@ public class ValidateController {
                 if(is_true && is_success){
                     List<User> userList = laiHuiDB.getUserList(" where _id= "+id);
                     User user =userList.get(0);
-                    String content = "很抱歉，您提交的行驶证信息未通过审核，是因为"+reason;
+                    String content = "很抱歉，您提交的行驶证信息未通过审核。原因："+reason;
                     JSONObject driverInfo = new JSONObject();
                     driverInfo.put("mobile",user.getUser_mobile());
                     driverInfo.put("content",content);
@@ -487,6 +487,17 @@ public class ValidateController {
         is_logined=Utils.isLogined(request);
         if(is_logined){
             return "db_popularize";
+        }else {
+            model.asMap().clear();
+            return "redirect:/db/login";
+        }
+    }
+
+    @RequestMapping("/db/merchant/join")
+    public String db_merchant_join(Model model,HttpServletRequest request){
+        is_logined=Utils.isLogined(request);
+        if(is_logined){
+            return "db_merchant_join";
         }else {
             model.asMap().clear();
             return "redirect:/db/login";

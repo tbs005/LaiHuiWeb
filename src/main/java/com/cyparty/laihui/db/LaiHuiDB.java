@@ -665,5 +665,11 @@ public class LaiHuiDB {
         List<UserTravelCardInfo> userTravelCardInfos = jdbcTemplateObject.query(SQL,new UserTravelCardInfoMapper());
         return userTravelCardInfos;
     }
+    //查询合作商家所有信息
+    public List<Business> listBusiness(){
+        String SQL="select * from pc_merchant_join ";
+        List<Business> businessList = jdbcTemplateObject.query(SQL,new BusinessMapper());
+        return businessList;
+    }
 }
 
