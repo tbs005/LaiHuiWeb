@@ -130,7 +130,7 @@ public class CarouselController {
                                 String image_oss = arr[arr.length - 1];
                                 try {
                                     if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                        image_oss = "http://cyparty-now.oss-cn-beijing.aliyuncs.com/" + image_oss;
+                                        image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
                                         carousel.setImage_url(image_oss);
                                     }
                                 } catch (Exception e) {
@@ -161,7 +161,7 @@ public class CarouselController {
                                 String image_oss = arr[arr.length - 1];
                                 try {
                                     if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                        image_oss = "http://cyparty-now.oss-cn-beijing.aliyuncs.com/" + image_oss;
+                                        image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
                                         carousel.setImage_url(image_oss);
                                     }
                                 } catch (Exception e) {
@@ -291,7 +291,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "http://cyparty-now.oss-cn-beijing.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
@@ -321,7 +321,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "http://cyparty-now.oss-cn-beijing.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
@@ -450,7 +450,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "http://cyparty-now.oss-cn-beijing.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
@@ -480,7 +480,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "http://cyparty-now.oss-cn-beijing.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
