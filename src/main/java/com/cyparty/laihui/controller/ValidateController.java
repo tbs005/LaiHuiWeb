@@ -229,14 +229,14 @@ public class ValidateController {
     }
     //驾驶证查询接口
     @ResponseBody
-    @RequestMapping(value = "/driver/check", method = RequestMethod.POST)
+    @RequestMapping(value = "/driver/find", method = RequestMethod.POST)
     public ResponseEntity<String> DriverFind(HttpServletRequest request) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         String json = "";
         JSONObject result = new JSONObject();
-        List<User> userList = laiHuiDB.getUserList(" where is_car_owner = 2 order by create_time limit 1 ");
+        List<User> userList = laiHuiDB.getUserList(" where is_car_owner =2 order by user_create_time limit 1 ");
         if(userList.size()>0){
             User user = userList.get(0);
             int user_id =user.getUser_id();
@@ -295,12 +295,12 @@ public class ValidateController {
                     json = ReturnJsonUtil.returnFailJsonString(result, "车主认证失败！");
                     return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                 }
-            } else {
+            } else if("2".equals(is_enable)){
                 String reason = request.getParameter("reason");
                 if (null != reason && !"".equals(reason)) {
                     is_true = laiHuiDB.update("pc_user_driver_license_info", " set is_enable ='" + is_enable + "' where user_id =" + user_id);
                     is_real = laiHuiDB.update("pc_user_travel_card_info", " set is_enable ='" + is_enable + "' where user_id =" + user_id);
-                    is_success = laiHuiDB.update("pc_user", " set is_car_owner =3 ,flag=1 where _id=" + user_id);
+                    is_success = laiHuiDB.update("pc_user", " set is_car_owner =3  where _id=" + user_id);
                     if (is_true && is_real && is_success) {
                         String content = "很抱歉，您提交的驾驶证信息未通过审核。原因：" + reason;
                         JSONObject driverInfo = ValidateUtils.getContent(user,content);
@@ -320,6 +320,10 @@ public class ValidateController {
                     json = ReturnJsonUtil.returnFailJsonString(result, "没有原因，不能提交！");
                     return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
                 }
+            }else{
+                result.put("msg", "参数错误！");
+                json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
+                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
             }
         }else {
             result.put("msg", "参数错误！");
@@ -327,7 +331,7 @@ public class ValidateController {
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
     }
-    //车主驾驶证认证链接页面
+    //车主认证审核页面
     @RequestMapping("/db/driver/check")
     public String db_driver_check(Model model,HttpServletRequest request){
         is_logined=Utils.isLogined(request);
@@ -338,17 +342,7 @@ public class ValidateController {
             return "redirect:/db/login";
         }
     }
-    //车主行驶证认证链接页面
-    @RequestMapping("/db/travel/card/check")
-    public String db_travel_card_check(Model model,HttpServletRequest request){
-        is_logined=Utils.isLogined(request);
-        if(is_logined){
-            return "db_travel_card_check";
-        }else {
-            model.asMap().clear();
-            return "redirect:/db/login";
-        }
-    }
+
     //添加专业退广人
     @RequestMapping("/db/popularize")
     public String db_popularize(Model model,HttpServletRequest request){
@@ -371,4 +365,15 @@ public class ValidateController {
             return "redirect:/db/login";
         }
     }
+    @RequestMapping("/db/car/editor")
+    public String db_car_single_editor(Model model,HttpServletRequest request){
+        is_logined=Utils.isLogined(request);
+        if(is_logined){
+            return "db_car_single_editor";
+        }else {
+            model.asMap().clear();
+            return "redirect:/db/login";
+        }
+    }
+
 }

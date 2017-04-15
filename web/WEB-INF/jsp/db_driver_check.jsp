@@ -199,20 +199,12 @@
         font-family: Microsoft Yahei;
         padding: 20px;
     }
-    .title{
-        text-align: center;
-        line-height:30px;
-        padding: 10px;
-    }
     .content{
-        width: 50%;
+        float: left;
+        width: 47%;
         margin: 0 auto;
-        background: #f9f9f9;
-        border: 1px solid rgba(0, 0, 0, 0.43);
-        border-radius: 2px;
         line-height:30px;
         padding: 10px;
-        box-shadow: #9f9f9f 1px 1px 10px;
         margin-top: 20px;
     }
     input{
@@ -222,10 +214,10 @@
         outline: none;
         border: 1px solid rgba(0, 0, 0, 0.43);
     }
-    .line01{
+    .line1{
         margin-bottom: 10px;
     }
-    .driver_license_photo{
+    .travel_license_photo{
         margin:20px auto auto 30px;
     }
     .btn{
@@ -260,36 +252,62 @@
     <div id="ui_right">
         <div class="right_top">
             <div class="right_top_style">
-                <span>驾驶证审核</span>
+                <span>车主认证审核</span>
             </div>
         </div>
-        <div class="title">
-            <h2>驾驶证审核</h2>
-        </div>
-        <div class="content">
-            <div class="line01">
-                <span class="name">驾驶员姓名：</span><span class="driver_name"></span>
-            </div>
-            <div class="line01">
-                <span class="name">驾驶证号：</span><span class="driver_license_number"></span>
-            </div>
-            <div class="line01">
-                <span class="name">初次领证日期：</span><span class="first_issue_date"></span>
-            </div>
-            <div class="line01">
-                <span class="name">准驾车型：</span><span class="allow_car_type"></span>
-            </div>
-            <div class="line01">
-                <span class="name">有效期：</span><span class="effective_date_end"></span>
-            </div>
-            <div class="line01">
-                <span class="name">架驶证照片：</span>
-                <div class="driver_license_photo">
-                    <img src="" alt="" width="80%">
+        <div style="overflow: hidden;width: 100%;margin: 0 auto;">
+            <div class="content">
+                <div class="line1">
+                    <span class="name">驾驶员姓名：</span><span class="driver_name"></span>
                 </div>
+                <div class="line1">
+                    <span class="name">驾驶证号：</span><span class="driver_license_number"></span>
+                </div>
+                <div class="line1">
+                    <span class="name">初次领证日期：</span><span class="first_issue_date"></span>
+                </div>
+                <div class="line1">
+                    <span class="name">准驾车型：</span><span class="allow_car_type"></span>
+                </div>
+                <div class="line1">
+                    <span class="name">有效期：</span><span class="effective_date_end"></span>
+                </div>
+                <div class="line1">
+                    <span class="name">架驶证照片：</span>
+                    <div class="driver_license_photo">
+                        <img src="" alt="" width="80%">
+                    </div>
+                </div>
+
             </div>
+            <div class="content">
+                <div class="line1">
+                    <span class="name">车牌号：</span><span class="car_license_number"></span>
+                </div>
+                <div class="line1">
+                    <span class="name">车辆颜色：</span><span class="car_color"></span>
+                </div>
+                <div class="line1">
+                    <span class="name">品牌车型：</span><span class="car_type"></span>
+                </div>
+                <div class="line1">
+                    <span class="name">注册日期：</span><span class="registration_date"></span>
+                </div>
+                <div class="line1">
+                    <span class="name">车辆所有人：</span><span class="vehicle_owner_name"></span>
+                </div>
+                <div class="line1">
+                    <span class="name">行驶证照片：</span>
+                    <div class="travel_license_photo">
+                        <img src="" alt="" width="80%">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div style="width: 100%;text-align: center">
             <form>
-                <div class="line01 not_describe">
+                <div class="line1 not_describe">
                     <span class="name">*审核未通过描述:</span><input type="text" class="describe">
                 </div>
                 <div class="btn">
@@ -310,15 +328,20 @@
         dataType:'json',
         success:function(data){
             if(data.result.msg == undefined){
-                /*alert(data.result.msg)*/
-                //console.log(data.result)
-                $('.driver_name').html(data.result.driverLicense.driver_name)
-                $('.driver_license_number').html(data.result.driverLicense.driver_license_number)
-                $('.first_issue_date').html(data.result.driverLicense.first_issue_date)
-                $('.allow_car_type').html(data.result.driverLicense.allow_car_type)
-                $('.effective_date_end').html(data.result.driverLicense.effective_date_end)
-                $('.driver_license_photo').children('img').attr("src",data.result.driverLicense.photo_url);
-                var oid = data.result.driverLicense.id;
+                console.log(data.result)
+                $('.driver_name').html(data.result.driver.driver_name)
+                $('.driver_license_number').html(data.result.driver.driver_license_number)
+                $('.first_issue_date').html(data.result.driver.first_issue_date)
+                $('.allow_car_type').html(data.result.driver.allow_car_type)
+                $('.effective_date_end').html(data.result.driver.effective_date_end)
+                $('.driver_license_photo').children('img').attr("src",data.result.driver.photo_url);
+                $('.car_license_number').html(data.result.travel.car_license_number)
+                $('.car_color').html(data.result.travel.car_color)
+                $('.car_type').html(data.result.travel.car_type)
+                $('.registration_date').html(data.result.travel.registration_date)
+                $('.vehicle_owner_name').html(data.result.travel.vehicle_owner_name)
+                $('.travel_license_photo').children('img').attr("src",data.result.travel.photo_url);
+                var oid = data.result.driver.id;
                 agree(oid);
                 disagree(oid);
             }else{
@@ -361,7 +384,6 @@
 
                 },
                 error: function(){
-
                 }
             });
         })

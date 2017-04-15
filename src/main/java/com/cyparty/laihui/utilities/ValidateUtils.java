@@ -19,7 +19,7 @@ public class ValidateUtils {
         JSONObject driver = new JSONObject();
         JSONObject travel = new JSONObject();
         //驾驶证信息
-        driver.put("id",driverIfo.get_id());
+        driver.put("id",driverIfo.getUser_id());
         driver.put("driver_name",driverIfo.getDriver_name());
         driver.put("driver_license_number",driverIfo.getDriver_license_number());
         driver.put("first_issue_date",driverIfo.getFirst_issue_date());
@@ -28,7 +28,7 @@ public class ValidateUtils {
         driver.put("photo_url",driverIfo.getDriver_license_photo());
         driver.put("status",driverIfo.getIs_enable());
         //行驶证信息
-        travel.put("id",travelInfo.get_id());
+        travel.put("id",travelInfo.getUser_id());
         travel.put("car_license_number",travelInfo.getCar_license_number());
         travel.put("car_color",travelInfo.getCar_color());
         travel.put("car_type",travelInfo.getCar_type());

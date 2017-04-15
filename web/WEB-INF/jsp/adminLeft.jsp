@@ -58,10 +58,7 @@
                         <a href="/db/validate/passenger_list">乘客认证</a>
                     </li>
                     <li class="menu_context_li db_driver_check">
-                        <a href="/db/driver/check">驾驶证认证</a>
-                    </li>
-                    <li class="menu_context_li db_travel_card_check">
-                        <a href="/db/travel/card/check">行驶证认证</a>
+                        <a href="/db/driver/check">认证审核</a>
                     </li>
             </ul>
         </div>
@@ -210,6 +207,17 @@
         <ul class="menu_context_ul">
             <li class="menu_context_li reset_password">
                 <a href="/db/merchant/join">招商加盟</a>
+            </li>
+        </ul>
+    </div>
+    <div class="menu_context">
+        <div class="menu_context_tittle">
+            <img src="/resource/images/pc_icon_menu_content.png" alt="">
+            <span>录入车单</span>
+        </div>
+        <ul class="menu_context_ul">
+            <li class="menu_context_li reset_password">
+                <a href="/db/car/editor">车单编辑</a>
             </li>
         </ul>
     </div>
