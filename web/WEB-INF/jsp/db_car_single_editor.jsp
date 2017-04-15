@@ -10,7 +10,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--头部信息--%>
 
-<script type="text/javascript" src="/resource/jeDate/jedate.js"></script>
+<script type="text/javascript" src="/resource/js/jedate.js"></script>
+<link rel="stylesheet" href="/resource/css/jedate.css"/>
 <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css?v=1.0"/>
 <script type="text/javascript"src="http://webapi.amap.com/maps?v=1.3&key=7a7787dd18e73bf0e5a350f6be459b35"></script>
 <script src="/resource/js/jquery-1.11.3.min.js" type="text/javascript"></script>
@@ -199,18 +200,18 @@
         margin-top: 5px;
         margin-left: 30px;
     }
-    /*以下是王凡*/
+    /*以下是凡哥代码*/
          body{font-family: "Microsoft Yahei";}
         .pc_content{margin-top: 5%;line-height: 4;width: 100%;text-align: center}
         .pc_content_passenger{display:inline;float:left;margin-left:10%;width: 50%;margin: 0 auto;padding: 2%;border: 1px solid #e4e4e4;box-shadow: 2px 2px 2px #cccbca;border-radius: 1vh;text-align: center}
-        .pc_content h2{color:#FF8F0c;font-size: 30px}
-        input{font-size: 20px;padding-left:2%;border: none;outline: #e4e4e4;width: 50%;color:#9a9a9a;height: 5vh;border:2px solid #FF8F0c;box-sizing: border-box; border-radius: 1vh;}
+        .pc_content h2{color:#FF8F0c;font-size: 25px}
+        input{font-size: 16px;padding-left:2%;border: none;outline: #e4e4e4;width: 50%;color:#9a9a9a;height: 5vh;border:2px solid #FF8F0c;box-sizing: border-box; border-radius: 1vh;}
         .pc_content_passenger span{width:20%;display: inline-block}
         .pc_content_driver span{width:20%;display: inline-block}
         .pc_content_driver{display:inline;float:left;margin-left:10%;width: 50%;margin: 0 auto;padding: 2%;border: 1px solid #e4e4e4;box-shadow: 2px 2px 2px #cccbca;border-radius: 1vh;text-align: center}
         #btn_passenger{background:#FF8F0c;color: white;margin-top: 10%;line-height:5vh;height:5vh;font-size: 20px}
         #btn_driver{background:#FF8F0c;color: white;margin-top: 10%;line-height:5vh;height:5vh;font-size: 20px}
-    /*以上是王凡*/
+    /*以上是凡哥代码*/
 </style>
 
 <%--右侧菜单--%>
@@ -337,6 +338,7 @@ var map = new AMap.Map("mapContainer", {
                     data:  {'mobile':mobile ,'boarding_point':aa,'breakout_point':bb,'departure_time':departure_time,'booking_seats':booking_seats,'remark':remark},
                     dataType:'json',
                     success:function(data){
+                        alert(data.message);
                         console.log(data);
                     },
                     error: function(){
@@ -425,6 +427,7 @@ var map = new AMap.Map("mapContainer", {
                         data:  {'mobile':mobile ,'boarding_point':aa,'breakout_point':bb,'departure_time':departure_time,'init_seats':init_seats,'remark':remark},
                         dataType:'json',
                         success:function(data){
+                            alert(data.message);
                             console.log(data);
                         },
                         error: function(){
