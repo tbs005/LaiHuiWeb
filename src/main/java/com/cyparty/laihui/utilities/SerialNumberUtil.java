@@ -9,24 +9,24 @@ package com.cyparty.laihui.utilities;
 import java.util.Random;
 
 /**
- * ÍÆ¹ãÂëÉú³ÉÆ÷
+ * æ¨å¹¿ç ç”Ÿæˆå™¨
  *
  *
  */
 public class SerialNumberUtil {
-    /**×Ô¶¨Òå½øÖÆ(0,1Ã»ÓĞ¼ÓÈë,ÈİÒ×Óëo,l»ìÏı)*/
+    /**è‡ªå®šä¹‰è¿›åˆ¶(0,1æ²¡æœ‰åŠ å…¥,å®¹æ˜“ä¸o,læ··æ·†)*/
     private static final char[] r = new char[] { 'Q', 'w', 'E', '8', 'a', 'S', '2', 'd', 'Z', 'x', '9', 'c', '7', 'p', 'O', '5', 'i', 'K', '3', 'm', 'j', 'U', 'f', 'r', '4', 'V', 'y', 'L', 't', 'N', '6', 'b', 'g', 'H' };
-    /**×Ô¶¯²¹È«×é(²»ÄÜÓë×Ô¶¨Òå½øÖÆÓĞÖØ¸´)*/
+    /**è‡ªåŠ¨è¡¥å…¨ç»„(ä¸èƒ½ä¸è‡ªå®šä¹‰è¿›åˆ¶æœ‰é‡å¤)*/
     private static final char[] b = new char[] { 'q', 'W', 'e', 'A', 's', 'D', 'z', 'X', 'C', 'P', 'o', 'I', 'k', 'M', 'J', 'u', 'F', 'R', 'v', 'Y', 'T', 'n', 'B', 'G', 'h' };
-    /**½øÖÆ³¤¶È*/
+    /**è¿›åˆ¶é•¿åº¦*/
     private static final int l = r.length;
-    /**ĞòÁĞ×îĞ¡³¤¶È*/
+    /**åºåˆ—æœ€å°é•¿åº¦*/
     private static final int s = 6;
 
     /**
-     * ¸ù¾İIDÉú³ÉÁùÎ»Ëæ»úÂë
+     * æ ¹æ®IDç”Ÿæˆå…­ä½éšæœºç 
      * @param num ID
-     * @return Ëæ»úÂë
+     * @return éšæœºç 
      */
     public static String toSerialNumber(long num) {
         char[] buf = new char[32];
@@ -38,7 +38,7 @@ public class SerialNumberUtil {
         }
         buf[--charPos] = r[(int) (num % l)];
         String str = new String(buf, charPos, (32 - charPos));
-        //²»¹»³¤¶ÈµÄ×Ô¶¯Ëæ»ú²¹È«
+        //ä¸å¤Ÿé•¿åº¦çš„è‡ªåŠ¨éšæœºè¡¥å…¨
         if (str.length() < s) {
             StringBuffer sb = new StringBuffer();
             Random rnd = new Random();

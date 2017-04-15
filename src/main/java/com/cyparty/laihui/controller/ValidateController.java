@@ -229,27 +229,26 @@ public class ValidateController {
     }
     //驾驶证查询接口
     @ResponseBody
-    @RequestMapping(value = "/driver/find", method = RequestMethod.POST)
+    @RequestMapping(value = "/driver/check", method = RequestMethod.POST)
     public ResponseEntity<String> DriverFind(HttpServletRequest request) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         String json = "";
         JSONObject result = new JSONObject();
-        JSONObject user = new JSONObject();
-        List<UserDriverLicenseInfo> userDriverLicenseInfos = laiHuiDB.getDriverLicense();
-        if(userDriverLicenseInfos.size()>0){
-            UserDriverLicenseInfo driverLicenseInfo = userDriverLicenseInfos.get(0);
-            user.put("id",driverLicenseInfo.getUser_id());
-            user.put("driver_name",driverLicenseInfo.getDriver_name());
-            user.put("driver_license_number",driverLicenseInfo.getDriver_license_number());
-            user.put("first_issue_date",driverLicenseInfo.getFirst_issue_date());
-            user.put("allow_car_type",driverLicenseInfo.getAllow_car_type());
-            user.put("effective_date_start",driverLicenseInfo.getEffective_date_start());
-            user.put("effective_date_end",driverLicenseInfo.getEffective_date_end());
-            user.put("photo_url",driverLicenseInfo.getDriver_license_photo());
-            user.put("status",driverLicenseInfo.getIs_enable());
-            result.put("driverLicense",user);
+        List<User> userList = laiHuiDB.getUserList(" where is_car_owner = 2 order by create_time limit 1 ");
+        if(userList.size()>0){
+            User user = userList.get(0);
+            int user_id =user.getUser_id();
+            List<UserDriverLicenseInfo> userDriverLicenseInfos = laiHuiDB.getDriver(user_id);
+            List<UserTravelCardInfo> userTravelCardInfos = laiHuiDB.getTravel(user_id);
+            UserDriverLicenseInfo driverIfo = new UserDriverLicenseInfo();
+            UserTravelCardInfo travelInfo = new UserTravelCardInfo();
+            if(userDriverLicenseInfos.size()>0&&userTravelCardInfos.size()>0) {
+                driverIfo = userDriverLicenseInfos.get(0);
+                travelInfo = userTravelCardInfos.get(0);
+                result = ValidateUtils.getDriver(driverIfo,travelInfo);
+            }
             json = ReturnJsonUtil.returnSuccessJsonString(result, "消息返回成功！");
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
         }else{
@@ -258,36 +257,7 @@ public class ValidateController {
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
         }
     }
-    //行驶证查询接口
-    @ResponseBody
-    @RequestMapping(value = "/travel/find", method = RequestMethod.POST)
-    public ResponseEntity<String> TravelFind(HttpServletRequest request) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
-        responseHeaders.set("Access-Control-Allow-Origin", "*");
-        String json = "";
-        JSONObject result = new JSONObject();
-        JSONObject driver = new JSONObject();
-        List<UserTravelCardInfo> userTravelCardInfos = laiHuiDB.getTravelCard();
-        if(userTravelCardInfos.size()>0){
-            UserTravelCardInfo driverIfo = userTravelCardInfos.get(0);
-            driver.put("id",driverIfo.getUser_id());
-            driver.put("car_license_number",driverIfo.getCar_license_number());
-            driver.put("car_color",driverIfo.getCar_color());
-            driver.put("car_type",driverIfo.getCar_type());
-            driver.put("registration_date",driverIfo.getRegistration_date());
-            driver.put("vehicle_owner_name",driverIfo.getVehicle_owner_name());
-            driver.put("photo_url",driverIfo.getTravel_license_photo());
-            driver.put("status",driverIfo.getIs_enable());
-            result.put("travelCard",driver);
-            json = ReturnJsonUtil.returnSuccessJsonString(result, "消息返回成功！");
-            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
-        }else{
-            result.put("msg","暂无需要审核的驾证信息");
-            json = ReturnJsonUtil.returnFailJsonString(result, "暂无需要审核的驾证信息");
-            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
-        }
-    }
+
     //驾驶证审核接口
     @ResponseBody
     @RequestMapping(value = "/driver/check", method = RequestMethod.POST)
@@ -300,162 +270,60 @@ public class ValidateController {
         String id = request.getParameter("id");
         String is_enable = request.getParameter("is_enable");
         boolean is_true = false;
-        if(null != id && null != is_enable && "3".equals(is_enable)){
-            is_true = laiHuiDB.update("pc_user_driver_license_info"," set is_enable ='"+is_enable+"' where user_id ="+Integer.parseInt(id));
-            List<UserTravelCardInfo> userTravelCardInfos = laiHuiDB.getTravel(Integer.parseInt(id));
-            List<User> userList = laiHuiDB.getUserList(" where _id= "+id);
-            User user =userList.get(0);
-            boolean is_success = false;
-            //判断行驶证的状态，如果根据行驶证的状态对应改变
-            if(userTravelCardInfos.size()>0){
-                UserTravelCardInfo userTravelCardInfo = userTravelCardInfos.get(0);
-                if(userTravelCardInfo.getIs_enable().equals("3")){
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =1 ,flag=1 where _id ="+Integer.parseInt(id));
-                    if(is_success){
-                        String content = "恭喜您成功通过车主认证，现在可以接单了！";
-                        JSONObject driverInfo = new JSONObject();
-                        driverInfo.put("mobile",user.getUser_mobile());
-                        driverInfo.put("content",content);
-                        String startTime = Utils.getCurrentTime();
-                        notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
-                    }
-                }else if(userTravelCardInfo.getIs_enable().equals("2")){
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =3 where _id ="+Integer.parseInt(id));
-                }else{
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =2 where _id ="+Integer.parseInt(id));
-                }
-            }else{
-                is_success = laiHuiDB.update("pc_user"," set is_car_owner =0 where _id ="+Integer.parseInt(id));
-            }
-            if(is_true && is_success){
-                json = ReturnJsonUtil.returnSuccessJsonString(result, "驾驶证审核通过！");
-                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
-            }else{
-                json = ReturnJsonUtil.returnFailJsonString(result, "驾驶证审核失败！");
-                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
-            }
-        }else if(null != id && null != is_enable && "2".equals(is_enable)){
-            String reason = request.getParameter("reason");
-            List<UserTravelCardInfo> userTravelCardInfos = laiHuiDB.getTravel(Integer.parseInt(id));
-            List<User> userList = laiHuiDB.getUserList(" where _id= "+id);
-            User user =userList.get(0);
-            boolean is_success = false;
-            if(null!= reason && !"".equals(reason) ){
-                is_true = laiHuiDB.update("pc_user_driver_license_info"," set is_enable ='"+is_enable+"' where user_id ="+Integer.parseInt(id));
-                if(userTravelCardInfos.size()>0){
-                    UserTravelCardInfo userTravelCardInfo = userTravelCardInfos.get(0);
-                    if(userTravelCardInfo.getIs_enable().equals("3")||userTravelCardInfo.getIs_enable().equals("2")){
-                        is_success = laiHuiDB.update("pc_user"," set is_car_owner =3 where _id ="+Integer.parseInt(id));
-                    }else{
-                        is_success = laiHuiDB.update("pc_user"," set is_car_owner =2 where _id ="+Integer.parseInt(id));
-                    }
-                }else{
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =0 where _id ="+Integer.parseInt(id));
-                }
-                if(is_true && is_success){
-                    String content = "很抱歉，您提交的驾驶证信息未通过审核。原因："+reason;
-                    JSONObject driverInfo = new JSONObject();
-                    driverInfo.put("mobile",user.getUser_mobile());
-                    driverInfo.put("content",content);
+        boolean is_real = false;
+        boolean is_success = false;
+        int user_id = 0;
+        if (null != id && null != is_enable) {
+            user_id = Integer.parseInt(id);
+            List<User> userList = laiHuiDB.getUserList(" where _id= " + user_id);
+            User user = userList.get(0);
+            if ("3".equals(is_enable)) {
+                is_true = laiHuiDB.update("pc_user_driver_license_info", " set is_enable ='" + is_enable + "' where user_id =" + user_id);
+                is_real = laiHuiDB.update("pc_user_travel_card_info", " set is_enable ='" + is_enable + "' where user_id =" + user_id);
+                is_success = laiHuiDB.update("pc_user", " set is_car_owner =1 ,flag=1 where _id=" + user_id);
+                if (is_true && is_real && is_success) {
+                    String content = "恭喜您成功通过车主认证，现在可以接单了！";
+                    JSONObject driverInfo = ValidateUtils.getContent(user,content);
                     String startTime = Utils.getCurrentTime();
                     notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
-                    json = ReturnJsonUtil.returnSuccessJsonString(result, "驾驶证审核未通过！");
+                    result.put("data",driverInfo);
+                    result.put("msg", "车主认证成功");
+                    json = ReturnJsonUtil.returnSuccessJsonString(result, "车主认证成功！");
                     return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
-                }else{
-                    json = ReturnJsonUtil.returnFailJsonString(result, "驾驶证审核失败！");
+                } else {
+                    result.put("msg", "车主认证失败");
+                    json = ReturnJsonUtil.returnFailJsonString(result, "车主认证失败！");
                     return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                 }
-            }else{
-                json = ReturnJsonUtil.returnFailJsonString(result, "没有原因，不能提交");
-                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
-            }
-        }else{
-            json = ReturnJsonUtil.returnFailJsonString(result, "参数错误");
-            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
-        }
-    }
-    //行驶证审核接口
-    @ResponseBody
-    @RequestMapping(value = "/travel/check", method = RequestMethod.POST)
-    public ResponseEntity<String> TravelCheck(HttpServletRequest request) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
-        responseHeaders.set("Access-Control-Allow-Origin", "*");
-        String json = "";
-        JSONObject result = new JSONObject();
-        String id = request.getParameter("id");
-        String is_enable = request.getParameter("is_enable");
-        boolean is_true = false;
-        boolean is_success =false ;
-        if(null != id && null != is_enable && "3".equals(is_enable)){
-            is_true = laiHuiDB.update("pc_user_travel_card_info"," set is_enable ='"+is_enable+"' where user_id ="+Integer.parseInt(id));
-            List<UserDriverLicenseInfo> userDriverLicenseInfoList = laiHuiDB.getDriver(Integer.parseInt(id));
-            List<User> userList = laiHuiDB.getUserList(" where _id= "+id);
-            User user =userList.get(0);
-
-            if(userDriverLicenseInfoList.size()>0){
-                UserDriverLicenseInfo userDriverLicenseInfo = userDriverLicenseInfoList.get(0);
-                if(userDriverLicenseInfo.getIs_enable().equals("3")){
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =1,flag=1  where _id ="+Integer.parseInt(id));
-                    if(is_success){
-                        String content = "恭喜您成功通过车主认证，现在可以接单了！";
-                        JSONObject driverInfo = new JSONObject();
-                        driverInfo.put("mobile",user.getUser_mobile());
-                        driverInfo.put("content",content);
+            } else {
+                String reason = request.getParameter("reason");
+                if (null != reason && !"".equals(reason)) {
+                    is_true = laiHuiDB.update("pc_user_driver_license_info", " set is_enable ='" + is_enable + "' where user_id =" + user_id);
+                    is_real = laiHuiDB.update("pc_user_travel_card_info", " set is_enable ='" + is_enable + "' where user_id =" + user_id);
+                    is_success = laiHuiDB.update("pc_user", " set is_car_owner =3 ,flag=1 where _id=" + user_id);
+                    if (is_true && is_real && is_success) {
+                        String content = "很抱歉，您提交的驾驶证信息未通过审核。原因：" + reason;
+                        JSONObject driverInfo = ValidateUtils.getContent(user,content);
                         String startTime = Utils.getCurrentTime();
                         notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
+                        result.put("data",driverInfo);
+                        result.put("msg", "审核未通过!");
+                        json = ReturnJsonUtil.returnSuccessJsonString(result, "审核未通过！");
+                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                    } else {
+                        result.put("msg", "审核失败!");
+                        json = ReturnJsonUtil.returnFailJsonString(result, "审核失败！");
+                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                     }
-                }else if(userDriverLicenseInfo.getIs_enable().equals("2")){
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =3 where _id ="+Integer.parseInt(id));
-                }else {
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =2 where _id ="+Integer.parseInt(id));
+                } else {
+                    result.put("msg", "没有原因，不能提交!");
+                    json = ReturnJsonUtil.returnFailJsonString(result, "没有原因，不能提交！");
+                    return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
                 }
-            }else{
-                is_success = laiHuiDB.update("pc_user"," set is_car_owner =0 where _id ="+Integer.parseInt(id));
             }
-            if(is_true && is_success){
-                json = ReturnJsonUtil.returnSuccessJsonString(result, "驾驶证审核通过！");
-                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
-            }else{
-                json = ReturnJsonUtil.returnFailJsonString(result, "驾驶证审核失败！");
-                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
-            }
-        }else if(null != id && null != is_enable && "2".equals(is_enable)){
-            String reason = request.getParameter("reason");
-            List<UserDriverLicenseInfo> userDriverLicenseInfoList = laiHuiDB.getDriver(Integer.parseInt(id));
-            if( !"".equals(reason) ){
-                is_true = laiHuiDB.update("pc_user_travel_card_info"," set is_enable ='"+is_enable+"' where user_id ="+Integer.parseInt(id));
-                if(userDriverLicenseInfoList.size()>0){
-                    UserDriverLicenseInfo userDriverLicenseInfo = userDriverLicenseInfoList.get(0);
-                    if(userDriverLicenseInfo.getIs_enable().equals("3")||userDriverLicenseInfo.getIs_enable().equals("2")){
-                        is_success = laiHuiDB.update("pc_user"," set is_car_owner =3 where _id ="+Integer.parseInt(id));
-                    }else{
-                        is_success = laiHuiDB.update("pc_user"," set is_car_owner =2 where _id ="+Integer.parseInt(id));
-                    }
-                }else{
-                    is_success = laiHuiDB.update("pc_user"," set is_car_owner =0 where _id ="+Integer.parseInt(id));
-                }
-                if(is_true && is_success){
-                    List<User> userList = laiHuiDB.getUserList(" where _id= "+id);
-                    User user =userList.get(0);
-                    String content = "很抱歉，您提交的行驶证信息未通过审核。原因："+reason;
-                    JSONObject driverInfo = new JSONObject();
-                    driverInfo.put("mobile",user.getUser_mobile());
-                    driverInfo.put("content",content);
-                    String startTime = Utils.getCurrentTime();
-                    notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
-                    json = ReturnJsonUtil.returnSuccessJsonString(result, "驾驶证审核未通过！");
-                    return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
-                }else{
-                    json = ReturnJsonUtil.returnFailJsonString(result, "驾驶证审核失败！");
-                    return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
-                }
-            }else{
-                json = ReturnJsonUtil.returnFailJsonString(result, "没有原因，不能提交");
-                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
-            }
-        }else{
-            json = ReturnJsonUtil.returnFailJsonString(result, "参数错误");
+        }else {
+            result.put("msg", "参数错误！");
+            json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
     }

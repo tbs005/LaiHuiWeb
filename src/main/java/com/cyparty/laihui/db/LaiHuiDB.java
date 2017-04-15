@@ -655,8 +655,9 @@ public class LaiHuiDB {
     }
 
     //查询车主认证状态
-    public List<UserDriverLicenseInfo> getDriverLicense() {
-        String SQL = "select * from pc_user_driver_license_info where is_enable=1 order by create_time limit 1 ";
+    public List<UserDriverLicenseInfo> getDriverLicense(String  where) {
+        where = where +" order by create_time limit 1";
+        String SQL = "select * from pc_user_driver_license_info  ";
         List<UserDriverLicenseInfo> driverLicenseInfos = jdbcTemplateObject.query(SQL, new UserDriverLicenseInfoMapper());
         return driverLicenseInfos;
     }

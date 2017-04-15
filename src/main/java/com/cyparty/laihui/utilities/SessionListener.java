@@ -13,7 +13,7 @@ public class SessionListener implements HttpSessionListener {
     public void sessionCreated(HttpSessionEvent event) {
         HttpSession ses = event.getSession();
         String id=ses.getId()+ses.getCreationTime();
-        SummerConstant.UserMap.put(id, Boolean.TRUE); //添加用户
+        SummerConstant.UserMap.put(id, Boolean.TRUE); //娣诲姞鐢ㄦ埛
     }
 
     @Override
@@ -21,8 +21,8 @@ public class SessionListener implements HttpSessionListener {
         HttpSession ses = event.getSession();
         String id=ses.getId()+ses.getCreationTime();
         synchronized (this) {
-            //用户数减一
-            SummerConstant.UserMap.remove(id); //从用户组中移除掉，用户组为一个map
+            //鐢ㄦ埛鏁板噺涓�
+            SummerConstant.UserMap.remove(id); //浠庣敤鎴风粍涓Щ闄ゆ帀锛岀敤鎴风粍涓轰竴涓猰ap
         }
     }
 }

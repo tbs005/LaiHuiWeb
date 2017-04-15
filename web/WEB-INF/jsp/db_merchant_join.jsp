@@ -198,7 +198,6 @@
   }
 </style>
 
-
 <%--右侧菜单--%>
 <div class="ui_body">
   <jsp:include page="adminLeft.jsp" flush="true"></jsp:include>
@@ -209,6 +208,36 @@
       </div>
     </div>
     <div class="userManage_container">
+      <div class="sub_title_bar">
+        <div class="page_box">
+          <div class="page_prev" onclick="loadPage.pagePrev()">
+            <div class="arrow prev_arrow"></div>
+          </div>
+          <div class="page_number">
+            <span class="page_current"></span>
+            <span>/</span>
+            <span class="page_content"></span>
+          </div>
+          <div class="page_next" onclick="loadPage.pageNext()">
+            <div class="arrow next_arrow"></div>
+          </div>
+          <input type="text" class="page_input_number">
+          <div class="page_go" onclick="loadPage.checkPageTo()">
+            <span>跳转</span>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="page_set" onclick="pageSet.showPageSetDrop(this)" onmouseleave="pageSet.hidePageSet(this)">
+          <span class="page_set_style">每页</span>
+          <span class="page_set_number show_page">20</span>
+          <span class="page_set_style">条</span>
+          <ul class="page_set_ul">
+          </ul>
+          <div class="down1"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+      </div>
       <div class="userManage_container_li_top">
         <span class="userManage_span">姓名</span>
         <span class="userManage_span">电话</span>
@@ -227,7 +256,30 @@
       </ul>
     </div>
     <%--分页加载--%>
-
+ <div class="page_container">
+      <div class="page_box">
+        <div class="page_prev" onclick="loadPage.pagePrev()">
+          <div class="arrow prev_arrow"></div>
+        </div>
+        <div class="page_number">
+          <span class="page_current"></span>
+          <span>/</span>
+          <span class="page_content"></span>
+        </div>
+        <div class="page_next" onclick="loadPage.pageNext()">
+          <div class="arrow next_arrow"></div>
+        </div>
+        <input type="text" class="page_input_number">
+        <div class="page_go" onclick="loadPage.checkPageTo()">
+          <span>跳转</span>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
     <script type="text/javascript">
 
         $.ajax({
@@ -247,16 +299,97 @@
                 $('.content_record_p').html("查询失败");
             }
         })
-
-
-
-
-        //添加用户列表
-
-
-
-
-
+        $(document).ready(function () {
+            loadUser();
+            $('.menu_context_li').removeClass('active_li');
+            $('.db_merchant_join').addClass('active_li');
+            pageSet.setPageNumber()
+            // 绑定键盘按下事件
+            $(document).keypress(function (e) {
+                // 回车键事件
+                if (e.which == 13) {
+                    jQuery('.search_ico').click();
+                }
+            });
+            //搜索重置page
+            $('.search_ico').click(function () {
+                global_page = 0;
+                findMessage();
+            });
+            $('.user_list_drop_box').mouseleave(function () {
+                $('.user_list_drop_box_ul').hide();
+            });
+            $("#datepicker").datetimepicker({
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#datepicker2").datetimepicker({
+                changeMonth: true,
+                changeYear: true
+            });
+            $.datepicker.regional['zh-CN'] = {
+                clearText: '清除', clearStatus: '清除已选日期',
+                closeText: '关闭', closeStatus: '不改变当前选择',
+                prevText: '上月', prevStatus: '显示上月',
+                nextText: '下月', nextStatus: '显示下月',
+                currentText: '今天', currentStatus: '显示本月',
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                    '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                monthNamesShort: ['一', '二', '三', '四', '五', '六',
+                    '七', '八', '九', '十', '十一', '十二'],
+                monthStatus: '选择月份', yearStatus: '选择年份',
+                weekHeader: '周', weekStatus: '年内周次',
+                dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                dayNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+                dayNamesMin: ['日', '一', '二', '三', '四', '五', '六'],
+                dayStatus: '设置 DD 为一周起始', dateStatus: '选择 m月 d日, DD',
+                dateFormat: 'yy-mm-dd', firstDay: 1,
+                initStatus: '请选择日期', isRTL: false
+            };
+            $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
+            madeLine();
+        });
+        var global_cat_id;
+        var check_click_search = 0;
+        var action_url="/business";
+        var start_time="";
+        var end_time="";
+        var count_array=[];
+        var count_status=0;
+        function loadUser(){
+            var obj={};
+            obj.size=size;
+            obj.page=global_page;
+            obj.is_passenger=1;
+            obj.source=source;
+            operation.operation_ajax(action_url,obj,sendMessage);
+        }
+        function sendMessage(){
+            $('.user_manage_container_li').remove();
+            loadPage.checkUserPrivilege(insertUserMessage);
+        }
+        /*查询数据*/
+        function findMessage(){
+            var obj={};
+            var search = $('.search_user_input').val();
+            obj.size=size;
+            obj.page=global_page;
+            operation.operation_ajax(action_url,obj,sendMessage);
+        }
+        //添加用户数据
+        function insertUserMessage(){
+            $('.user_manage_container_li').remove();
+            for (var i = 0; i < global_data.data.length; i++){
+                var mobile = global_data.data[i].mobile;//手机号
+                var name = global_data.data[i].name;//名字
+                var address=global_data.data[i].address;//身份证号
+                var description=global_data.data[i].description;//描述
+                var way=global_data.data[i].way;//加盟方式
+                var create_time=global_data.data[i].create_time;//加入时间
+                var id=global_data.data[i].id;//id
+                addUserDisplay(mobile,name,idsn,address,description,way,create_time,id);
+            }
+        }
     </script>
     <%--底部--%>
     <jsp:include page="footer.jsp" flush="true"></jsp:include>
