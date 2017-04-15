@@ -62,11 +62,11 @@
 
     <!--oss-->
     <bean id="ossConfigure" class="com.cyparty.laihui.utilities.OssConfigure">
-        <property name="accessKeyId" value="D3TTVw1GOGZyzUCs"/>
-        <property name="accessKeySecret" value="o0lvAyo60wp1LmYrvGay24ZvaY7afs"/>
+        <property name="accessKeyId" value="LTAIBylxOP12jqp2"/>
+        <property name="accessKeySecret" value="mkjn9cKyGx8mxG0tvMUyO7ceRTIw61"/>
         <property name="accessUrl" value="laihuipincheoss.oss-cn-qingdao.aliyuncs.com"/>
-        <property name="bucketName" value="cyparty-now"/>
-        <property name="endpoint" value="http://oss-cn-beijing.aliyuncs.com"/>
+        <property name="bucketName" value="laihuipincheoss"/>
+        <property name="endpoint" value="http://oss-cn-qingdao.aliyuncs.com"/>
     </bean>
     <bean id="ossUtil" class="com.cyparty.laihui.utilities.OssUtil">
         <property name="ossConfigure" ref="ossConfigure"/>
