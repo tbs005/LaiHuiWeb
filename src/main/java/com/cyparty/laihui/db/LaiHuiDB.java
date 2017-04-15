@@ -691,9 +691,9 @@ public class LaiHuiDB {
     //添加pc端车主车单
     public boolean createDeriverCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int init_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code) {
         boolean is_success = true;
-        String SQL = "insert into pc_driver_publish_info(user_id,mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String SQL = "insert into pc_driver_publish_info(user_id,mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            jdbcTemplateObject.update(SQL, new Object[]{-5, mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, departure_city_code, Utils.getCurrentTime(),1});
+            jdbcTemplateObject.update(SQL, new Object[]{-5, mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, departure_city_code, Utils.getCurrentTime(),1,5});
         } catch (Exception e) {
             is_success = false;
         }
@@ -704,9 +704,9 @@ public class LaiHuiDB {
     //添加pc端车主车单
     public boolean createPassengerCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int booking_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code) {
         boolean is_success = true;
-        String SQL = "insert into pc_passenger_publish_info(user_id,trade_no,departure_time,boarding_point,breakout_point,booking_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String SQL = "insert into pc_passenger_publish_info(user_id,trade_no,departure_time,boarding_point,breakout_point,booking_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            jdbcTemplateObject.update(SQL, new Object[]{-5, mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, departure_city_code, Utils.getCurrentTime(),1});
+            jdbcTemplateObject.update(SQL, new Object[]{-5, mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, Utils.getCurrentTime(),1,5});
         } catch (Exception e) {
             is_success = false;
         }
