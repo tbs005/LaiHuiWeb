@@ -18,10 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhu on 2015/12/29.
@@ -692,9 +689,10 @@ public class LaiHuiDB {
     //添加pc端车主车单
     public boolean createDeriverCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int init_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code) {
         boolean is_success = true;
-        String SQL = "insert into pc_driver_publish_info(user_id,mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        int user_id = -Integer.parseInt((new Date().getTime()+"").substring(4,13));
+        String SQL = "insert into pc_driver_publish_info(user_id,mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source,current_seats) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            jdbcTemplateObject.update(SQL, new Object[]{-5, mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, departure_city_code, Utils.getCurrentTime(),1,5});
+            jdbcTemplateObject.update(SQL, new Object[]{user_id, mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, departure_city_code, Utils.getCurrentTime(),1,5,init_seats});
         } catch (Exception e) {
             is_success = false;
         }

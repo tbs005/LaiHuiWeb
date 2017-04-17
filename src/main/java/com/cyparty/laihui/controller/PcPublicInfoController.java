@@ -57,6 +57,7 @@ public class PcPublicInfoController {
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
         boolean is_success = laiHuiDB.createDeriverCarList(mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code);
+
         if (is_success){
 
             json = JsonUtils.returnSuccessJsonString(result,"发布成功！");
