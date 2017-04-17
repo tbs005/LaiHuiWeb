@@ -1,0 +1,57 @@
+@charset "utf-8";
+html,body,ul,li,ol,h1,h2,h3,h4,h5,h6,p,dl,dt,dd,form,input,textarea,select,.clear{margin:0;padding:0;outline:none;}
+html,body{height:100%; text-align:center;}
+div{ margin:0 auto;}
+body{color:#7f7f7f;font-size:12px;font-weight:normal;background:#fff;font-family: "微软雅黑";min-width:1200px;}
+h1,h2,h3,h4,h5,h6{font-weight: normal;}
+button{cursor: pointer;}
+input[type="button"]{cursor: pointer;}
+input{font-family: "微软雅黑";}
+a{color:#7f7f7f;text-decoration:none;outline:none;}
+li{list-style:none}
+em,i{font-style: normal;}
+img{border:none;vertical-align:middle;}
+.clear{overflow: hidden;font-size:0;line-height:0;width:100%;clear:both;height:0;}
+.clearfix:after {content: " ";display: block;clear: both;height: 0;}
+.clearfix {zoom: 1;}
+input[type=text]::-ms-clear { display: none; }
+input[type=password]::-ms-reveal { display: none; }
+input[type=file]{ cursor:pointer;}
+
+
+
+/*省市区联动*/
+.mianR .area{display:block;float:left;margin-right:10px; position:relative;width: 100%}
+.mianR .employee li .arer-sheng{width:300px; position:absolute;top:50px;left:35%;background:#fff;border:solid 1px #dadada; z-index:9999; display:none;}
+.mianR .arer-sheng{width:230px; position:absolute;top:23px;left:0;background:#fff;border:solid 1px #dadada; z-index:9999; display:none;}
+.mianR .arer-sheng h4{font-size:12px;color:#20ab4f;border-bottom:solid 2px #f6f6f6;padding-left:10px;}
+.mianR .arer-sheng ul{padding:0 ;margin:0; text-align:left;}
+.mianR .arer-sheng ul li{float:left; display:block; text-align: center;cursor:pointer;padding:3px 10px;line-height:22px;margin:0;width: auto;}
+.mianR .arer-sheng ul li:hover{ background:#FF8F0c;color:#fff;}
+
+.mianR .employee li .arer-shi{width:300px; position:absolute;top:50px;left:35%;background:#fff;border:solid 1px #dadada; z-index:9999; display:none;}
+.mianR .arer-shi{width:230px; position:absolute;top:23px;left:0;background:#fff;border:solid 1px #dadada; z-index:9999; display:none;}
+.mianR .arer-shi h4{font-size:12px;color:#20ab4f;border-bottom:solid 2px #f6f6f6;padding-left:10px;}
+.mianR .arer-shi ul{padding:0;margin:0;}
+.mianR .arer-shi ul li{padding:3px 10px;float:left; height:auto;display:block;cursor:pointer;margin:0;width:auto; line-height: 22px;}
+.mianR .arer-shi ul  li:hover{ background:#FF8F0c;color:#fff;}
+
+.mianR .employee li .arer-qu{width:300px; position:absolute;top:50px;left:35%;background:#fff;border:solid 1px #dadada; z-index:9999; display:none;}
+.mianR .arer-qu{width:230px; position:absolute;top:23px;left:0;background:#fff;border:solid 1px #dadada; z-index:9999; display:none;}
+.mianR .arer-qu h4{font-size:12px;color:#20ab4f;border-bottom:solid 2px #f6f6f6;padding-left:10px;}
+.mianR .arer-qu ul{padding:0 ;margin:0;}
+.mianR .arer-qu ul li{float:left; display:block; text-align: center; cursor:pointer;padding:3px 10px;width:auto;line-height:22px;margin:0;}
+.mianR .arer-qu ul li:hover{ background:#FF8F0c;color:#fff;}
+.mianR .area select{width:auto;height:24px;padding:0 10px;line-height:24px;border:solid 1px #dadada;}
+
+div.content_wrap {width: 400px;float:left;margin:20px 50px;}
+div.content_wrap div.left{float: left;}
+div.zTreeDemoBackground {text-align:left; overflow-y:scroll;height:500px;width: 400px;border:solid 2px #eaeaea;}
+ul.ztree {margin-top: 10px;}
+ul.log {border: 1px solid #617775;background: #f0f6e4;width:300px;height:170px;overflow: hidden;}
+ul.log.small {height:45px;}
+ul.log li {color: #666666;list-style: none;padding-left: 10px;}
+ul.log li.dark {background-color: #E3E3E3;}
+
+
+
