@@ -362,10 +362,10 @@
                 data:{"id":oid,"is_enable":status},
                 dataType:'json',
                 success:function(data){
-
+                    alert(data.result.msg)
                 },
                 error: function(){
-
+                    alert("查询失败")
                 }
             });
         })
@@ -381,9 +381,10 @@
                 data:{"id":oid,"is_enable":status,"reason":val},
                 dataType:'json',
                 success:function(data){
-
+                    alert(data.result.msg)
                 },
                 error: function(){
+                    alert("查询失败")
                 }
             });
         })

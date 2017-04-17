@@ -233,7 +233,7 @@
             <form>
                 手机号：
                 <input type="text" class="tel">
-                <input type="submit" value="提交" id="btn">
+                <input type="button" value="提交" id="btn">
             </form>
         </div>
         <%--分页加载--%>
@@ -251,11 +251,14 @@
             data:{"mobile":val},
             dataType:'json',
             success:function(data){
-
+                alert(data.result.msg)
+                window.location.reload();
             },
             error: function(){
-
+                alert("插入失败")
+                window.location.reload();
             }
+
         });
     })
 </script>

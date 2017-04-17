@@ -16,6 +16,8 @@
 <script type="text/javascript"src="http://webapi.amap.com/maps?v=1.3&key=7a7787dd18e73bf0e5a350f6be459b35"></script>
 <script src="/resource/js/jquery-1.11.3.min.js" type="text/javascript"></script>
 
+<link type="text/css" rel="stylesheet" href="/resource/css/common.css" />
+<script src="/resource/js/index.js" type="text/javascript"></script>
 <jsp:include page="adminHeader.jsp" flush="true"></jsp:include>
 <style>
     .userManage_container {
@@ -228,8 +230,32 @@
         <form action="">
         <h2>添加乘客车单</h2>
         <div><span>手机号：</span><input type="text" placeholder="请输入手机号" class="mobile"></div>
-        <div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
-        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point"></div>
+            <div>
+                <div class="mianR">
+                    <div class="carDealer">
+                        <div class="employee" style="display:block">
+                            <form    id="formalForm01">
+                                <ul class="clearfix">
+                                    <li class="departure">
+                                        <script>
+                                            var add = new AddressCom03();
+                                            /*add.set_init(["2", "110000", "110102"]);//初始值*/
+                                        </script>
+                                    </li>
+                                    <li class="destination">
+                                        <script>
+                                            var add = new AddressCom04();
+                                            /*add.set_init(["2", "110000", "110102"]);//初始值*/
+                                        </script>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <%--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
+        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point"></div>--%>
         <div><span>出发时间：</span><input class="datainp departure_time" id="datebut01" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut01',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
         <div><span>几人乘车：</span><input type="text" placeholder="请说明有几人乘车" class="booking_seats"></div>
         <div><span>备注：</span><input type="text" placeholder="*注：是否有行李" class="remark"></div>
@@ -240,8 +266,32 @@
         <form action="">
         <h2>添加车主车单</h2>
         <div><span>手机号：</span><input onblur="blur()" type="text" placeholder="请输入手机号" class="mobile1"></div>
-        <div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point1"></div>
-        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point1"></div>
+            <div>
+                <div class="mianR">
+                    <div class="carDealer">
+                        <div class="employee" style="display:block">
+                            <form    id="formalForm">
+                                <ul class="clearfix">
+                                    <li class="departure">
+                                        <script>
+                                            var add = new AddressCom();
+                                            /*add.set_init(["2", "110000", "110102"]);//初始值*/
+                                        </script>
+                                    </li>
+                                    <li class="destination">
+                                        <script>
+                                            var add = new AddressCom01();
+                                            /*add.set_init(["2", "110000", "110102"]);//初始值*/
+                                        </script>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <%--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point1"></div>
+        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point1"></div>--%>
         <div><span>出发时间：</span><input class="datainp departure_time1" id="datebut02" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut02',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
         <div><span>几个座位：</span><input type="text" placeholder="请说明邀请几人乘车" class="init_seats"></div>
         <div><span>备注：</span><input type="text" placeholder="*注：乘客是否可以携带行李或宠物。" class="remark1"></div>
@@ -340,6 +390,7 @@ var map = new AMap.Map("mapContainer", {
                     success:function(data){
                         alert(data.message);
                         console.log(data);
+                        window.location.reload()
                     },
                     error: function(){
                         $('.content_record_p').html("查询失败");
@@ -429,6 +480,7 @@ var map = new AMap.Map("mapContainer", {
                         success:function(data){
                             alert(data.message);
                             console.log(data);
+                            window.location.reload()
                         },
                         error: function(){
                             $('.content_record_p').html("查询失败");

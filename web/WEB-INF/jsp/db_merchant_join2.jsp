@@ -347,7 +347,7 @@
                 initStatus: '请选择日期', isRTL: false
             };
             $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
-            madeLine();
+//            madeLine();
         });
         var global_cat_id;
         var check_click_search = 0;
@@ -361,12 +361,12 @@
             obj.size=size;
             obj.page=global_page;
             obj.is_passenger=1;
-            obj.source=source;
+//            obj.source=source;
             operation.operation_ajax(action_url,obj,sendMessage);
         }
         function sendMessage(){
             $('.user_manage_container_li').remove();
-            loadPage.checkUserPrivilege(insertUserMessage);
+//            loadPage.checkUserPrivilege(insertUserMessage);
         }
         /*查询数据*/
         function findMessage(){

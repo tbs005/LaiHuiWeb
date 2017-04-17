@@ -51,13 +51,16 @@ public class PopularizeController {
                     boolean is_true =  false;
                     is_true = laiHuiDB.createPopularize(user_id, 0, null, popularize_code, 1, 0);
                     if(is_true){
+                        result.put("msg","推广人推广码生成成功");
                         json = ReturnJsonUtil.returnSuccessJsonString(result, "推广人推广码生成成功");
                         return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                     }else{
+                        result.put("msg","推广人推广码生成失败");
                         json = ReturnJsonUtil.returnFailJsonString(result, "推广人推广码生成失败");
                         return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                     }
                 }else{
+                    result.put("msg","推广人推广码已存在");
                     json = ReturnJsonUtil.returnFailJsonString(result, "推广人推广码已存在");
                     return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                 }
