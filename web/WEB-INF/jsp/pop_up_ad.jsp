@@ -1082,12 +1082,18 @@
       var image_url = global_data.slides[i].image_url;
       var image_link = global_data.slides[i].image_link;
       ShopsListStyle(image_link,image_url,id, content, title, seq);
-    }
-    $('.swiper-wrapper').append('<div class="swiper-slide">' +
-            '<a href="'+global_data.slides[0].image_link+'" class="img_link" target="_blank">'+
-            '<img src='+global_data.slides[0].image_url+' class="ad_img" alt="'+global_data.slides[0].image_title+'">' +
+        $('.swiper-wrapper').append('<div class="swiper-slide">' +
+            '<a href="'+image_link+'" class="img_link" target="_blank">'+
+            '<img src='+image_url+' class="ad_img" alt="'+title+'">' +
             '</a>'+
-            '</div>');
+            '</div>')
+    }
+//    }
+//    $('.swiper-wrapper').append('<div class="swiper-slide">' +
+//            '<a href="'+global_data.slides[0].image_link+'" class="img_link" target="_blank">'+
+//            '<img src='+global_data.slides[0].image_url+' class="ad_img" alt="'+global_data.slides[0].image_title+'">' +
+//            '</a>'+
+//            '</div>');
     swiper();
   }
 
