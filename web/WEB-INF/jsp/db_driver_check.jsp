@@ -311,7 +311,7 @@
                     <span class="name">*审核未通过描述:</span><input type="text" class="describe">
                 </div>
                 <div class="btn">
-                    <input type="submit" value="审核通过" id="btn01"><input type="submit" value="审核未通过" id="btn02">
+                    <input type="button" value="审核通过" id="btn01"><input type="button" value="审核未通过" id="btn02">
                 </div>
             </form>
         </div>
@@ -328,7 +328,6 @@
         dataType:'json',
         success:function(data){
             if(data.result.msg == undefined){
-                console.log(data.result)
                 $('.driver_name').html(data.result.driver.driver_name)
                 $('.driver_license_number').html(data.result.driver.driver_license_number)
                 $('.first_issue_date').html(data.result.driver.first_issue_date)
@@ -346,11 +345,12 @@
                 disagree(oid);
             }else{
                 alert(data.result.msg)
+                console.log(data.result.msg)
             }
 
         },
         error: function(){
-            $('.content_record_p').html("查询失败");
+            alert("查询失败");
         }
     });
     function agree(oid){
@@ -363,9 +363,12 @@
                 dataType:'json',
                 success:function(data){
                     alert(data.result.msg)
+                    console.log(data.result.msg)
+                    window.location.reload()
+                    return false
                 },
                 error: function(){
-                    alert("查询失败")
+                    alert("显示失败")
                 }
             });
         })
@@ -374,7 +377,6 @@
         $('#btn02').click(function (){
             var status=2;
             var val=$('.describe').val();
-            console.log(val);
             $.ajax({
                 type: 'POST',
                 url: '/driver/check',
@@ -382,9 +384,12 @@
                 dataType:'json',
                 success:function(data){
                     alert(data.result.msg)
+                    console.log(data.result.msg)
+                    window.location.reload()
+                    return false
                 },
                 error: function(){
-                    alert("查询失败")
+                    alert("请您先填写审核未通过的原因")
                 }
             });
         })
