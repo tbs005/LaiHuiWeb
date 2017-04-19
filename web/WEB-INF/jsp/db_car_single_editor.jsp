@@ -207,7 +207,7 @@
         .pc_content{margin-top: 5%;line-height: 4;width: 100%;text-align: center}
         .pc_content_passenger{display:inline;float:left;margin-left:10%;width: 50%;margin: 0 auto;padding: 2%;border: 1px solid #e4e4e4;box-shadow: 2px 2px 2px #cccbca;border-radius: 1vh;text-align: center}
         .pc_content h2{color:#FF8F0c;font-size: 25px}
-        input{font-size: 16px;padding-left:2%;border: none;outline: #e4e4e4;width: 50%;color:#9a9a9a;height: 5vh;border:2px solid #FF8F0c;box-sizing: border-box; border-radius: 1vh;}
+        input{font-size: 16px;padding-left:2%;border: none;outline: #e4e4e4;width: 50%;color:#9a9a9a;height: 5vh;line-height: 5vh;border:2px solid #FF8F0c;box-sizing: border-box; border-radius: 1vh;}
         .pc_content_passenger span{width:20%;display: inline-block}
         .pc_content_driver span{width:20%;display: inline-block}
         .pc_content_driver{display:inline;float:left;margin-left:10%;width: 50%;margin: 0 auto;padding: 2%;border: 1px solid #e4e4e4;box-shadow: 2px 2px 2px #cccbca;border-radius: 1vh;text-align: center}

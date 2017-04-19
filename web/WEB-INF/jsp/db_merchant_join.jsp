@@ -196,19 +196,124 @@
   .update_message:hover{
     background-color: #FF8F0c;
   }
-</style>
 
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        loadUser();
+        $('.menu_context_li').removeClass('active_li');
+        $('.db_merchant_join').addClass('active_li');
+        pageSet.setPageNumber()
+        // 绑定键盘按下事件
+        $(document).keypress(function (e) {
+            // 回车键事件
+            if (e.which == 13) {
+                jQuery('.search_ico').click();
+            }
+        });
+        $('.user_list_drop_box').mouseleave(function () {
+            $('.user_list_drop_box_ul').hide();
+        });
+    });
+
+    var action_url="/business/manage";
+    var count_array=[];
+    var count_status=0;
+    //ajax获取用户
+    function updateLine(){
+        count_array=[];
+        loadUser();
+    }
+    //封装传输的信息并提交
+    function loadUser(){
+        var obj={};
+        obj.action='show';
+        obj.size=size;
+        obj.page=global_page;
+        operation.operation_ajax(action_url,obj,sendMessage);
+    }
+    function sendMessage(){
+        $('.user_manage_container_li').remove();
+        count = global_data.total;
+        loadPage.checkUserPrivilege(count,insertUserMessage);
+    }
+    //删除信息
+    function deleteSingle(item){
+        var obj={};
+        var id = $(item).parent().parent().attr('id');
+        obj.action='delete';
+        obj.id=id;
+        operation.operation_ajax(action_url,obj,loadUser);
+    }
+    //添加用户数据
+    function insertUserMessage(){
+        $('.user_manage_container_li').remove();
+        for (var i = 0; i < global_data.slides.length; i++){
+            var mobile = global_data.slides[i].mobile;//手机号
+            var name = global_data.slides[i].name;//名字
+            var address=global_data.slides[i].address;//身份证号
+            var description=global_data.slides[i].description;//描述
+            var way=global_data.slides[i].way;//加盟方式
+            var create_time=global_data.slides[i].create_time;//加入时间
+            var id=global_data.slides[i].id;//id
+            addUserDisplay(name,mobile,address,description,way,create_time,id);
+        }
+    }
+    //添加用户列表
+    function addUserDisplay(name,mobile,address,description,way,create_time,id) {
+        $(".userManage_container_ul").append('<li class="user_manage_container_li" id='+id+'>'+
+            '<span class="userManage_span ">'+name+'</span>' +
+            '<span class="userManage_span ">'+mobile+'</span>' +
+            '<span class="userManage_span ">'+address+'</span>' +
+            '<span class="userManage_span">'+description+'</span>' +
+            '<span class="userManage_span">'+way+'</span>' +
+            '<span class="userManage_span">'+create_time+'</span>' +
+            '<div class="user_list_checklist_del_active" onclick="showDeleteTip(this)"></div>' +
+            '<div class="user_list_select_delete_tip all_tip">'+
+            '<div class="detailAll_tip_txt">'+
+            '<span>确认删除</span>'+
+            '</div>'+
+            '<span class="detailAll_tip_yes" onclick="deleteSingle(this)">确认</span>'+
+            '<span class="detailAll_tip_no" onclick="hideDeleteTips(this)">取消</span>'+
+            '<i class="popover_arrow popover_arrow_out"></i>'+
+            '<i class="popover_arrow popover_arrow_in"></i>'+
+            '</div>'+
+            '</li>')
+    }
+
+    //单元删除提示
+    function showDeleteTip(obj) {
+        $(obj).parent().children('.user_list_select_delete_tip').fadeIn();
+    }
+    //隐藏删除信息
+    function hideDeleteTips(obj){
+        $(obj).parent().hide();
+    }
+    function hideDeleteTip(obj){
+        $(obj).children('.user_list_select_delete_tip').hide()
+    }
+
+    function findMessage(){
+        var obj={};
+        obj.action='show';
+        obj.size=size;
+        obj.page=global_page;
+        operation.operation_ajax(action_url,obj,sendMessage);
+    }
+</script>
 <%--右侧菜单--%>
 <div class="ui_body">
   <jsp:include page="adminLeft.jsp" flush="true"></jsp:include>
   <div id="ui_right">
     <div class="right_top">
       <div class="right_top_style">
-        <span>招商加盟</span>
+        <span>招商管理</span>
       </div>
     </div>
     <div class="userManage_container">
+      <div class="clear"></div>
       <div class="sub_title_bar">
+        <span class="sub_message"></span>
         <div class="page_box">
           <div class="page_prev" onclick="loadPage.pagePrev()">
             <div class="arrow prev_arrow"></div>
@@ -222,6 +327,7 @@
             <div class="arrow next_arrow"></div>
           </div>
           <input type="text" class="page_input_number">
+
           <div class="page_go" onclick="loadPage.checkPageTo()">
             <span>跳转</span>
           </div>
@@ -232,31 +338,32 @@
           <span class="page_set_number show_page">20</span>
           <span class="page_set_style">条</span>
           <ul class="page_set_ul">
+
           </ul>
           <div class="down1"></div>
           <div class="clear"></div>
         </div>
         <div class="clear"></div>
       </div>
-      <div class="userManage_container_li_top">
-        <span class="userManage_span">姓名</span>
-        <span class="userManage_span">电话</span>
-        <span class="userManage_span">地址</span>
-        <span class="userManage_span">合作方式</span>
-        <span class="userManage_span">合作描述</span>
-        <span class="userManage_span">创建时间</span>
-      </div>
       <ul class="userManage_container_ul">
-
+        <li class="userManage_container_li_top">
+          <span class="userManage_span">姓名</span>
+          <span class="userManage_span">电话</span>
+          <span class="userManage_span">地址</span>
+          <span class="userManage_span">自我描述</span>
+          <span class="userManage_span">合作方式</span>
+          <span class="userManage_span">创建时间</span>
+        </li>
         <div class="not_find_message">
           <img src="/resource/images/eat.gif" alt="">
           <span>您所查询的信息被我吃光光了~~</span>
         </div>
         <div class="clear"></div>
       </ul>
+
     </div>
     <%--分页加载--%>
- <div class="page_container">
+    <div class="page_container">
       <div class="page_box">
         <div class="page_prev" onclick="loadPage.pagePrev()">
           <div class="arrow prev_arrow"></div>
@@ -280,116 +387,6 @@
   </div>
   <div class="clear"></div>
 </div>
-    <script type="text/javascript">
 
-        $.ajax({
-            type: 'POST',
-            url: '/business',
-            data: {},
-            dataType:'json',
-            success:function(data){
-                var cc=data.result.data;
-                var aa = ''
-                for(i=0;i<cc.length;i++){
-                    aa += '<li class="user_manage_container_li"><span class="userManage_span">'+(cc[i].name)+'</span><span class="userManage_span">'+(cc[i].mobile)+'</span><span class="userManage_span">'+(cc[i].address)+'</span><span class="userManage_span">'+(cc[i].way)+'</span><span class="userManage_span">'+(cc[i].description)+'</span><span class="userManage_span">'+(cc[i].create_time)+'</span></li>'
-                    $('.userManage_container_ul').html(aa)
-                }
-            },
-            error: function(){
-                $('.content_record_p').html("查询失败");
-            }
-        })
-//        $(document).ready(function () {
-//            loadUser();
-//            $('.menu_context_li').removeClass('active_li');
-//            $('.db_merchant_join').addClass('active_li');
-//            pageSet.setPageNumber()
-//            // 绑定键盘按下事件
-//            $(document).keypress(function (e) {
-//                // 回车键事件
-//                if (e.which == 13) {
-//                    jQuery('.search_ico').click();
-//                }
-//            });
-//            //搜索重置page
-//            $('.search_ico').click(function () {
-//                global_page = 0;
-//                findMessage();
-//            });
-//            $('.user_list_drop_box').mouseleave(function () {
-//                $('.user_list_drop_box_ul').hide();
-//            });
-//            $("#datepicker").datetimepicker({
-//                changeMonth: true,
-//                changeYear: true
-//            });
-//            $("#datepicker2").datetimepicker({
-//                changeMonth: true,
-//                changeYear: true
-//            });
-//            $.datepicker.regional['zh-CN'] = {
-//                clearText: '清除', clearStatus: '清除已选日期',
-//                closeText: '关闭', closeStatus: '不改变当前选择',
-//                prevText: '上月', prevStatus: '显示上月',
-//                nextText: '下月', nextStatus: '显示下月',
-//                currentText: '今天', currentStatus: '显示本月',
-//                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
-//                    '七月', '八月', '九月', '十月', '十一月', '十二月'],
-//                monthNamesShort: ['一', '二', '三', '四', '五', '六',
-//                    '七', '八', '九', '十', '十一', '十二'],
-//                monthStatus: '选择月份', yearStatus: '选择年份',
-//                weekHeader: '周', weekStatus: '年内周次',
-//                dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-//                dayNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-//                dayNamesMin: ['日', '一', '二', '三', '四', '五', '六'],
-//                dayStatus: '设置 DD 为一周起始', dateStatus: '选择 m月 d日, DD',
-//                dateFormat: 'yy-mm-dd', firstDay: 1,
-//                initStatus: '请选择日期', isRTL: false
-//            };
-//            $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
-////            madeLine();
-//        });
-//        var global_cat_id;
-//        var check_click_search = 0;
-//        var action_url="/business";
-//        var start_time="";
-//        var end_time="";
-//        var count_array=[];
-//        var count_status=0;
-//        function loadUser(){
-//            var obj={};
-//            obj.size=size;
-//            obj.page=global_page;
-//            obj.is_passenger=1;
-////            obj.source=source;
-//            operation.operation_ajax(action_url,obj,sendMessage);
-//        }
-//        function sendMessage(){
-//            $('.user_manage_container_li').remove();
-////            loadPage.checkUserPrivilege(insertUserMessage);
-//        }
-//        /*查询数据*/
-//        function findMessage(){
-//            var obj={};
-//            var search = $('.search_user_input').val();
-//            obj.size=size;
-//            obj.page=global_page;
-//            operation.operation_ajax(action_url,obj,sendMessage);
-//        }
-//        //添加用户数据
-//        function insertUserMessage(){
-//            $('.user_manage_container_li').remove();
-//            for (var i = 0; i < global_data.data.length; i++){
-//                var mobile = global_data.data[i].mobile;//手机号
-//                var name = global_data.data[i].name;//名字
-//                var address=global_data.data[i].address;//身份证号
-//                var description=global_data.data[i].description;//描述
-//                var way=global_data.data[i].way;//加盟方式
-//                var create_time=global_data.data[i].create_time;//加入时间
-//                var id=global_data.data[i].id;//id
-//                addUserDisplay(mobile,name,idsn,address,description,way,create_time,id);
-//            }
-//        }
-    </script>
-    <%--底部--%>
-    <jsp:include page="footer.jsp" flush="true"></jsp:include>
+<%--底部--%>
+<jsp:include page="footer.jsp" flush="true"></jsp:include>

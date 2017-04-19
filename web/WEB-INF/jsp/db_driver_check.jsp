@@ -362,13 +362,15 @@
                 data:{"id":oid,"is_enable":status},
                 dataType:'json',
                 success:function(data){
-                    alert(data.result.msg)
-                    console.log(data.result.msg)
-                    window.location.reload()
-                    return false
+                    alert(data.result.msg);
+                    console.log(data.result.msg);
+                    window.location.reload();
                 },
-                error: function(){
-                    alert("显示失败")
+                error: function(data){
+                    console.log(data);
+                    console.log(data.result.msg);
+                    alert("显示失败");
+
                 }
             });
         })
@@ -383,13 +385,12 @@
                 data:{"id":oid,"is_enable":status,"reason":val},
                 dataType:'json',
                 success:function(data){
-                    alert(data.result.msg)
-                    console.log(data.result.msg)
-                    window.location.reload()
-                    return false
+                    alert(data.result.msg);
+                    console.log(data.result.msg);
+                    window.location.reload();
                 },
                 error: function(){
-                    alert("请您先填写审核未通过的原因")
+                    alert("请您先填写审核未通过的原因");
                 }
             });
         })

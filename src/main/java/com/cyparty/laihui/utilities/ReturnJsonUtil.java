@@ -1451,5 +1451,37 @@ public class ReturnJsonUtil {
         result_json.put("size", size);
         return result_json;
     }
+    //统计招商加盟
+    public static JSONObject getBusinessJson(LaiHuiDB laiHuiDB,int page,int size,int id){
+        JSONObject result_json=new JSONObject();
+        JSONArray dataArray=new JSONArray();
+        String where=" order by create_time ASC ";
+        int offset=page*size;
+        int count=1;
+        if(id==0){
+            count=laiHuiDB.getBusiness(where).size();
+            where=where+" limit "+offset+","+size;
+        }else {
+            where=" where _id="+id;
+        }
+        List<Business> businessList = laiHuiDB.getBusiness(where);
+        for(Business business:businessList){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id",business.get_id());
 
+            jsonObject.put("mobile",business.getBusiness_mobile());
+            jsonObject.put("name",business.getBusiness_name());
+            jsonObject.put("address",business.getAddress());
+            jsonObject.put("description",business.getCooperation_description());
+            jsonObject.put("way",business.getCooperation_way());
+            jsonObject.put("flag",business.getFlag());
+            jsonObject.put("create_time",business.getCreate_time());
+            dataArray.add(jsonObject);
+        }
+        result_json.put("total",count);
+        result_json.put("page",page);
+        result_json.put("size",size);
+        result_json.put("slides",dataArray);
+        return result_json;
+    }
 }

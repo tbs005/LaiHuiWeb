@@ -285,11 +285,16 @@ public class ValidateController {
                     String content = "恭喜您成功通过车主认证，现在可以接单了！";
                     JSONObject driverInfo = ValidateUtils.getContent(user,content);
                     String startTime = Utils.getCurrentTime();
-                    notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
-                    result.put("data",driverInfo);
-                    result.put("msg", "车主认证成功");
-                    json = ReturnJsonUtil.returnSuccessJsonString(result, "车主认证成功！");
-                    return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                    try{
+                        notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }finally {
+                        result.put("data",driverInfo);
+                        result.put("msg", "车主认证成功");
+                        json = ReturnJsonUtil.returnSuccessJsonString(result, "车主认证成功！");
+                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                    }
                 } else {
                     result.put("msg", "车主认证失败");
                     json = ReturnJsonUtil.returnFailJsonString(result, "车主认证失败！");
@@ -305,28 +310,33 @@ public class ValidateController {
                         String content = "很抱歉，您提交的驾驶证信息未通过审核。原因：" + reason;
                         JSONObject driverInfo = ValidateUtils.getContent(user,content);
                         String startTime = Utils.getCurrentTime();
-                        notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
-                        result.put("data",driverInfo);
-                        result.put("msg", "审核未通过!");
-                        json = ReturnJsonUtil.returnSuccessJsonString(result, "审核未通过！");
-                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                        try{
+                            notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }finally {
+                            result.put("data",driverInfo);
+                            result.put("msg", "审核未通过");
+                            json = ReturnJsonUtil.returnSuccessJsonString(result, "审核未通过！");
+                            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                        }
                     } else {
                         result.put("msg", "审核失败!");
                         json = ReturnJsonUtil.returnFailJsonString(result, "审核失败！");
                         return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                     }
                 } else {
-                    result.put("msg", "没有原因，不能提交!");
+                    result.put("msg","没有原因，不能提交!");
                     json = ReturnJsonUtil.returnFailJsonString(result, "没有原因，不能提交！");
                     return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
                 }
             }else{
-                result.put("msg", "参数错误！");
+                result.put("msg","参数错误!");
                 json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
                 return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
             }
         }else {
-            result.put("msg", "参数错误！");
+            result.put("msg","参数错误！");
             json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }

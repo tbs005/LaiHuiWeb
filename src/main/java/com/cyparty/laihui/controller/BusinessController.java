@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.domain.Business;
+import com.cyparty.laihui.domain.Carousel;
 import com.cyparty.laihui.utilities.ReturnJsonUtil;
+import com.cyparty.laihui.utilities.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,34 +28,66 @@ public class BusinessController {
     @Autowired
     LaiHuiDB laiHuiDB;
     @ResponseBody
-    @RequestMapping(value = "/business", method = RequestMethod.POST)
-    public ResponseEntity<String> business(HttpServletRequest request) {
+    @RequestMapping(value = "/business/manage", method = RequestMethod.POST)
+    public ResponseEntity<String> businessManage(HttpServletRequest request) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
+        JSONObject result = new JSONObject();
         String json = "";
-        JSONObject bus = new JSONObject();
-        JSONArray result = new JSONArray();
-        List<Business> businessList = laiHuiDB.listBusiness();
-        if(businessList.size()>0){
-            for(Business business : businessList){
-                JSONObject object = new JSONObject();
-                object.put("mobile",business.getBusiness_mobile());
-                object.put("name",business.getBusiness_name());
-                object.put("address",business.getAddress());
-                object.put("description",business.getCooperation_description());
-                object.put("way",business.getCooperation_way());
-                object.put("flag",business.getFlag());
-                object.put("create_time",business.getCreate_time());
-                object.put("id",business.get_id());
-                result.add(object);
+        int id = 0;
+        try {
+            String action=request.getParameter("action");
+            boolean is_success=false;
+            int page=0;
+            int size=1;
+            if(request.getParameter("page")!=null&&!request.getParameter("page").trim().equals("")){
+                try {
+                    page=Integer.parseInt(request.getParameter("page"));
+                } catch (NumberFormatException e) {
+                    page=0;
+                    e.printStackTrace();
+                }
             }
-            bus.put("data",result);
-            json = ReturnJsonUtil.returnSuccessJsonString(bus, "数据查询成功！");
+            if(request.getParameter("size")!=null&&!request.getParameter("size").trim().equals("")){
+                try {
+                    size=Integer.parseInt(request.getParameter("size"));
+                } catch (NumberFormatException e) {
+                    size=1;
+                    e.printStackTrace();
+                }
+            }
+            switch (action) {
+                case "show":
+                    if(request.getParameter("id")!=null&&!request.getParameter("id").isEmpty()){
+                        id=Integer.parseInt(request.getParameter("id"));
+                    }else {
+                        id=0;
+                    }
+                    json = ReturnJsonUtil.returnSuccessJsonString(ReturnJsonUtil.getBusinessJson(laiHuiDB, page, size, id), "轮播图信息获取成功");
+                    return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                case "delete":
+                    if(request.getParameter("id")!=null&&!request.getParameter("id").isEmpty()){
+                        id=Integer.parseInt(request.getParameter("id"));
+                    }else {
+                        id=0;
+                    }
+                    String delete_sql=" where _id="+id;
+                    is_success=laiHuiDB.delete("pc_merchant_join",delete_sql);
+                    if(is_success){
+                        json = ReturnJsonUtil.returnSuccessJsonString(result, "招商加盟删除成功！");
+                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                    }else {
+                        json = ReturnJsonUtil.returnFailJsonString(result, "招商加盟删除失败！");
+                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                    }
+            }
+            json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
+            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
         }
-        json = ReturnJsonUtil.returnFailJsonString(bus, "数据查询失败！");
-        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
     }
-
 }

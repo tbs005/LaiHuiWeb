@@ -680,8 +680,8 @@ public class LaiHuiDB {
         return userTravelCardInfos;
     }
     //查询合作商家所有信息
-    public List<Business> listBusiness(){
-        String SQL="select * from pc_merchant_join ";
+    public List<Business> getBusiness(String where){
+        String SQL="select * from pc_merchant_join "+where;
         List<Business> businessList = jdbcTemplateObject.query(SQL,new BusinessMapper());
         return businessList;
     }
