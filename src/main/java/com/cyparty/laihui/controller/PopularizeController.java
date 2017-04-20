@@ -40,7 +40,7 @@ public class PopularizeController {
         JSONObject result = new JSONObject();
         String mobile = request.getParameter("mobile");
         if(null != mobile && mobile.length() ==11){
-            List<User> userList = laiHuiDB.getUserList(" where  user_mobile =" +mobile);
+            List<User> userList = laiHuiDB.getUserList(" where  user_mobile =" +mobile +" and is_validated =1");
             if(userList.size()>0){
                 User user = userList.get(0);
                 int user_id = user.getUser_id();

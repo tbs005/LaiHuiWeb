@@ -243,9 +243,116 @@
     .name{
         padding-left: 30px;
     }
+
+    /*弹窗*/
+    #container {
+    width: 600px;
+    margin: 0 auto;
+    margin-top: 10%;
+    }
+    #container img{
+    width: 45%;
+    margin-right: 5%;
+    margin-bottom: 30px;
+    float: left;
+    }
+    #popup{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: none;
+    z-index: 9999;
+    }
+    #popup .bg{
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    }
+    #popup img{
+    max-width: 80%;
+    max-height: 80%;
+    width: 35%;
+    margin: 5%;
+    }
+    #target{
+    width: 20%;
+    background:#FF8F0c;
+    color: white;
+    margin-top: 10%;
+    line-height:3vh;
+    height:3vh;
+    font-size: 16px;
+    border: none;
+    border-radius: 3vh;
+    outline: none;
+    margin-left: 20%;
+    }
+    /*2*/
+    #container01 {
+    width: 600px;
+    margin: 0 auto;
+    margin-top: 10%;
+    }
+    #container01 img{
+    width: 45%;
+    margin-right: 5%;
+    margin-bottom: 30px;
+    float: left;
+    }
+    #popup01{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: none;
+    }
+    #popup01 .bg{
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    }
+    #popup01 img{
+    max-width: 80%;
+    max-height: 80%;
+    width: 35%;
+    margin: 5%;
+    }
+    #target01{
+    width: 20%;
+    background:#FF8F0c;
+    color: white;
+    margin-top: 10%;
+    line-height:3vh;
+    height:3vh;
+    font-size: 16px;
+    border: none;
+    border-radius: 3vh;
+    outline: none;
+    margin-left: 20%;
+    }
     /*以上是王凡*/
 </style>
-
+    <script>
+    window.onload = function(){
+    var current = 0;
+    document.getElementById('target').onclick = function(){
+    current = (current+90)%360;
+    document.getElementById('bb').style.transform = 'rotate('+current+'deg)';
+    document.getElementById('aa').style.transform = 'rotate('+current+'deg)';
+    }
+    var current01 = 0;
+    document.getElementById('target01').onclick = function(){
+    current01 = (current01+90)%360;
+    document.getElementById('bb01').style.transform = 'rotate('+current01+'deg)';
+    document.getElementById('aa01').style.transform = 'rotate('+current01+'deg)';
+    }
+    };
+    </script>
 <%--右侧菜单--%>
 <div class="ui_body">
     <jsp:include page="adminLeft.jsp" flush="true"></jsp:include>
@@ -274,8 +381,19 @@
                 </div>
                 <div class="line1">
                     <span class="name">架驶证照片：</span>
-                    <div class="driver_license_photo">
+                    <%--<div class="driver_license_photo">
                         <img src="" alt="" width="80%">
+                    </div>--%>
+                    <div id="container" class="container driver_license_photo">
+                        <img id="bb" src="" alt="" width="80%">
+                    </div>
+                    <div id="qq">
+                          <input id="target" type="button" value="旋转">
+                        <div id="popup">
+                            <div class="bg">
+                                <img id="aa" src="" alt=""/>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -298,8 +416,20 @@
                 </div>
                 <div class="line1">
                     <span class="name">行驶证照片：</span>
-                    <div class="travel_license_photo">
+                    <%--<div class="travel_license_photo">
                         <img src="" alt="" width="80%">
+                    </div>--%>
+                    <div id="container01" class="container travel_license_photo">
+                        <img id="bb01" src="" alt="" width="80%">
+                    </div>
+
+                    <div id="qq01">
+                            <input id="target01" type="button" value="旋转">
+                        <div id="popup01">
+                            <div class="bg">
+                               <img id="aa01" src="" alt=""/>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -395,6 +525,41 @@
             });
         })
     }
+
+    /*以下是弹窗*/
+
+    var imgs = document.getElementById("container").getElementsByTagName("img");
+    var popup = document.getElementById("popup");
+    var imgs01 = document.getElementById("container01").getElementsByTagName("img");
+    var popup01 = document.getElementById("popup01");
+
+
+    imgs[0].onclick = function (event){
+    event = event||window.event;
+    var target = document.elementFromPoint(event.clientX, event.clientY);
+    showBig(target.src);
+    }
+    imgs01[0].onclick = function (event){
+    event = event||window.event;
+    var target = document.elementFromPoint(event.clientX, event.clientY);
+    showBig01(target.src);
+    }
+
+    popup.onclick = function (){
+    popup.style.display = "none";
+    }
+    popup01.onclick = function (){
+    popup01.style.display = "none";
+    }
+    function showBig(src){
+    popup.getElementsByTagName("img")[0].src = src;
+    popup.style.display = "block";
+    }
+    function showBig01(src){
+    popup01.getElementsByTagName("img")[0].src = src;
+    popup01.style.display = "block";
+    }
+
 </script>
 <%--底部--%>
 <jsp:include page="footer.jsp" flush="true"></jsp:include>
