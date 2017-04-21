@@ -3,6 +3,7 @@ package com.cyparty.laihui.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.utilities.JsonUtils;
+import com.cyparty.laihui.utilities.SendSMSUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -52,18 +53,16 @@ public class PcPublicInfoController {
             destination_city_code = Integer.parseInt((destination_address_code + "").substring(0, 4) + "00");
         } catch (Exception e) {
             e.printStackTrace();
-
-            json = JsonUtils.returnFailJsonString(result,"发布失败！");
+            json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
-        boolean is_success = laiHuiDB.createDeriverCarList(mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code);
-
-        if (is_success){
-
-            json = JsonUtils.returnSuccessJsonString(result,"发布成功！");
+        boolean is_success = laiHuiDB.createDeriverCarList(mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code);
+        if (is_success) {
+            json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
+            SendSMSUtil.sendSMSToPc(mobile);
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
-        }else {
-            json = JsonUtils.returnFailJsonString(result,"发布失败！");
+        } else {
+            json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
 
@@ -99,19 +98,32 @@ public class PcPublicInfoController {
             destination_city_code = Integer.parseInt((destination_address_code + "").substring(0, 4) + "00");
         } catch (Exception e) {
             e.printStackTrace();
-
-            json = JsonUtils.returnFailJsonString(result,"发布失败！");
+            json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
-        boolean is_success = laiHuiDB.createPassengerCarList(mobile,departure_time,boarding_point,breakout_point,booking_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code);
-        if (is_success){
-
-            json = JsonUtils.returnSuccessJsonString(result,"发布成功！");
+        boolean is_success = laiHuiDB.createPassengerCarList(mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code);
+        if (is_success) {
+            json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
+            SendSMSUtil.sendSMSToPc(mobile);
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
-        }else {
-            json = JsonUtils.returnFailJsonString(result,"发布失败！");
+        } else {
+            json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
 
     }
+
+    /**
+     * 给被录入车单信息的人发送一条短信
+     */
+    @ResponseBody
+    @RequestMapping(value = "/pc/sms", method = RequestMethod.POST)
+    public static void sms(HttpServletRequest request) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        String mobile = request.getParameter("mobile");
+        SendSMSUtil.sendSMSToPc(mobile);
+    }
+
 }

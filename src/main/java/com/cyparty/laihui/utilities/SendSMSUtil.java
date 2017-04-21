@@ -22,7 +22,7 @@ public class SendSMSUtil {
     public static String userAgent =  "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
 
     //配置您申请的KEY
-    public static final String APPKEY ="bce2c0143acc023f67d058a801fe40e6";
+    public static final String APPKEY ="6c871b315def3b449dbdbce28a4dc55a";
 
     //1.屏蔽词检查测
     public static void getRequest1(){
@@ -305,7 +305,7 @@ public class SendSMSUtil {
         return result;
     }
     //给司机发短信
-    public static boolean sendSMSToDriver(String mobile)
+    public static boolean sendSMSToPc(String mobile)
     {
         boolean isSuccess=false;
         String result=sendSMS(mobile);
@@ -334,7 +334,7 @@ public class SendSMSUtil {
         return isSuccess;
     }
     public static String sendSMS(String mobile){
-        int tpl_id=19139;
+        int tpl_id=32600;
         String tpl_value="#mobile#="+mobile;
         //String tpl_value="";
         try {
