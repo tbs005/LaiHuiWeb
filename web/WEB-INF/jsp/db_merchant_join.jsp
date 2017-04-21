@@ -9,10 +9,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--头部信息--%>
 <jsp:include page="adminHeader.jsp" flush="true"></jsp:include>
-<script src="/resource/js/jquery-ui.min.js" type="text/javascript"></script>
+<script src="/resource/js/jquery-1.11.3.min.js"></script>
 <script src="/resource/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
-<link rel="stylesheet" href="/resource/css/jquery-ui.css" type="text/css">
 <script src="/resource/js/highcharts.js" type="text/javascript"></script>
+<script src="/resource/js/jquery-ui.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/resource/css/jquery-ui.css" type="text/css">
 <style>
   .userManage_container {
     width: 902px;
@@ -196,7 +197,6 @@
   .update_message:hover{
     background-color: #FF8F0c;
   }
-
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -265,7 +265,7 @@
             '<span class="userManage_span ">'+name+'</span>' +
             '<span class="userManage_span ">'+mobile+'</span>' +
             '<span class="userManage_span ">'+address+'</span>' +
-            '<span class="userManage_span">'+description+'</span>' +
+            '<span id="show-option" title="'+description+'" class="userManage_span">'+description+'</span>' +
             '<span class="userManage_span">'+way+'</span>' +
             '<span class="userManage_span">'+create_time+'</span>' +
             '<div class="user_list_checklist_del_active" onclick="showDeleteTip(this)"></div>' +
@@ -280,7 +280,20 @@
             '</div>'+
             '</li>')
     }
+    //提示框js
+    $(function() {
+        $("#show-option").tooltip({
+            show: {
+                effect: "slideDown",
+                delay: 250
+            },
+            position: {
+                my: "left top",
+                at: "left bottom"
+            }
 
+        });
+    });
     //单元删除提示
     function showDeleteTip(obj) {
         $(obj).parent().children('.user_list_select_delete_tip').fadeIn();
