@@ -78,6 +78,7 @@ public class PushListController {
                 birth.put("mobile",user.getUser_mobile());
                 birth.put("content",content);
                 notifyPush.pinCheNotifiy(String.valueOf(type), user.getUser_mobile(), content, user.getUser_id(), birth, startTime);
+                laiHuiDB.createPush(0,user.getUser_id(),content,50,1,"",2,"生日快乐");
             }
             result.put("data",birth);
             json = ReturnJsonUtil.returnSuccessJsonString(result, "生日消息推送成功！");

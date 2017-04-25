@@ -12,6 +12,7 @@ public class Carousel {
     private String  image_title;
     private String  create_time;
     private String  update_time;
+    private String  image_subtitle;
 
     public int getType() {
         return type;
@@ -76,4 +77,8 @@ public class Carousel {
     public void setImage_title(String image_title) {
         this.image_title = image_title;
     }
+
+    public String getImage_subtitle() {return image_subtitle;}
+
+    public void setImage_subtitle(String image_subtitle) {this.image_subtitle = image_subtitle;}
 }

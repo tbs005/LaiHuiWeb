@@ -294,8 +294,8 @@ public class LaiHuiDB {
     //创建广告
     public boolean createCarousel(Carousel carousel) {
         boolean is_success = true;
-        String SQL = "insert into pc_carousel(pc_image_url,pc_image_link,pc_image_title,pc_image_seq,pc_image_create_time,pc_image_update_time,pc_type) VALUES (?,?,?,?,?,?,?)";
-        int count = jdbcTemplateObject.update(SQL, new Object[]{carousel.getImage_url(), carousel.getImage_link(), carousel.getImage_title(), carousel.getSeq(), Utils.getCurrentTime(), Utils.getCurrentTime(), carousel.getType()});
+        String SQL = "insert into pc_carousel(pc_image_url,pc_image_link,pc_image_title,pc_image_seq,pc_image_create_time,pc_image_update_time,pc_image_subtitle,pc_type) VALUES (?,?,?,?,?,?,?,?)";
+        int count = jdbcTemplateObject.update(SQL, new Object[]{carousel.getImage_url(), carousel.getImage_link(), carousel.getImage_title(), carousel.getSeq(), Utils.getCurrentTime(), Utils.getCurrentTime(),carousel.getImage_subtitle(), carousel.getType()});
         if (count < 1) {
             is_success = false;
         }
@@ -711,6 +711,17 @@ public class LaiHuiDB {
         }
         return is_success;
 
+    }
+
+    //将推送消息存入数据库
+    public boolean createPush(int activity_id ,int receive_id,String alert,int type,int status,String link_url,int flag,String title){
+        boolean is_success = true;
+        String SQL = "insert into pc_push_notification (activity_id,receive_id,alert,type,time,status,is_enable,link_url,flag,title) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        int count=jdbcTemplateObject.update(SQL, new Object[]{activity_id,receive_id,alert,type,Utils.getCurrentTime(),status,1,link_url,flag,title});
+        if (count<1){
+            is_success = false;
+        }
+        return is_success;
     }
 }
 

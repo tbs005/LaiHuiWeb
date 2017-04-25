@@ -290,6 +290,7 @@ public class ValidateController {
                     }catch (Exception e){
                         e.printStackTrace();
                     }finally {
+                        laiHuiDB.createPush(0,user_id,content,90,1,"",2,"车主认证成功");
                         result.put("data",driverInfo);
                         result.put("msg", "车主认证成功");
                         json = ReturnJsonUtil.returnSuccessJsonString(result, "车主认证成功！");
@@ -315,6 +316,7 @@ public class ValidateController {
                         }catch (Exception e){
                             e.printStackTrace();
                         }finally {
+                            laiHuiDB.createPush(0,user_id,content,90,1,"",2,"审核未通过");
                             result.put("data",driverInfo);
                             result.put("msg", "审核未通过");
                             json = ReturnJsonUtil.returnSuccessJsonString(result, "审核未通过！");

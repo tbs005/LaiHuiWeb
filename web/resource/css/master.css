@@ -1,0 +1,14 @@
+*{margin: 0;padding: 0; font-size:14px;font-family:"Microsoft YaHei";}
+.top{margin-top: 3vh}
+.top img{width: 40px;height: 40px;margin: 0 auto;display: block}
+.top span{text-align: center;display: block;color: #FF8F0c;line-height: 30px}
+.content{padding: 2vh;line-height: 25px;}
+.content p{margin-top: 2vh;text-indent: 2em;}
+.content h4{font-weight: 900;margin-top: 2vh;font-size: 18px;}
+.footer{margin-top: 2vh;margin-bottom: 1vh}
+.footer P{text-align:center; display:block; margin:0 auto;color:#9a9a9a;font-size: 10px;padding-top: 1vh}
+.mytable{width: 100%;margin: 0 auto;overflow: hidden;overflow: auto;}
+.mytable table{width: 100%;height: auto;border: 1px solid #999;padding: 0;margin: 0;border-collapse: collapse;}
+.mytable table thead{background: #f2f2f2;}
+.mytable th{width: 30%;height: 8vh;/* line-height: 5vh; */text-align: center;border-bottom: 1px solid #999;border-right: 1px solid #999;padding: 0;margin: 0;}
+.mytable td{width: 30%;text-align: center;border-bottom: 1px solid #999;border-right: 1px solid #999;padding: 0;margin: 0;height: 8vh;}

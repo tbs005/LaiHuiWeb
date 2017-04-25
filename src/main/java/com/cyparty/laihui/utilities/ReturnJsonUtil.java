@@ -854,6 +854,7 @@ public class ReturnJsonUtil {
             jsonObject.put("image_url",carousel.getImage_url());
             jsonObject.put("image_link",carousel.getImage_link());
             jsonObject.put("image_title",carousel.getImage_title());
+            jsonObject.put("image_subtitle",carousel.getImage_subtitle());
             jsonObject.put("create_time",carousel.getCreate_time());
             dataArray.add(jsonObject);
         }

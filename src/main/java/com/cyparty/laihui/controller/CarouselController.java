@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by zhu on 2016/5/11.
@@ -82,6 +83,7 @@ public class CarouselController {
         try {
             String action=request.getParameter("action");
             boolean is_success=false;
+            boolean is_true = false;
             int page=0;
             int size=10;
             if(request.getParameter("page")!=null&&!request.getParameter("page").trim().equals("")){
@@ -105,11 +107,12 @@ public class CarouselController {
                     String title=request.getParameter("title");
                     String link=request.getParameter("link");
                     String seq=request.getParameter("seq");
-
+                    String subtitle = request.getParameter("subtitle");
                     Carousel carousel=new Carousel();
 
                     carousel.setImage_link(link);
                     carousel.setImage_title(title);
+                    carousel.setImage_subtitle(subtitle);
                     int now_seq=0;
                     if(seq!=null&&!seq.isEmpty()){
                         now_seq=Integer.parseInt(seq);
@@ -144,14 +147,17 @@ public class CarouselController {
                             String update_where="";
                             if(carousel.getImage_url()!=null){
                                 //update
-                                update_where=" set pc_image_url='"+carousel.getImage_url()+"',pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
+                                update_where=" set pc_image_url='"+carousel.getImage_url()+"',pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_subtitle='"+subtitle+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
                             }else {
-                                update_where=" set pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
+                                update_where=" set pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_subtitle='"+subtitle+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
                             }
 
-                            laiHuiDB.update("pc_carousel",update_where);
-                            json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
-                            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                            is_success = laiHuiDB.update("pc_carousel",update_where);
+                            is_true = laiHuiDB.update("pc_push_notification"," set title ='"+title+"',link_url ='"+link+"',alert ='"+subtitle+"' where activity_id="+id);
+                            if(is_success && is_true){
+                                json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
+                                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                            }
                     }else {
                             //新建
                             String filePath = Utils.fileImgUpload("img", request);
@@ -175,8 +181,12 @@ public class CarouselController {
 
                                 carousel.setType(1);
                                 is_success=laiHuiDB.createCarousel(carousel);
+                                List<Carousel> carousels = laiHuiDB.getCarousel(" where pc_image_title ='"+title+"' and pc_image_seq ='"+seq+"' and pc_type =1 order by pc_image_create_time desc limit 1 ");
+                                if(carousels.size()>0){
+                                    is_true = laiHuiDB.createPush(carousels.get(0).get_id(),0,subtitle,100,1,link,1,title);
+                                }
                             }
-                            if(is_success){
+                            if(is_success && is_true){
                                 json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
                                 return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                             }
@@ -243,6 +253,7 @@ public class CarouselController {
         try {
             String action=request.getParameter("action");
             boolean is_success=false;
+            boolean is_true = false;
             int page=0;
             int size=10;
             if(request.getParameter("page")!=null&&!request.getParameter("page").trim().equals("")){
@@ -266,11 +277,12 @@ public class CarouselController {
                     String title=request.getParameter("title");
                     String link=request.getParameter("link");
                     String seq=request.getParameter("weight");
-
+                    String subtitle = request.getParameter("subtitle");
                     Carousel carousel=new Carousel();
 
                     carousel.setImage_link(link);
                     carousel.setImage_title(title);
+                    carousel.setImage_subtitle(subtitle);
                     int now_seq=0;
                     if(seq!=null&&!seq.isEmpty()){
                         now_seq=Integer.parseInt(seq);
@@ -304,14 +316,17 @@ public class CarouselController {
                         String update_where="";
                         if(carousel.getImage_url()!=null){
                             //update
-                            update_where=" set pc_image_url='"+carousel.getImage_url()+"',pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
+                            update_where=" set pc_image_url='"+carousel.getImage_url()+"',pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_subtitle='"+subtitle+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
                         }else {
-                            update_where=" set pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
+                            update_where=" set pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_subtitle='"+subtitle+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
                         }
 
-                        laiHuiDB.update("pc_carousel",update_where);
-                        json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
-                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                        is_success = laiHuiDB.update("pc_carousel",update_where);
+                        is_true = laiHuiDB.update("pc_push_notification"," set title ='"+title+"',link_url ='"+link+"',alert ='"+subtitle+"' where activity_id="+id);
+                        if(is_success && is_true){
+                            json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
+                            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                        }
                     }else {
                         //新建
                         String filePath = Utils.fileImgUpload("img", request);
@@ -334,8 +349,12 @@ public class CarouselController {
                         if(carousel.getImage_url()!=null&&carousel.getSeq()!=0){
                             carousel.setType(2);
                             is_success=laiHuiDB.createCarousel(carousel);
+                            List<Carousel> carousels = laiHuiDB.getCarousel(" where pc_image_title ='"+title+"' and pc_image_seq ='"+seq+"' and pc_type =2 order by pc_image_create_time desc limit 1 ");
+                            if(carousels.size()>0){
+                                is_true = laiHuiDB.createPush(carousels.get(0).get_id(),0,carousel.getImage_subtitle(),100,1,link,1,title);
+                            }
                         }
-                        if(is_success){
+                        if(is_success&&is_true){
                             json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
                             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                         }
@@ -402,6 +421,7 @@ public class CarouselController {
         try {
             String action=request.getParameter("action");
             boolean is_success=false;
+            boolean is_true = false;
             int page=0;
             int size=10;
             if(request.getParameter("page")!=null&&!request.getParameter("page").trim().equals("")){
@@ -425,11 +445,12 @@ public class CarouselController {
                     String title=request.getParameter("title");
                     String link=request.getParameter("link");
                     String seq=request.getParameter("weight");
-
+                    String subtitle = request.getParameter("subtitle");
                     Carousel carousel=new Carousel();
 
                     carousel.setImage_link(link);
                     carousel.setImage_title(title);
+                    carousel.setImage_subtitle(subtitle);
                     int now_seq=0;
                     if(seq!=null&&!seq.isEmpty()){
                         now_seq=Integer.parseInt(seq);
@@ -463,14 +484,16 @@ public class CarouselController {
                         String update_where="";
                         if(carousel.getImage_url()!=null){
                             //update
-                            update_where=" set pc_image_url='"+carousel.getImage_url()+"',pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
+                            update_where=" set pc_image_url='"+carousel.getImage_url()+"',pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_subtitle='"+subtitle+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
                         }else {
-                            update_where=" set pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
+                            update_where=" set pc_image_link='"+carousel.getImage_link()+"',pc_image_title='"+title+"',pc_image_subtitle='"+subtitle+"',pc_image_seq="+carousel.getSeq()+",pc_image_update_time='"+Utils.getCurrentTime()+"' where _id="+id;
                         }
-
-                        laiHuiDB.update("pc_carousel",update_where);
-                        json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
-                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                        is_success = laiHuiDB.update("pc_carousel",update_where);
+                        is_true = laiHuiDB.update("pc_push_notification"," set title ='"+title+"',link_url ='"+link+"',alert ='"+subtitle+"' where activity_id="+id);
+                        if (is_success && is_true){
+                            json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
+                            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                        }
                     }else {
                         //新建
                         String filePath = Utils.fileImgUpload("img", request);
@@ -493,8 +516,12 @@ public class CarouselController {
                         if(carousel.getImage_url()!=null&&carousel.getSeq()!=0){
                             carousel.setType(3);
                             is_success=laiHuiDB.createCarousel(carousel);
+                            List<Carousel> carousels = laiHuiDB.getCarousel(" where pc_image_title ='"+title+"' and pc_image_seq ="+seq+" and pc_type=3 order by pc_image_create_time desc limit 1 ");
+                            if(carousels.size()>0){
+                                is_true = laiHuiDB.createPush(carousels.get(0).get_id(),0,subtitle,100,1,link,1,title);
+                            }
                         }
-                        if(is_success){
+                        if(is_success && is_true){
                             json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
                             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
                         }

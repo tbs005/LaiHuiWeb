@@ -380,7 +380,7 @@
                     <span class="name">有效期：</span><span class="effective_date_end"></span>
                 </div>
                 <div class="line1">
-                    <span class="name">架驶证照片：</span>
+                    <span class="name">驾驶证照片：</span>
                     <%--<div class="driver_license_photo">
                         <img src="" alt="" width="80%">
                     </div>--%>

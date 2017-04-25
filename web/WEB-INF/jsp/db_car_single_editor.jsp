@@ -205,14 +205,15 @@
     /*以下是凡哥代码*/
          body{font-family: "Microsoft Yahei";}
         .pc_content{margin-top: 5%;line-height: 4;width: 100%;text-align: center}
-        .pc_content_passenger{display:inline;float:left;margin-left:10%;width: 50%;margin: 0 auto;padding: 2%;border: 1px solid #e4e4e4;box-shadow: 2px 2px 2px #cccbca;border-radius: 1vh;text-align: center}
+        .pc_content_passenger{display:inline;float:left;margin-left:10%;width: 50%;margin: 0 auto;padding: 2%;text-align: center}
         .pc_content h2{color:#FF8F0c;font-size: 25px}
-        input{font-size: 16px;padding-left:2%;border: none;outline: #e4e4e4;width: 50%;color:#9a9a9a;height: 5vh;line-height: 5vh;border:2px solid #FF8F0c;box-sizing: border-box; border-radius: 1vh;}
-        .pc_content_passenger span{width:20%;display: inline-block}
-        .pc_content_driver span{width:20%;display: inline-block}
-        .pc_content_driver{display:inline;float:left;margin-left:10%;width: 50%;margin: 0 auto;padding: 2%;border: 1px solid #e4e4e4;box-shadow: 2px 2px 2px #cccbca;border-radius: 1vh;text-align: center}
+        input{font-size: 16px;padding-left: 2%;border: none;outline: #e4e4e4;width: 50%;color: #9a9a9a;height: 5vh;line-height: 5vh;border: 1px solid #FF8F0c;box-sizing: border-box;}
+        .pc_content_passenger span{width:15%;display: inline-block}
+        .pc_content_driver span{width:15%;display: inline-block}
+        .pc_content_driver{display:inline;float:left;margin-left:10%;width: 50%;margin: 0 auto;padding: 2%;text-align: center}
         #btn_passenger{background:#FF8F0c;color: white;margin-top: 10%;line-height:5vh;height:5vh;font-size: 20px}
         #btn_driver{background:#FF8F0c;color: white;margin-top: 10%;line-height:5vh;height:5vh;font-size: 20px}
+        span{text-align: left;}
     /*以上是凡哥代码*/
 </style>
 
@@ -229,7 +230,7 @@
     <div class="pc_content_passenger">
         <form action="">
         <h2>添加乘客车单</h2>
-        <div><span>手机号：</span><input type="text" placeholder="请输入手机号" class="mobile"></div>
+        <div><span>手机号</span><input type="text" placeholder="请输入手机号" class="mobile"></div>
             <div>
                 <div class="mianR">
                     <div class="carDealer">
@@ -256,16 +257,16 @@
             </div>
         <%--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
         <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point"></div>--%>
-        <div><span>出发时间：</span><input class="datainp departure_time" id="datebut01" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut01',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
-        <div><span>几人乘车：</span><input type="text" placeholder="请说明有几人乘车" class="booking_seats"></div>
-        <div><span>备注：</span><input type="text" placeholder="*注：是否有行李" class="remark"></div>
+        <div><span>出发时间</span><input class="datainp departure_time" id="datebut01" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut01',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
+        <div><span>几人乘车</span><input type="text" placeholder="请说明有几人乘车" class="booking_seats"></div>
+        <div><span>备注</span><input type="text" placeholder="*注：是否有行李" class="remark"></div>
         <input type="button" value="添加" id="btn_passenger">
         </form>
     </div>
     <div class="pc_content_driver">
         <form action="">
         <h2>添加车主车单</h2>
-        <div><span>手机号：</span><input onblur="blur()" type="text" placeholder="请输入手机号" class="mobile1"></div>
+        <div><span>手机号</span><input onblur="blur()" type="text" placeholder="请输入手机号" class="mobile1"></div>
             <div>
                 <div class="mianR">
                     <div class="carDealer">
@@ -292,9 +293,9 @@
             </div>
         <%--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point1"></div>
         <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point1"></div>--%>
-        <div><span>出发时间：</span><input class="datainp departure_time1" id="datebut02" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut02',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
-        <div><span>几个座位：</span><input type="text" placeholder="请说明邀请几人乘车" class="init_seats"></div>
-        <div><span>备注：</span><input type="text" placeholder="*注：乘客是否可以携带行李或宠物。" class="remark1"></div>
+        <div><span>出发时间</span><input class="datainp departure_time1" id="datebut02" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut02',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
+        <div><span>几个座位</span><input type="text" placeholder="请说明邀请几人乘车" class="init_seats"></div>
+        <div><span>备注</span><input type="text" placeholder="*注：乘客是否可以携带行李或宠物。" class="remark1"></div>
         <input type="button" value="添加" id="btn_driver">
         </form>
     </div>

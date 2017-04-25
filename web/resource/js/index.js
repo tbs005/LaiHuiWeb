@@ -220,7 +220,7 @@ var AddressCom = function(suffix){
 		var html='<input type="hidden" id="province_'+rand_id+'"  name="province'+suffix+'" value="" />'+
 					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'+
 					'<input type="hidden" id="area_'+rand_id+'"  name="area'+suffix+'" value="" />'
-		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>起点：</span>'+
+		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>起点</span>'+
 		 	'<input type="text" placeholder="请输入起点" class="boarding_point1"/>'+
 		 	'<div class="arer-sheng_'+rand_id+' arer-sheng"><ul></ul></div>'+
 		 	'<div class="arer-shi_'+rand_id+' arer-shi" ><ul></ul></div>'+
@@ -435,7 +435,7 @@ var AddressCom01 = function(suffix){
 		var html='<input type="hidden" id="province_'+rand_id+'"  name="province'+suffix+'" value="" />'+
 					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'+
 					'<input type="hidden" id="area_'+rand_id+'"  name="area'+suffix+'" value="" />'
-		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>终点：</span>'+
+		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>终点</span>'+
 		 	'<input type="text" placeholder="请输入终点" class="breakout_point1"/>'+
 		 	'<div class="arer-sheng_'+rand_id+' arer-sheng"><ul></ul></div>'+
 		 	'<div class="arer-shi_'+rand_id+' arer-shi" ><ul></ul></div>'+
@@ -650,7 +650,7 @@ var AddressCom03 = function(suffix){
 		var html='<input type="hidden" id="province_'+rand_id+'"  name="province'+suffix+'" value="" />'+
 					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'+
 					'<input type="hidden" id="area_'+rand_id+'"  name="area'+suffix+'" value="" />'
-		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>起点：</span>'+
+		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>起点</span>'+
 		 	'<input type="text" placeholder="请输入起点" class="boarding_point"/>'+
 		 	'<div class="arer-sheng_'+rand_id+' arer-sheng"><ul></ul></div>'+
 		 	'<div class="arer-shi_'+rand_id+' arer-shi" ><ul></ul></div>'+
@@ -865,7 +865,7 @@ var AddressCom04 = function(suffix){
 		var html='<input type="hidden" id="province_'+rand_id+'"  name="province'+suffix+'" value="" />'+
 					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'+
 					'<input type="hidden" id="area_'+rand_id+'"  name="area'+suffix+'" value="" />'
-		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>终点：</span>'+
+		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>终点</span>'+
 		 	'<input type="text" placeholder="请输入终点" class="breakout_point"/>'+
 		 	'<div class="arer-sheng_'+rand_id+' arer-sheng"><ul></ul></div>'+
 		 	'<div class="arer-shi_'+rand_id+' arer-shi" ><ul></ul></div>'+
