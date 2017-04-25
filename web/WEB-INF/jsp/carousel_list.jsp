@@ -315,7 +315,7 @@
     top: 0;
   }
 
-  .detailAll_tip_no, .delete_tip_no, {
+  .detailAll_tip_no, .delete_tip_no {
     margin-right: 0;
   }
 
@@ -928,7 +928,12 @@
     color: #999;
     /* text-indent: 14px; */
     line-height: 16px;
-    margin-top: 35px;
+    margin-top: 7px;
+  }
+  .question_list_message_subtitle_span{
+    color: #999;
+    line-height: 16px;
+    margin-top: 16px;
   }
   .question_list_img{
     float: left;
@@ -1056,7 +1061,8 @@
       var seq = global_data.slides[i].image_seq;
       var image_url = global_data.slides[i].image_url;
       var image_link = global_data.slides[i].image_link;
-      ShopsListStyle(image_link,image_url,id, content, title, seq);
+      var subtitle=global_data.slides[i].image_subtitle;
+      ShopsListStyle(image_link,image_url,id, content, title, seq, subtitle);
       $('.swiper-wrapper').append('<div class="swiper-slide">' +
                 '<a href="'+image_link+'" class="img_link" target="_blank">'+
                 '<img src='+image_url+' class="ad_img" alt="'+title+'">' +
@@ -1076,7 +1082,7 @@
               '</li>')
     }
   }
-  function ShopsListStyle(image_link,image_url,id, content, title, seq) {
+  function ShopsListStyle(image_link,image_url,id, content, title, seq, subtitle) {
     $('.not_find_message').before('<li class="question_list question_list_message_box_right" id='+id+'>'+
             '<div class="question_list_left">'+
             '<div class="question_list_check question_list_select_list" onclick="showEditTip(this)"></div>'+
@@ -1092,6 +1098,8 @@
 
             '</a>'+
             '<div class="question_list_message_context_span">'+content+'</div>'+
+            '<div class="clear"></div>'+
+            '<div class="question_list_message_subtitle_span">'+subtitle+'</div>'+
             '<div class="clear"></div>'+
             '</div>'+
             '</div>'+
@@ -1190,7 +1198,7 @@
     $('.input_style').val("");
     $('.editor_cancel').click();
     click_type=0;
-    $('.slide_container').animate({"top":"22%","opacity":"1"},300);
+    $('.slide_container').animate({"top":"12%","opacity":"1"},300);
     $('.slide_container_top').find('.slide_container_top_title').text('添加轮播图');
     $('.submit_select_sure').text('添加');
   }
@@ -1201,14 +1209,16 @@
     global_id = parent.attr('id');
     var img_src =parent.find('.question_list_img_img').attr('src');
     var img_title = parent.find('.question_list_message_tittle_span').text();
+    var img_subtitle = parent.find('.question_list_message_subtitle_span').text();
     var img_seq = parent.find('.company_cat_box_span').text();
     var img_link = parent.find('.img_link').attr('href');
     $('.img0').show().attr('src',img_src).css({'width':'100%'});
     $('.editor_change').hide();
     $('.route_start').val(img_title);
+    $('.route_sub').val(img_subtitle);
     $('.route_end').val(img_link);
     $('.ad_seq').text(img_seq);
-    $('.slide_container').animate({"top":"22%","opacity":"1"},300);
+    $('.slide_container').animate({"top":"12%","opacity":"1"},300);
     $('.slide_container_top').find('.slide_container_top_title').text('编辑轮播图');
     $('.submit_select_sure').text('保存');
   }
@@ -1283,6 +1293,8 @@
     if(click_type==0){
       if($('.route_start').val()==""){
         showErrorTips('请输入图片标题')
+      }else if($('.route_sub').val()==""){
+        showErrorTips('请输入图片副标题')
       }else if($('.file0').val()==""){
         showErrorTips('请添加轮播图片')
       }else{
@@ -1291,6 +1303,8 @@
     }else{
       if($('.route_start').val()==""){
         showErrorTips('请输入图片标题')
+      }else if($('.route_sub').val()==""){
+        showErrorTips('请输入图片副标题')
       }else{
         addAD();
       }
@@ -1395,6 +1409,10 @@
         <img src="/resource/images/pc_icon_beihzu.png" />
         <input type="text" name="title" placeholder="图片标题" class="input_style route_start" />
       </div>
+      <div class="input_list">
+        <img src="/resource/images/pc_icon_beihzu.png" />
+        <input type="text" name="subtitle" placeholder="图片副标题" class="input_style route_sub" />
+      </div >
       <div class="input_list">
         <img src="/resource/images/pc_icon_url.png" />
         <input type="text" name="link" placeholder="图片链接" class="input_style route_end" />
