@@ -167,7 +167,7 @@
     <div class="header_right">
       <div class="header_user">
         <img src="/resource/images/icon_people.png" alt=""/>
-        <span>管理员</span>
+        <span>${manager.name}</span>
       </div>
       <div class="header_exit">
         <a href="/db/logout">退出</a>
@@ -199,3 +199,66 @@
 <div class="fixed_menu" onclick="showMenu(this)">
   <img src="/resource/images/pch_icon_menu_style.png">
 </div>
+<style>
+  *{margin:0;padding:0;}
+  .tishi{width:200px;height:130px;border:1px solid #aaaaaa;overflow: hidden;
+    position:fixed;top:100%;right:50px;
+    display: none;
+    z-index: 10000;
+  }
+  .tishi_m{padding:5px;background:#63a35c;text-align: center;}
+  .caoZuo button{padding:2px 10px;margin:0 10px;background: #AEDEF4;border-radius: 5px;cursor: pointer;}
+  .tishi>p:nth-child(2){padding:10px;}
+  .xiangQing:hover{background:#00E080;}
+  .close_t:hover{background:#DF6A10;}
+</style>
+<body>
+<div class="tishi">
+  <p class="tishi_m">消息提醒</p>
+  <p>你有<span class="count">2</span>条新的消息</p>
+  <div class="caoZuo" style="text-align: center;margin:20px 0">
+    <button class="xiangQing" onclick="chakan()">查 看</button>
+    <button class="close_t" onclick="close_t1()">取 消</button>
+  </div>
+</div>
+<%--<script src="js/jquery-1.11.3.min.js"></script>--%>
+<script>
+    function open_t(){
+        $('.tishi').show();
+        $('.tishi').animate({"top":"82%"},1000);
+
+    }
+
+    function close_t1() {
+        $('.tishi').hide();
+    }
+
+    function chakan() {
+        window.location.href="/db/driver/check";
+        close_t1();
+    }
+
+    function read() {
+        var privilege = 0;
+        privilege = ${manager.privilege};
+        $.ajax({
+            type: 'POST',
+            url: '/validate/count',
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                if(privilege ==5 &&data.result.count>0){
+                    $('.count').html(data.result.count);
+                    open_t();
+                }else{
+                    close_t1();
+                }
+            }
+        });
+    }
+    read();
+    setInterval(function () {
+        read();
+    },120000)
+
+</script>

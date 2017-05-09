@@ -6,7 +6,7 @@
   describtion:后台管理--【个人配置】人员基本信息
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"  %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--头部信息--%>
 
@@ -308,6 +308,37 @@
 </div>
 
 <script>
+    $("#datebut01").focus(function () {
+        var time = new Date()
+        var m = time.getMonth() + 1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var mm = time.getMinutes();
+        var c = time.getSeconds();
+        m =(m<10 ? "0"+m:m);
+        d =(d<10 ? "0"+d:d);
+        h =(h<10 ? "0"+h:h);
+        mm =(mm<10 ? "0"+mm:mm);
+        c =(c<10 ? "0"+c:c);
+        var t = time.getFullYear() + "-" + m + "-"     + d + " " + h + ":"     + mm + ":" + c;
+        $("#datebut01").val(t)
+    });
+    $("#datebut02").focus(function () {
+        var time = new Date()
+        var m = time.getMonth() + 1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var mm = time.getMinutes();
+        var c = time.getSeconds();
+        m =(m<10 ? "0"+m:m);
+        d =(d<10 ? "0"+d:d);
+        h =(h<10 ? "0"+h:h);
+        mm =(mm<10 ? "0"+mm:mm);
+        c =(c<10 ? "0"+c:c);
+        var t = time.getFullYear() + "-" + m + "-"     + d + " " + h + ":"     + mm + ":" + c;
+        $("#datebut02").val(t)
+    });
+
 var map = new AMap.Map("mapContainer", {
         resizeEnable: true
     });
@@ -377,7 +408,7 @@ var map = new AMap.Map("mapContainer", {
         var departure_time = $(".departure_time").val();
         var booking_seats = $(".booking_seats").val();
         var remark = $(".remark").val();
-
+        var m_id = ${manager.m_id};
         var re = /^1[3456789]\d{9}$/;
         if(!re.test(mobile)){
             alert("手机号输入有误！");
@@ -386,7 +417,7 @@ var map = new AMap.Map("mapContainer", {
                 $.ajax({
                     type: 'POST',
                     url: '/pc/pessenger/date',
-                    data:  {'mobile':mobile ,'boarding_point':aa,'breakout_point':bb,'departure_time':departure_time,'booking_seats':booking_seats,'remark':remark},
+                    data:  {'mobile':mobile ,'boarding_point':aa,'breakout_point':bb,'departure_time':departure_time,'booking_seats':booking_seats,'remark':remark,'m_id':m_id},
                     dataType:'json',
                     success:function(data){
                         alert(data.message);
@@ -467,6 +498,7 @@ var map = new AMap.Map("mapContainer", {
             var departure_time = $(".departure_time1").val()
             var init_seats = $(".init_seats").val()
             var remark = $(".remark1").val();
+            var m_id = ${manager.m_id};
             var re = /^1[3456789]\d{9}$/;
             if(!re.test(mobile)){
                 alert("手机号输入有误！");
@@ -476,7 +508,7 @@ var map = new AMap.Map("mapContainer", {
                     $.ajax({
                         type: 'POST',
                         url: '/pc/deriver/date',
-                        data:  {'mobile':mobile ,'boarding_point':aa,'breakout_point':bb,'departure_time':departure_time,'init_seats':init_seats,'remark':remark},
+                        data:  {'mobile':mobile ,'boarding_point':aa,'breakout_point':bb,'departure_time':departure_time,'init_seats':init_seats,'remark':remark,'m_id':m_id},
                         dataType:'json',
                         success:function(data){
                             alert(data.message);

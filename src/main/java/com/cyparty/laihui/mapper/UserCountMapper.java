@@ -16,7 +16,6 @@ public class UserCountMapper implements RowMapper<UserCount> {
 
         count.setCreate_time(resultSet.getString("create_date"));
         count.setTotal(resultSet.getInt("number"));
-
         return count;
     }
 }

@@ -153,6 +153,7 @@
         <c:if test="${manager !=null && manager.privilege==1}">
         loadUser()
         </c:if>
+        <%--console.log("${manager.m_id}");--%>
         $('.menu_context_li').removeClass('active_li');
         $('.reset_password').addClass('active_li');
         $(".col-3 input").val("");
@@ -164,24 +165,37 @@
             }
         });
     });
-    function loadUser() {
-        var obj = {};
-        obj.action = 'show';
-        operation.operation_ajax('/api/db/editor/cumulate', obj, insertMessage);
-    }
+//    function loadUser() {
+//        var obj = {};
+//        obj.action = 'show';
+//        operation.operation_ajax('/api/db/editor/cumulate', obj, insertMessage);
+//    }
 
-    function insertMessage() {
-        var name = global_data.data[0].name;
-        var mobile = global_data.data[0].mobile;
-        var all_count = global_data.data[0].all_count;
-        var day_count = global_data.data[0].day_count;
+//    function insertMessage() {
+//        var name = global_data.data[0].name;
+//        var mobile = global_data.data[0].mobile;
+//        var all_count = global_data.data[0].all_count;
+//        var day_count = global_data.data[0].day_count;
+//
+//        $('.all_count').text(all_count + "条");
+//        $('.today_count').text(day_count + "条");
+//        $('.change_user_name').text(name);
+//        $('.change_user_mobile').text(mobile);
+//    }
+        function loadUser() {
+            var obj = {};
+            obj.m_id ="${manager.m_id}";
+            operation.operation_ajax('/single/count', obj, insertMessage);
+        }
 
-        $('.all_count').text(all_count + "条");
-        $('.today_count').text(day_count + "条");
-        $('.change_user_name').text(name);
-        $('.change_user_mobile').text(mobile);
-    }
-
+        function insertMessage() {
+            console.log(global_data);
+            var all_count = global_data.all_count;
+            var day_count = global_data.today_count;
+            console.log(global_data.data);
+            $('.all_count').text(all_count + "条");
+            $('.today_count').text(day_count + "条");
+        }
     function success() {
         window.location.href = "/db/login"
     }

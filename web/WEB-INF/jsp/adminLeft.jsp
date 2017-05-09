@@ -158,6 +158,9 @@
             <li class="menu_context_li navigation_page">
                 <a href="/db/navigation_page">导航设置</a>
             </li>
+            <li class="menu_context_li splash_screen">
+                <a href="/db/splash_screen">闪屏设置</a>
+            </li>
         </ul>
     </div>
     <div class="menu_context">
@@ -181,7 +184,6 @@
         </ul>
     </div>
     <c:if test="${manager !=null && manager.privilege<=4}">
-
         <div class="menu_context">
             <div class="menu_context_tittle">
                 <img src="/resource/images/pch_menu_super.png" alt="">
@@ -194,33 +196,51 @@
             </ul>
         </div>
     </c:if>
-    <div class="menu_context">
-        <div class="menu_context_tittle">
-            <img src="/resource/images/pch_menu_super.png" alt="">
-            <span>推广管理</span>
+    <c:if test="${manager !=null && manager.privilege>=4}">
+        <div class="menu_context">
+            <div class="menu_context_tittle">
+                <img src="/resource/images/pch_menu_super.png" alt="">
+                <span>推广管理</span>
+            </div>
+            <ul class="menu_context_ul">
+                <li class="menu_context_li popularize">
+                    <a href="/db/popularize">新增专业推广员</a>
+                </li>
+            </ul>
+            <ul class="menu_context_ul">
+                <li class="menu_context_li merchant_join">
+                    <a href="/db/merchant/join">招商加盟</a>
+                </li>
+            </ul>
         </div>
-        <ul class="menu_context_ul">
-            <li class="menu_context_li reset_password">
-                <a href="/db/popularize">新增专业推广员</a>
-            </li>
-        </ul>
-        <ul class="menu_context_ul">
-            <li class="menu_context_li reset_password">
-                <a href="/db/merchant/join">招商加盟</a>
-            </li>
-        </ul>
-    </div>
+    </c:if>
     <div class="menu_context">
         <div class="menu_context_tittle">
             <img src="/resource/images/pc_icon_menu_content.png" alt="">
             <span>录入车单</span>
         </div>
         <ul class="menu_context_ul">
-            <li class="menu_context_li reset_password">
+            <li class="menu_context_li order_editor">
                 <a href="/db/car/editor">车单编辑</a>
             </li>
         </ul>
     </div>
+    <c:if test="${manager !=null && manager.privilege>=4}">
+        <div class="menu_context">
+            <div class="menu_context_tittle">
+                <img src="/resource/images/pc_icon_menu_content.png" alt="">
+                <span>推送管理</span>
+            </div>
+            <ul class="menu_context_ul">
+                <li class="menu_context_li sms_push">
+                    <a href="/db/sms/push">短信推送</a>
+                </li>
+                <li class="menu_context_li activity_push">
+                    <a href="/db/activity/push">活动推送</a>
+                </li>
+            </ul>
+        </div>
+    </c:if>
     <div class="menu_context">
         <div class="menu_context_tittle">
             <img src="/resource/images/pc_icon_menu_role.png" alt="">

@@ -342,7 +342,27 @@ public class ValidateController {
             json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
+    }/**
+     * 统计需要车主认证的信息
+     */
+    @ResponseBody
+    @RequestMapping(value = "/validate/count", method = RequestMethod.POST)
+    public ResponseEntity<String> ValidateCount() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        JSONObject result =new JSONObject();
+        String json ="";
+        int count = 0;
+        List<User> users = laiHuiDB.getUserList("where is_validated=1 and is_car_owner =2");
+        if(users.size()>0){
+            count = users.size();
+        }
+        result.put("count",count);
+        json = ReturnJsonUtil.returnSuccessJsonString(result, "统计成功！");
+        return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
     }
+
     //车主认证审核页面
     @RequestMapping("/db/driver/check")
     public String db_driver_check(Model model,HttpServletRequest request){
@@ -387,5 +407,26 @@ public class ValidateController {
             return "redirect:/db/login";
         }
     }
-
+    //短信推送
+    @RequestMapping("/db/sms/push")
+    public String sms_push(Model model,HttpServletRequest request){
+        is_logined= Utils.isLogined(request);
+        if(is_logined){
+            return "db_sms_push";
+        }else {
+            model.asMap().clear();
+            return "redirect:/db/login";
+        }
+    }
+    //短信推送
+    @RequestMapping("/db/activity/push")
+    public String activity_push(Model model,HttpServletRequest request){
+        is_logined= Utils.isLogined(request);
+        if(is_logined){
+            return "db_activity_push";
+        }else {
+            model.asMap().clear();
+            return "redirect:/db/login";
+        }
+    }
 }

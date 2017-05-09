@@ -687,12 +687,12 @@ public class LaiHuiDB {
     }
 
     //添加pc端车主车单
-    public boolean createDeriverCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int init_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code) {
+    public boolean createDeriverCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int init_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code,int m_id) {
         boolean is_success = true;
         int user_id = -Integer.parseInt((new Date().getTime()+"").substring(4,13));
-        String SQL = "insert into pc_driver_publish_info(user_id,mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source,current_seats) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String SQL = "insert into pc_driver_publish_info(user_id,mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source,current_seats,m_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            jdbcTemplateObject.update(SQL, new Object[]{user_id, mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, departure_city_code, Utils.getCurrentTime(),1,5,init_seats});
+            jdbcTemplateObject.update(SQL, new Object[]{user_id, mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, departure_city_code, Utils.getCurrentTime(),1,5,init_seats,m_id});
         } catch (Exception e) {
             is_success = false;
         }
@@ -701,11 +701,11 @@ public class LaiHuiDB {
     }
 
     //添加pc端车主车单
-    public boolean createPassengerCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int booking_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code) {
+    public boolean createPassengerCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int booking_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code, int m_id) {
         boolean is_success = true;
-        String SQL = "insert into pc_passenger_publish_info(user_id,trade_no,departure_time,boarding_point,breakout_point,booking_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String SQL = "insert into pc_passenger_publish_info(user_id,trade_no,departure_time,boarding_point,breakout_point,booking_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source,m_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            jdbcTemplateObject.update(SQL, new Object[]{-5, mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, Utils.getCurrentTime(),1,5});
+            jdbcTemplateObject.update(SQL, new Object[]{-5, mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, Utils.getCurrentTime(),1,5,m_id});
         } catch (Exception e) {
             is_success = false;
         }
@@ -722,6 +722,21 @@ public class LaiHuiDB {
             is_success = false;
         }
         return is_success;
+    }
+
+    //查询当前系统的手机号
+    public List<User> getMobileUsers(String where){
+        String SQL="select DISTINCT user_mobile from pc_user "+where;
+        List<User> users = jdbcTemplateObject.query(SQL,new RowMapper<User>(){
+
+            @Override
+            public User mapRow(ResultSet resultSet, int i) throws SQLException {
+                User user = new User();
+                user.setUser_mobile(resultSet.getString("user_mobile"));
+                return user;
+            }
+        });
+        return users;
     }
 }
 

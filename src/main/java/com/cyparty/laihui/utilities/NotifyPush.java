@@ -1,6 +1,7 @@
 package com.cyparty.laihui.utilities;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cyparty.laihui.db.LaiHuiDB;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -73,5 +74,9 @@ public class NotifyPush {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    public static int getLast(LaiHuiDB laiHuiDB){
+        int last = laiHuiDB.getUserList(" where id>0 order by id desc limit 1").get(0).getUser_id();
+        return last;
     }
 }

@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--<div class="footer">--%>
   <%--<div class="footer_box">--%>
-    <%--<span>© 2016  河南点融工坊信息技术有限公司</span>--%>
+    <%--<span>© 2016  河南来回网络科技有限公司</span>--%>
   <%--</div>--%>
 <%--</div>--%>
 <div id="large-header" class="large-header">
