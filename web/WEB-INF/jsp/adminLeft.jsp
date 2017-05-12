@@ -252,4 +252,16 @@
             </li>
         </ul>
     </div>
+
+    <div class="menu_context">
+        <div class="menu_context_tittle">
+            <img src="/resource/images/pc_icon_menu_agent.png" alt="">
+            <span>资讯管理</span>
+        </div>
+        <ul class="menu_context_ul">
+            <li class="menu_context_li db_manage_agent">
+                <a href="/db/advisory/manage">资讯管理</a>
+            </li>
+        </ul>
+    </div>
 </div>
