@@ -37,6 +37,12 @@ public class OssUtil {
         this.client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 
     }
+
+    public OssConfigure getOssConfigure()
+    {
+        return ossConfigure;
+    }
+
     public  void uploadFile(HttpServletRequest request,String key, String filePath) throws FileNotFoundException
     {
         filePath=request.getSession().getServletContext().getRealPath("/resource/uploads")+filePath;

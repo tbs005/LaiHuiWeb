@@ -738,5 +738,24 @@ public class LaiHuiDB {
         });
         return users;
     }
+
+    //查询咨询列表
+    public List<Advisory> getAdvisory(String where){
+        String SQL="select * from pc_advisory "+where;
+        List<Advisory> advisoryList = jdbcTemplateObject.query(SQL,new AdvisoryMapper());
+        return advisoryList;
+    }
+
+    //创建咨询
+    public boolean createAdvisory(Advisory advisory) {
+        boolean is_success = true;
+        String SQL = "insert into pc_advisory(title,sub_title,content,create_date) VALUES (?,?,?,?)";
+        int count = jdbcTemplateObject.update(SQL, new Object[]{advisory.getTitile(), advisory.getSub_title(), advisory.getContent(), Utils.getCurrentTime()});
+        if (count < 1) {
+            is_success = false;
+        }
+
+        return is_success;
+    }
 }
 

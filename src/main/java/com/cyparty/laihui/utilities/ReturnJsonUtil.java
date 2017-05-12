@@ -6,9 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.domain.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Shadow on 2016/5/3.
@@ -1477,6 +1479,36 @@ public class ReturnJsonUtil {
             jsonObject.put("way",business.getCooperation_way());
             jsonObject.put("flag",business.getFlag());
             jsonObject.put("create_time",business.getCreate_time());
+            dataArray.add(jsonObject);
+        }
+        result_json.put("total",count);
+        result_json.put("page",page);
+        result_json.put("size",size);
+        result_json.put("slides",dataArray);
+        return result_json;
+    }
+
+    //咨询
+    public static JSONObject getAdvisoryJson(LaiHuiDB laiHuiDB,int page,int size,int id){
+        JSONObject result_json=new JSONObject();
+        JSONArray dataArray=new JSONArray();
+        String where=" order by create_date DESC ";
+        int offset=page*size;
+        int count=1;
+        if(id==0){
+            count=laiHuiDB.getAdvisory(where).size();
+            where=where+" limit "+offset+","+size;
+        }else {
+            where=" where advisory_id="+id;
+        }
+        List<Advisory> advisoryList = laiHuiDB.getAdvisory(where);
+        for(Advisory advisory:advisoryList){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id",advisory.getAdvisory_id());
+            jsonObject.put("title",advisory.getTitile());
+            jsonObject.put("sub_title",advisory.getSub_title());
+            jsonObject.put("content",advisory.getContent());
+            jsonObject.put("create_date",advisory.getCreate_date());
             dataArray.add(jsonObject);
         }
         result_json.put("total",count);
