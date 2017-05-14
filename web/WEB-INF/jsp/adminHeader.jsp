@@ -19,6 +19,14 @@
   <script src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js" type="text/javascript"></script>
   <script src="/resource/js/manage.js" type="text/javascript"></script>
 
+  <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
+  <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+  <!--引入wangEditor.css-->
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/dist/css/wangEditor.min.css">
+  <script type="text/javascript" src="${pageContext.request.contextPath}/resource/dist/js/wangEditor.min.js"></script>
+
   <link rel="stylesheet" href="/resource/css/bootstrap.min.css" >
   <link href="/resource/css/manage_css.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/resource/css/component.css" />
