@@ -3,6 +3,7 @@ package com.cyparty.laihui.db;
 import com.cyparty.laihui.utilities.MD5Kit;
 import com.cyparty.laihui.utilities.OssUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,7 @@ import java.io.File;
 /**
  * Created by Administrator on 2017/4/14.
  */
-@Service
+@Component
 public class FileService {
     @Autowired
     private OssUtil ossUtil;
