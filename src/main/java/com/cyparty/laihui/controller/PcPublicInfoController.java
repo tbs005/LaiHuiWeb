@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.awt.*;
 import java.util.Date;
 import java.util.List;
 
@@ -36,12 +35,13 @@ public class PcPublicInfoController {
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         JSONObject result = new JSONObject();
         String json = "";
+        double price = 0.0;
         String mobile = request.getParameter("mobile");
         String departure_time = request.getParameter("departure_time");
         String boarding_point = request.getParameter("boarding_point");
         String breakout_point = request.getParameter("breakout_point");
         int init_seats = Integer.parseInt(request.getParameter("init_seats"));
-        int  m_id = Integer.parseInt(request.getParameter("m_id"));
+        int m_id = Integer.parseInt(request.getParameter("m_id"));
         String remark = "司机没有限制要求";
         if (request.getParameter("remark") != null && !request.getParameter("remark").isEmpty()) {
             remark = request.getParameter("remark");
@@ -57,12 +57,25 @@ public class PcPublicInfoController {
             JSONObject breakoutObject = JSONObject.parseObject(breakout_point);
             destination_address_code = breakoutObject.getIntValue("adCode");
             destination_city_code = Integer.parseInt((destination_address_code + "").substring(0, 4) + "00");
+            //起点经纬度
+            String s_longitude = "".equals(boardingObject.get("longitude").toString()) ? "-256.18" : boardingObject.get("longitude").toString();
+            String s_latitude = "".equals(boardingObject.get("latitude").toString()) ? "-256.18" : boardingObject.get("latitude").toString();
+            //终点经纬度
+            String e_longitude = "".equals(breakoutObject.get("longitude").toString()) ? "-256.18" : breakoutObject.get("longitude").toString();
+            String e_latitude = "".equals(breakoutObject.get("latitude").toString()) ? "-256.18" : breakoutObject.get("latitude").toString();
+            if (!s_longitude.equals("-256.18") && !s_latitude.equals("-256.18") && !e_longitude.equals("-256.18") && !e_latitude.equals("-256.18")) {
+                //计算距离和价格
+                double distance = RangeUtils.getDistance(Double.parseDouble(s_latitude), Double.parseDouble(s_longitude), Double.parseDouble(e_latitude), Double.parseDouble(e_longitude));
+                String origin_location = s_latitude + "," + s_longitude;
+                String destination_location = e_latitude + "," + e_longitude;
+                price = PriceUtil.getOwnerPrice(origin_location, destination_location, distance);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
-        boolean is_success = laiHuiDB.createDeriverCarList(mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code,m_id);
+        boolean is_success = laiHuiDB.createDeriverCarList(mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price);
         if (is_success) {
             json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
             SendSMSUtil.sendSMSToPc(mobile);
@@ -81,13 +94,14 @@ public class PcPublicInfoController {
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         JSONObject result = new JSONObject();
+        double price = 0.0;
         String json = "";
         String mobile = request.getParameter("mobile");
         String departure_time = request.getParameter("departure_time");
         String boarding_point = request.getParameter("boarding_point");
         String breakout_point = request.getParameter("breakout_point");
         int booking_seats = Integer.parseInt(request.getParameter("booking_seats"));
-        int  m_id = Integer.parseInt(request.getParameter("m_id"));
+        int m_id = Integer.parseInt(request.getParameter("m_id"));
         String remark = "乘客轻装简行";
         if (request.getParameter("remark") != null && !request.getParameter("remark").isEmpty()) {
             remark = request.getParameter("remark");
@@ -103,12 +117,25 @@ public class PcPublicInfoController {
             JSONObject breakoutObject = JSONObject.parseObject(breakout_point);
             destination_address_code = breakoutObject.getIntValue("adCode");
             destination_city_code = Integer.parseInt((destination_address_code + "").substring(0, 4) + "00");
+            //起点经纬度
+            String s_longitude = "".equals(boardingObject.get("longitude").toString()) ? "-256.18" : boardingObject.get("longitude").toString();
+            String s_latitude = "".equals(boardingObject.get("latitude").toString()) ? "-256.18" : boardingObject.get("latitude").toString();
+            //终点经纬度
+            String e_longitude = "".equals(breakoutObject.get("longitude").toString()) ? "-256.18" : breakoutObject.get("longitude").toString();
+            String e_latitude = "".equals(breakoutObject.get("latitude").toString()) ? "-256.18" : breakoutObject.get("latitude").toString();
+            if (!s_longitude.equals("-256.18") && !s_latitude.equals("-256.18") && !e_longitude.equals("-256.18") && !e_latitude.equals("-256.18")) {
+                //计算距离和价格
+                double distance = RangeUtils.getDistance(Double.parseDouble(s_latitude), Double.parseDouble(s_longitude), Double.parseDouble(e_latitude), Double.parseDouble(e_longitude));
+                String origin_location = s_latitude + "," + s_longitude;
+                String destination_location = e_latitude + "," + e_longitude;
+                price = PriceUtil.getPessengerPrice(origin_location, destination_location, distance, booking_seats);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
-        boolean is_success = laiHuiDB.createPassengerCarList(mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id);
+        boolean is_success = laiHuiDB.createPassengerCarList(mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price);
         if (is_success) {
             json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
             SendSMSUtil.sendSMSToPc(mobile);
@@ -132,66 +159,68 @@ public class PcPublicInfoController {
         String mobile = request.getParameter("mobile");
         SendSMSUtil.sendSMSToPc(mobile);
     }
+
     /**
      * 五一活动给每个用户都发送一条活动消息
-    */
+     */
     @ResponseBody
     @RequestMapping(value = "/activity/sms", method = RequestMethod.POST)
-    public ResponseEntity<String>ActivitySms(HttpServletRequest request) {
+    public ResponseEntity<String> ActivitySms(HttpServletRequest request) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
-        JSONObject result =new JSONObject();
-        String json ="";
+        JSONObject result = new JSONObject();
+        String json = "";
         int start = 50000;
         int end = 50678;
         long start_time = new Date().getTime();
-        List<User> userList = laiHuiDB.getMobileUsers(" where _id >"+start+"  and _id <= "+end+ " ORDER BY _id ASC");
-        String mobile ="";
+        List<User> userList = laiHuiDB.getMobileUsers(" where _id >" + start + "  and _id <= " + end + " ORDER BY _id ASC");
+        String mobile = "";
         JSONObject activity = new JSONObject();
         JSONArray action = new JSONArray();
-        if(userList.size()>0){
-            int a =1;
-            for(User user : userList){
+        if (userList.size() > 0) {
+            int a = 1;
+            for (User user : userList) {
                 mobile = user.getUser_mobile();
-                if(null != mobile && mobile.length()==11){
-                    SendSMSUtil.sendSMS(mobile,33130,"");
-                }else{
+                if (null != mobile && mobile.length() == 11) {
+                    SendSMSUtil.sendSMS(mobile, 33130, "");
+                } else {
                     continue;
                 }
-                activity.put("mobile",mobile);
-                List<User> users =laiHuiDB.getUserList("  where user_mobile ='"+mobile+"'");
-                if(users.size()>0){
-                    activity.put("id",users.get(0).getUser_id());
-                    activity.put("a",a++);
+                activity.put("mobile", mobile);
+                List<User> users = laiHuiDB.getUserList("  where user_mobile ='" + mobile + "'");
+                if (users.size() > 0) {
+                    activity.put("id", users.get(0).getUser_id());
+                    activity.put("a", a++);
                     action.add(activity);
                 }
             }
             long end_time = new Date().getTime();
-            long time =end_time-start_time;
+            long time = end_time - start_time;
             System.out.println(time);
-            result.put("data",action);
+            result.put("data", action);
             System.out.println(result.toJSONString());
             json = ReturnJsonUtil.returnSuccessJsonString(result, "活动消息推送成功！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
-        }else{
+        } else {
             json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
     }
+
     /**
      * 统计今天录入车单的情况，统计到今天为止车单录入的情况
      */
     @ResponseBody
     @RequestMapping(value = "/single/count", method = RequestMethod.POST)
-    public ResponseEntity<String>SingleCount(HttpServletRequest request) {
+    public ResponseEntity<String> SingleCount(HttpServletRequest request) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
-        JSONObject result =new JSONObject();
-        String json ="";
-        String  id = request.getParameter("m_id");
-        if(StringUtil.isBlank(id) && "null".equals(id)){
+        JSONObject result = new JSONObject();
+        String json = "";
+        String id = request.getParameter("m_id");
+        if (StringUtil.isBlank(id) && "null".equals(id)) {
             json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
@@ -202,14 +231,14 @@ public class PcPublicInfoController {
         int p_allCount = 0;
         int d_todayCount = 0;
         int p_todayCount = 0;
-        d_allCount = laiHuiDB.getTotalCount("pc_driver_publish_info"," where m_id="+m_id);
-        d_todayCount = laiHuiDB.getTotalCount("pc_driver_publish_info"," where m_id="+m_id+" and to_days(create_time) = to_days(now())");
-        p_allCount = laiHuiDB.getTotalCount("pc_passenger_publish_info"," where m_id="+m_id);
-        p_todayCount = laiHuiDB.getTotalCount("pc_passenger_publish_info"," where m_id="+m_id+" and to_days(create_time) = to_days(now())");
+        d_allCount = laiHuiDB.getTotalCount("pc_driver_publish_info", " where m_id=" + m_id);
+        d_todayCount = laiHuiDB.getTotalCount("pc_driver_publish_info", " where m_id=" + m_id + " and to_days(create_time) = to_days(now())");
+        p_allCount = laiHuiDB.getTotalCount("pc_passenger_publish_info", " where m_id=" + m_id);
+        p_todayCount = laiHuiDB.getTotalCount("pc_passenger_publish_info", " where m_id=" + m_id + " and to_days(create_time) = to_days(now())");
         all_count = d_allCount + p_allCount;
         today_count = d_todayCount + p_todayCount;
-        result.put("all_count",all_count);
-        result.put("today_count",today_count);
+        result.put("all_count", all_count);
+        result.put("today_count", today_count);
         json = ReturnJsonUtil.returnSuccessJsonString(result, "统计成功！");
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
     }
@@ -219,56 +248,56 @@ public class PcPublicInfoController {
      */
     @ResponseBody
     @RequestMapping(value = "/sms/push", method = RequestMethod.POST)
-    public ResponseEntity<String>PushSms(HttpServletRequest request) {
+    public ResponseEntity<String> PushSms(HttpServletRequest request) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
-        JSONObject result =new JSONObject();
-        String json ="";
+        JSONObject result = new JSONObject();
+        String json = "";
 //        int start = 50000;
 //        int end = 50678;
         int last = NotifyPush.getLast(laiHuiDB);
         int start = Integer.parseInt(request.getParameter("start"));
         int end = Integer.parseInt(request.getParameter("end"));
         int tpl_id = Integer.parseInt(request.getParameter("tpl_id"));
-        if(end>last){
+        if (end > last) {
             json = ReturnJsonUtil.returnFailJsonString(result, "不能超过最大id！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
-        if(start<0 || end<0 || start>end  || tpl_id<0){
+        if (start < 0 || end < 0 || start > end || tpl_id < 0) {
             json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
         long start_time = new Date().getTime();
-        List<User> userList = laiHuiDB.getMobileUsers(" where _id >"+start+"  and _id <= "+end+ " ORDER BY _id ASC");
-        String mobile ="";
+        List<User> userList = laiHuiDB.getMobileUsers(" where _id >" + start + "  and _id <= " + end + " ORDER BY _id ASC");
+        String mobile = "";
         JSONObject activity = new JSONObject();
         JSONArray action = new JSONArray();
-        if(userList.size()>0){
-            int a =1;
-            for(User user : userList){
+        if (userList.size() > 0) {
+            int a = 1;
+            for (User user : userList) {
                 mobile = user.getUser_mobile();
-                if(null != mobile && mobile.length()==11){
-                    SendSMSUtil.sendSMS(mobile,tpl_id,"");
-                }else{
+                if (null != mobile && mobile.length() == 11) {
+                    SendSMSUtil.sendSMS(mobile, tpl_id, "");
+                } else {
                     continue;
                 }
-                activity.put("mobile",mobile);
-                List<User> users =laiHuiDB.getUserList("  where user_mobile ='"+mobile+"'");
-                if(users.size()>0){
-                    activity.put("id",users.get(0).getUser_id());
-                    activity.put("a",a++);
+                activity.put("mobile", mobile);
+                List<User> users = laiHuiDB.getUserList("  where user_mobile ='" + mobile + "'");
+                if (users.size() > 0) {
+                    activity.put("id", users.get(0).getUser_id());
+                    activity.put("a", a++);
                     action.add(activity);
                 }
             }
             long end_time = new Date().getTime();
-            long time =end_time-start_time;
+            long time = end_time - start_time;
             System.out.println(time);
-            result.put("data",action);
+            result.put("data", action);
             System.out.println(result.toJSONString());
             json = ReturnJsonUtil.returnSuccessJsonString(result, "活动消息推送成功！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
-        }else{
+        } else {
             json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
