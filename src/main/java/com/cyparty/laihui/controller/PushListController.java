@@ -238,6 +238,7 @@ public class PushListController {
                     action.add(activity);
                 }
             }
+            laiHuiDB.createPush(0,0,content,Integer.parseInt(type),1,url,1,null);
             result.put("data",action);
             long end_time = new Date().getTime();
             long time =end_time-start_time;

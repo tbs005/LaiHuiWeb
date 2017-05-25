@@ -76,7 +76,7 @@ public class NotifyPush {
         }
     }
     public static int getLast(LaiHuiDB laiHuiDB){
-        int last = laiHuiDB.getUserList(" where id>0 order by id desc limit 1").get(0).getUser_id();
+        int last = laiHuiDB.getUserList(" where _id>0 order by _id desc limit 1").get(0).getUser_id();
         return last;
     }
 }
