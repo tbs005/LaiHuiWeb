@@ -757,5 +757,12 @@ public class LaiHuiDB {
 
         return is_success;
     }
+
+    //通过手机号查找用户
+    public List<User> getUsersByMobile(String where){
+        String SQL="select * from pc_user "+where;
+        List<User> users = jdbcTemplateObject.query(SQL,new UserMapper());
+        return users;
+    }
 }
 

@@ -27,6 +27,9 @@ public class PcPublicInfoController {
     @Autowired
     LaiHuiDB laiHuiDB;
 
+    @Autowired
+    NotifyPush notifyPush;
+
     @ResponseBody
     @RequestMapping(value = "/pc/deriver/date", method = RequestMethod.POST)
     public ResponseEntity<String> deriver(HttpServletRequest request) {
@@ -64,11 +67,10 @@ public class PcPublicInfoController {
             String e_longitude = "".equals(breakoutObject.get("longitude").toString()) ? "-256.18" : breakoutObject.get("longitude").toString();
             String e_latitude = "".equals(breakoutObject.get("latitude").toString()) ? "-256.18" : breakoutObject.get("latitude").toString();
             if (!s_longitude.equals("-256.18") && !s_latitude.equals("-256.18") && !e_longitude.equals("-256.18") && !e_latitude.equals("-256.18")) {
-                //计算距离和价格
-                double distance = RangeUtils.getDistance(Double.parseDouble(s_latitude), Double.parseDouble(s_longitude), Double.parseDouble(e_latitude), Double.parseDouble(e_longitude));
-                String origin_location = s_latitude + "," + s_longitude;
-                String destination_location = e_latitude + "," + e_longitude;
-                price = PriceUtil.getOwnerPrice(origin_location, destination_location, distance);
+                //计算价格
+                String origin_location = s_longitude + "," + s_latitude;
+                String destination_location = e_longitude + "," + e_latitude;
+                price = PriceUtil.getOwnerPrice(origin_location, destination_location);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,7 +80,15 @@ public class PcPublicInfoController {
         boolean is_success = laiHuiDB.createDeriverCarList(mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price);
         if (is_success) {
             json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
-            SendSMSUtil.sendSMSToPc(mobile);
+            String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
+            List<User> userList = laiHuiDB.getUsersByMobile(where);
+            if (userList.size() > 0){
+                JSONObject activity = new JSONObject();
+                notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
+                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
+            }else {
+                SendSMSUtil.sendSMSToPc(mobile);
+            }
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         } else {
             json = JsonUtils.returnFailJsonString(result, "发布失败！");
@@ -124,11 +134,10 @@ public class PcPublicInfoController {
             String e_longitude = "".equals(breakoutObject.get("longitude").toString()) ? "-256.18" : breakoutObject.get("longitude").toString();
             String e_latitude = "".equals(breakoutObject.get("latitude").toString()) ? "-256.18" : breakoutObject.get("latitude").toString();
             if (!s_longitude.equals("-256.18") && !s_latitude.equals("-256.18") && !e_longitude.equals("-256.18") && !e_latitude.equals("-256.18")) {
-                //计算距离和价格
-                double distance = RangeUtils.getDistance(Double.parseDouble(s_latitude), Double.parseDouble(s_longitude), Double.parseDouble(e_latitude), Double.parseDouble(e_longitude));
-                String origin_location = s_latitude + "," + s_longitude;
-                String destination_location = e_latitude + "," + e_longitude;
-                price = PriceUtil.getPessengerPrice(origin_location, destination_location, distance, booking_seats);
+                //计算价格
+                String origin_location = s_longitude + "," + s_latitude;
+                String destination_location = e_longitude + "," + e_latitude;
+                price = PriceUtil.getPessengerPrice(origin_location, destination_location, booking_seats);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +147,15 @@ public class PcPublicInfoController {
         boolean is_success = laiHuiDB.createPassengerCarList(mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price);
         if (is_success) {
             json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
-            SendSMSUtil.sendSMSToPc(mobile);
+            String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
+            List<User> userList = laiHuiDB.getUsersByMobile(where);
+            if (userList.size() > 0){
+                JSONObject activity = new JSONObject();
+                notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
+                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
+            }else {
+                SendSMSUtil.sendSMSToPc(mobile);
+            }
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         } else {
             json = JsonUtils.returnFailJsonString(result, "发布失败！");

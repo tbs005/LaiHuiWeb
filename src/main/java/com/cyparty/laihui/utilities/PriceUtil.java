@@ -17,7 +17,7 @@ public class PriceUtil {
     /**
      * 获取车主价格
      */
-    public static double getOwnerPrice(String origin_location, String destination_location, double distance) {
+    public static double getOwnerPrice(String origin_location, String destination_location) {
         double price = 0.0;
         String result = "";
         URL file_url = null;
@@ -36,6 +36,8 @@ public class PriceUtil {
         JSONObject dataObject = JSONObject.parseObject(result);
         JSONArray dataArray = dataObject.getJSONArray("results");
         if (dataArray.size() > 0) {
+            JSONObject nowObject = dataArray.getJSONObject(0);
+            int distance = nowObject.getIntValue("distance");
             if (distance <= 200000)
                 price = distance * 3.5 / 10000f;
             else
@@ -47,7 +49,7 @@ public class PriceUtil {
     /**
      * 获取乘客价格
      */
-    public static double getPessengerPrice(String origin_location, String destination_location, double distance, int person) {
+    public static double getPessengerPrice(String origin_location, String destination_location, int person) {
         String result = "";
         URL file_url = null;
         try {
@@ -62,12 +64,20 @@ public class PriceUtil {
         } catch (Exception e) {
             //System.out.println(e.getMessage());
         }
-        double start_price = 0;
-        double price = distance * 3.3 / 10000f;
-        if (distance <= 200000) {
-            start_price = 10.0;
+        JSONObject dataObject = JSONObject.parseObject(result);
+        JSONArray dataArray = dataObject.getJSONArray("results");
+        if (dataArray.size() > 0) {
+            JSONObject nowObject = dataArray.getJSONObject(0);
+            int distance = nowObject.getIntValue("distance");
+            double start_price = 0;
+            double price = distance * 3.3 / 10000f;
+            if (distance <= 200000) {
+                start_price = 10.0;
+            }
+            double last_price = start_price + price * person;
+            return new BigDecimal(last_price).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        }else {
+            return 0.0;
         }
-        double last_price = start_price + price * person;
-        return new BigDecimal(last_price).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }
