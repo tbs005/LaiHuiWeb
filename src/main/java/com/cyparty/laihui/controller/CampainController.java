@@ -3,6 +3,8 @@ package com.cyparty.laihui.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.domain.Carousel;
+import com.cyparty.laihui.domain.Manager;
+import com.cyparty.laihui.utilities.ConfigUtils;
 import com.cyparty.laihui.utilities.OssUtil;
 import com.cyparty.laihui.utilities.ReturnJsonUtil;
 import com.cyparty.laihui.utilities.Utils;
@@ -32,6 +34,10 @@ public class CampainController {
     public String index(Model model,HttpServletRequest request){
         is_logined= Utils.isLogined(request);
         if(is_logined){
+            Manager user = (Manager)request.getSession().getAttribute("manager");
+            if (ConfigUtils.SUB_ADMIN.equals(user.getMobile())){
+                return "redirect:/db/login";
+            }
             return "campaign_76";
         }else {
             model.asMap().clear();

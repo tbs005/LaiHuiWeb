@@ -2,6 +2,8 @@ package com.cyparty.laihui.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
+import com.cyparty.laihui.domain.Manager;
+import com.cyparty.laihui.utilities.ConfigUtils;
 import com.cyparty.laihui.utilities.ReturnJsonUtil;
 import com.cyparty.laihui.utilities.Utils;
 import com.cyparty.laihui.utilities.WXUtils;
@@ -47,6 +49,10 @@ public class IndexController {
     public String db_cumulate(Model model, HttpServletRequest request) {
         is_logined=Utils.isLogined(request);
         if(is_logined){
+            Manager user = (Manager)request.getSession().getAttribute("manager");
+            if (ConfigUtils.SUB_ADMIN.equals(user.getMobile())){
+                return "redirect:/db/login";
+            }
             return "db_cumulate";
         }else {
             model.asMap().clear();

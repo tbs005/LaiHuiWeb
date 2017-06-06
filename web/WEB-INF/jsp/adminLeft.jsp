@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.cyparty.laihui.utilities.ConfigUtils" %><%--
   Created by IntelliJ IDEA.
   User: super
   Date: 2016/3/23
@@ -48,18 +48,18 @@
                 <span>实名认证</span>
             </div>
             <ul class="menu_context_ul">
-                <%--<li class="menu_context_li db_validate_manager">--%>
+                    <%--<li class="menu_context_li db_validate_manager">--%>
                     <%--<a href="/db/validate/manager">认证审核员</a>--%>
-                <%--</li>--%>
+                    <%--</li>--%>
                 <li class="menu_context_li db_validate_driver_list">
                     <a href="/db/validate/driver_list">车主认证</a>
                 </li>
-                    <li class="menu_context_li db_validate_passenger_list">
-                        <a href="/db/validate/passenger_list">乘客认证</a>
-                    </li>
-                    <li class="menu_context_li db_driver_check">
-                        <a href="/db/driver/check">认证审核</a>
-                    </li>
+                <li class="menu_context_li db_validate_passenger_list">
+                    <a href="/db/validate/passenger_list">乘客认证</a>
+                </li>
+                <li class="menu_context_li db_driver_check">
+                    <a href="/db/driver/check">认证审核</a>
+                </li>
             </ul>
         </div>
     </c:if>
@@ -74,57 +74,60 @@
                 <a href="/db/departure_list">发车信息</a>
             </li>
             <%--<li class="menu_context_li car_owner_departure_list">--%>
-                <%--<a href="/db/car_owner/departure_list">微信车主发车信息</a>--%>
+            <%--<a href="/db/car_owner/departure_list">微信车主发车信息</a>--%>
             <%--</li>--%>
             <%--<li class="menu_context_li app_driver_departure_count">--%>
-                <%--<a href="/db/app_driver/departure_count">APP车主发车信息</a>--%>
+            <%--<a href="/db/app_driver/departure_count">APP车主发车信息</a>--%>
             <%--</li>--%>
             <%--<li class="menu_context_li car_owner_base_list">--%>
-                <%--<a href="/db/car_owner/base_list">车主信息统计</a>--%>
+            <%--<a href="/db/car_owner/base_list">车主信息统计</a>--%>
             <%--</li>--%>
             <c:if test="${manager !=null && manager.privilege>=3}">
                 <%--<li class="menu_context_li wx_passenger_departure_list">--%>
-                    <%--<a href="/db/wx_passenger/departure/cumulate">乘客发布信息</a>--%>
+                <%--<a href="/db/wx_passenger/departure/cumulate">乘客发布信息</a>--%>
                 <%--</li>--%>
                 <%--<li class="menu_context_li wx_passenger_list">--%>
-                    <%--<a href="/db/wx_passenger/cumulate">乘客信息统计</a>--%>
+                <%--<a href="/db/wx_passenger/cumulate">乘客信息统计</a>--%>
                 <%--</li>--%>
                 <%--<li class="menu_context_li passenger_booking_orders">--%>
-                    <%--<a href="/wx/db/passenger_orders">乘客预约信息</a>--%>
+                <%--<a href="/wx/db/passenger_orders">乘客预约信息</a>--%>
                 <%--</li>--%>
                 <%--<li class="menu_context_li db_wx_binding_users">--%>
-                    <%--<a href="/db/wx_user/cumulate/users">微信用户统计</a>--%>
+                <%--<a href="/db/wx_user/cumulate/users">微信用户统计</a>--%>
                 <%--</li>--%>
 
                 <%--<li class="menu_context_li db_editor_cumulate">--%>
-                    <%--<a href="/db/editor/cumulate">编辑人员信息统计</a>--%>
+                <%--<a href="/db/editor/cumulate">编辑人员信息统计</a>--%>
                 <%--</li>--%>
             </c:if>
         </ul>
     </div>
-    <div class="menu_context">
-        <div class="menu_context_tittle">
-            <img src="/resource/images/pc_icon_menu_WX.png" alt="">
-            <span>公众号</span>
+    <c:if test="${manager.mobile != ConfigUtils.SUB_ADMIN}">
+        <div class="menu_context">
+            <div class="menu_context_tittle">
+                <img src="/resource/images/pc_icon_menu_WX.png" alt="">
+                <span>公众号</span>
+            </div>
+            <ul class="menu_context_ul">
+                <li class="menu_context_li db_cumulate">
+                    <a href="/db/pcxxh/cumulate">公众号数据统计</a>
+                </li>
+            </ul>
         </div>
-        <ul class="menu_context_ul">
-            <li class="menu_context_li db_cumulate">
-                <a href="/db/pcxxh/cumulate">公众号数据统计</a>
-            </li>
-        </ul>
-    </div>
+    </c:if>
+
     <%--<c:if test="${manager !=null && manager.privilege==4}">--%>
-        <%--<div class="menu_context">--%>
-            <%--<div class="menu_context_tittle">--%>
-                <%--<img src="/resource/images/pc_icon_menu_app.png" alt="">--%>
-                <%--<span>APP信息管理</span>--%>
-            <%--</div>--%>
-            <%--<ul class="menu_context_ul">--%>
-                <%--<li class="menu_context_li db_passenger_departure_list">--%>
-                    <%--<a href="/db/passenger/departure_list">出行信息</a>--%>
-                <%--</li>--%>
-            <%--</ul>--%>
-        <%--</div>--%>
+    <%--<div class="menu_context">--%>
+    <%--<div class="menu_context_tittle">--%>
+    <%--<img src="/resource/images/pc_icon_menu_app.png" alt="">--%>
+    <%--<span>APP信息管理</span>--%>
+    <%--</div>--%>
+    <%--<ul class="menu_context_ul">--%>
+    <%--<li class="menu_context_li db_passenger_departure_list">--%>
+    <%--<a href="/db/passenger/departure_list">出行信息</a>--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
     <%--</c:if>--%>
 
 
@@ -138,7 +141,7 @@
                 <a href="/laihui/car/list">乘客订单信息</a>
             </li>
             <%--<li class="menu_context_li pay_passenger_orders">--%>
-                <%--<a href="/db/pay/p_orders">乘客流水信息</a>--%>
+            <%--<a href="/db/pay/p_orders">乘客流水信息</a>--%>
             <%--</li>--%>
         </ul>
     </div>
@@ -148,9 +151,7 @@
             <span>广告与活动</span>
         </div>
         <ul class="menu_context_ul">
-            <li class="menu_context_li partner_list">
-                <a href="/db/partner">商户图标设置</a>
-            </li>
+
             <li class="menu_context_li carousel_list">
                 <a href="/db/carousel">轮播图设置</a>
             </li>
@@ -163,29 +164,30 @@
             <li class="menu_context_li splash_screen">
                 <a href="/db/splash_screen">闪屏设置</a>
             </li>
-
         </ul>
     </div>
-    <div class="menu_context">
-        <div class="menu_context_tittle">
-            <img src="/resource/images/pc_icon_menu_cash.png" alt="">
-            <span>资金管理</span>
+    <c:if test="${manager.mobile != ConfigUtils.SUB_ADMIN}">
+        <div class="menu_context">
+            <div class="menu_context_tittle">
+                <img src="/resource/images/pc_icon_menu_cash.png" alt="">
+                <span>资金管理</span>
+            </div>
+            <ul class="menu_context_ul">
+                <li class="menu_context_li pay_application">
+                    <a href="/pay/application">用户提现</a>
+                </li>
+                <li class="menu_context_li pay_list">
+                    <a href="/pay/list">拼车资金</a>
+                </li>
+                <li class="menu_context_li pay_back">
+                    <a href="/pay/back">用户退款</a>
+                </li>
+                <li class="menu_context_li campaign_76">
+                    <a href="/db/campaign/76">76人</a>
+                </li>
+            </ul>
         </div>
-        <ul class="menu_context_ul">
-            <li class="menu_context_li pay_application">
-                <a href="/pay/application">用户提现</a>
-            </li>
-            <li class="menu_context_li pay_list">
-                <a href="/pay/list">拼车资金</a>
-            </li>
-            <li class="menu_context_li pay_back">
-                <a href="/pay/back">用户退款</a>
-            </li>
-            <li class="menu_context_li campaign_76">
-                <a href="/db/campaign/76">76人</a>
-            </li>
-        </ul>
-    </div>
+    </c:if>
     <c:if test="${manager !=null && manager.privilege<=4}">
         <div class="menu_context">
             <div class="menu_context_tittle">
@@ -217,17 +219,19 @@
             </ul>
         </div>
     </c:if>
-    <div class="menu_context">
-        <div class="menu_context_tittle">
-            <img src="/resource/images/pc_icon_menu_content.png" alt="">
-            <span>录入车单</span>
+    <c:if test="${manager.mobile != ConfigUtils.SUB_ADMIN}">
+        <div class="menu_context">
+            <div class="menu_context_tittle">
+                <img src="/resource/images/pc_icon_menu_content.png" alt="">
+                <span>录入车单</span>
+            </div>
+            <ul class="menu_context_ul">
+                <li class="menu_context_li order_editor">
+                    <a href="/db/car/editor">车单编辑</a>
+                </li>
+            </ul>
         </div>
-        <ul class="menu_context_ul">
-            <li class="menu_context_li order_editor">
-                <a href="/db/car/editor">车单编辑</a>
-            </li>
-        </ul>
-    </div>
+    </c:if>
     <c:if test="${manager !=null && manager.privilege>=4}">
         <div class="menu_context">
             <div class="menu_context_tittle">
@@ -252,18 +256,6 @@
         <ul class="menu_context_ul">
             <li class="menu_context_li user_suggestion">
                 <a href="/db/user_suggestion">用户反馈</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="menu_context">
-        <div class="menu_context_tittle">
-            <img src="/resource/images/pc_icon_menu_agent.png" alt="">
-            <span>资讯管理</span>
-        </div>
-        <ul class="menu_context_ul">
-            <li class="menu_context_li db_manage_agent">
-                <a href="/db/advisory/manage">资讯管理</a>
             </li>
         </ul>
     </div>

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.domain.ErrorCode;
 import com.cyparty.laihui.domain.Manager;
+import com.cyparty.laihui.utilities.ConfigUtils;
 import com.cyparty.laihui.utilities.OssUtil;
 import com.cyparty.laihui.utilities.ReturnJsonUtil;
 import com.cyparty.laihui.utilities.Utils;
@@ -32,10 +33,12 @@ public class PayController {
     OssUtil ossUtil;
     @RequestMapping("/pay/list")
     public String pay_list(HttpServletRequest request,Model model){
-
         is_logined=Utils.isLogined(request);
         if(is_logined){
-            Manager manager=(Manager)request.getSession().getAttribute("manager");
+            Manager manager = (Manager)request.getSession().getAttribute("manager");
+            if (ConfigUtils.SUB_ADMIN.equals(manager.getMobile())){
+                return "redirect:/db/login";
+            }
             if(manager.getPrivilege()>1){
                 return "pay_list";
             }else {
@@ -68,7 +71,10 @@ public class PayController {
     public String pay_application(Model model,HttpServletRequest request){
         is_logined=Utils.isLogined(request);
         if(is_logined){
-            Manager manager=(Manager)request.getSession().getAttribute("manager");
+            Manager manager = (Manager)request.getSession().getAttribute("manager");
+            if (ConfigUtils.SUB_ADMIN.equals(manager.getMobile())){
+                return "redirect:/db/login";
+            }
             if(manager.getPrivilege()>1){
                 return "pay_application";
             }else {
@@ -84,7 +90,10 @@ public class PayController {
     public String pay_back(Model model,HttpServletRequest request){
         is_logined=Utils.isLogined(request);
         if(is_logined){
-            Manager manager=(Manager)request.getSession().getAttribute("manager");
+            Manager manager = (Manager)request.getSession().getAttribute("manager");
+            if (ConfigUtils.SUB_ADMIN.equals(manager.getMobile())){
+                return "redirect:/db/login";
+            }
             if(manager.getPrivilege()>1){
                 return "pay_back";
             }else {

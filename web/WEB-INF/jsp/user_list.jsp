@@ -432,6 +432,7 @@
       var idsn=global_data.data[i].idsn;//身份证号
       var is_validated_car=global_data.data[i].is_validated_car;//是否通过车主认证
       var mobile=global_data.data[i].mobile;//手机号
+        // phone.substr(0, 3) + '****' + phone.substr(7);
       var name=global_data.data[i].name;//名字
       var id=global_data.data[i].id;//id
       var last_logined_time=global_data.data[i].last_logined_time;//最后登录时间
@@ -444,10 +445,10 @@
     $(".userManage_container_ul").append('<li class="user_manage_container_li" user_id='+id+' is_validated_car='+is_validated_car+' is_validated_passenger='+is_validated_passenger+' onmouseleave="hideDeleteTip(this)">' +
             '<span class="userManage_span ">'+name+'</span>' +
             '<span class="userManage_span ">'+idsn+'</span>' +
-            '<span class="userManage_span ">'+mobile+'</span>' +
+            '<span class="userManage_span ">'+mobile.substr(0, 3) + '****' + mobile.substr(7)+'</span>' +
             '<span class="userManage_span">'+create_time+'</span>' +
             '<span class="userManage_span">'+last_logined_time+'</span>' +
-            '<span class="userManage_span">'+last_login_ip+'</span>' +
+            '<span class="userManage_span">'+last_login_ip.substr(0, last_login_ip.indexOf(".")+1) + '****' + last_login_ip.substr(last_login_ip.lastIndexOf("."))+'</span>' +
             '<div class="user_list_checklist_del_active" onclick="showDeleteTip(this)"></div>' +
             '<div class="user_list_select_delete_tip all_tip">'+
             '<div class="detailAll_tip_txt">'+

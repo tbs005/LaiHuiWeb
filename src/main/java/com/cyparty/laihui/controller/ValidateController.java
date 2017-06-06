@@ -51,7 +51,7 @@ public class ValidateController {
      *
      */
     @RequestMapping("/db/validate/manager")
-     public String db_validate(Model model,HttpServletRequest request){
+    public String db_validate(Model model,HttpServletRequest request){
         is_logined=Utils.isLogined(request);
 
         if(is_logined){
@@ -137,7 +137,7 @@ public class ValidateController {
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
     }
-//    车主认证链接页面
+    //    车主认证链接页面
     @RequestMapping("/db/validate/driver_list")
     public String db_driver_list(Model model,HttpServletRequest request){
         is_logined=Utils.isLogined(request);
@@ -148,7 +148,7 @@ public class ValidateController {
             return "redirect:/db/login";
         }
     }
-//    乘客认证链接页面
+    //    乘客认证链接页面
     @RequestMapping("/db/validate/passenger_list")
     public String db_validate_list(Model model,HttpServletRequest request){
         is_logined=Utils.isLogined(request);
@@ -401,9 +401,12 @@ public class ValidateController {
     public String db_car_single_editor(Model model,HttpServletRequest request){
         is_logined=Utils.isLogined(request);
         if(is_logined){
+            Manager user = (Manager)request.getSession().getAttribute("manager");
+            if (ConfigUtils.SUB_ADMIN.equals(user.getMobile())){
+                return "redirect:/db/login";
+            }
             return "db_car_single_editor";
         }else {
-
             model.asMap().clear();
             return "redirect:/db/login";
         }
