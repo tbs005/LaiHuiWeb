@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.domain.Carousel;
-import com.cyparty.laihui.utilities.OssUtil;
-import com.cyparty.laihui.utilities.ReturnJsonUtil;
-import com.cyparty.laihui.utilities.Utils;
-import com.cyparty.laihui.utilities.WXUtils;
+import com.cyparty.laihui.domain.Partner;
+import com.cyparty.laihui.utilities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +29,9 @@ public class CarouselController {
     LaiHuiDB laiHuiDB;
     @Autowired
     OssUtil ossUtil;
+    @Autowired
+    OssConfigure ossConfigure;
+
     @RequestMapping("/db/carousel")
     public String index(Model model,HttpServletRequest request){
         is_logined= Utils.isLogined(request);
@@ -41,6 +42,17 @@ public class CarouselController {
             return "redirect:/db/login";
         }
     }
+    @RequestMapping("/db/partner")
+    public String partner(Model model,HttpServletRequest request){
+        is_logined= Utils.isLogined(request);
+        if(is_logined){
+            return "partner_list";
+        }else {
+            model.asMap().clear();
+            return "redirect:/db/login";
+        }
+    }
+
     @RequestMapping("/db/pop_up_ad")
     public String pop_up_ad(Model model,HttpServletRequest request){
         is_logined= Utils.isLogined(request);
@@ -142,7 +154,7 @@ public class CarouselController {
                                 String image_oss = arr[arr.length - 1];
                                 try {
                                     if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                        image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
+                                        image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
                                         carousel.setImage_url(image_oss);
                                     }
                                 } catch (Exception e) {
@@ -176,7 +188,7 @@ public class CarouselController {
                                 String image_oss = arr[arr.length - 1];
                                 try {
                                     if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                        image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
+                                        image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
                                         carousel.setImage_url(image_oss);
                                     }
                                 } catch (Exception e) {
@@ -312,7 +324,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
@@ -345,7 +357,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
@@ -480,7 +492,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
@@ -512,7 +524,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
@@ -587,6 +599,12 @@ public class CarouselController {
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
         }
     }
+
+    /**
+     * 闪屏管理
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/api/splash_screen/manage", method = RequestMethod.POST)
     public ResponseEntity<String> splash_screen(HttpServletRequest request) {
@@ -647,7 +665,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
@@ -679,7 +697,7 @@ public class CarouselController {
                             String image_oss = arr[arr.length - 1];
                             try {
                                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                                    image_oss = "https://laihuipincheoss.oss-cn-qingdao.aliyuncs.com/" + image_oss;
+                                    image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
                                     carousel.setImage_url(image_oss);
                                 }
                             } catch (Exception e) {
@@ -753,5 +771,150 @@ public class CarouselController {
             json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
         }
+    }
+    /**
+     * 合作商家管理
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/api/partner/manage", method = RequestMethod.POST)
+    public ResponseEntity<String> partner(HttpServletRequest request) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        JSONObject result = new JSONObject();
+        String json = "";
+        try {
+            String action = request.getParameter("action");
+            boolean is_success = false;
+            boolean is_true = false;
+            int page = 0;
+            int size = 10;
+            if (request.getParameter("page") != null && !request.getParameter("page").trim().equals("")) {
+                try {
+                    page = Integer.parseInt(request.getParameter("page"));
+                } catch (NumberFormatException e) {
+                    page = 0;
+                    e.printStackTrace();
+                }
+            }
+            if (request.getParameter("size") != null && !request.getParameter("size").trim().equals("")) {
+                try {
+                    size = Integer.parseInt(request.getParameter("size"));
+                } catch (NumberFormatException e) {
+                    size = 10;
+                    e.printStackTrace();
+                }
+            }
+            switch (action) {
+                case "add":
+                    String partner_icon = request.getParameter("partnerIcon");
+                    String partner_url = request.getParameter("partnerUrl");
+
+                    Partner partner = new Partner();
+                    partner.setIsEnable(1);
+                    partner.setPartnerIcon(partner_icon);
+                    partner.setPartnerUrl(partner_url);
+
+                    //判断是更新还是创建
+                    String partner_id = request.getParameter("id");
+                    int id = 0;
+                    if (partner_id != null && !partner_id.trim().equals("")) {
+                        id = Integer.parseInt(partner_id);
+                    }
+                    if (id > 0) {
+                        //更新
+                        String filePath = Utils.fileImgUpload("img", request);
+                        if (filePath != null && !filePath.trim().equals("")) {
+                            String image_local = filePath.substring(filePath.indexOf("upload"));
+                            String arr[] = image_local.split("\\\\");
+                            String image_oss = arr[arr.length - 1];
+                            try {
+                                if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
+                                    image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
+                                    partner.setPartnerIconUrl(image_oss);
+                                }
+                            } catch (Exception e) {
+                                image_oss = null;
+                                partner.setPartnerIconUrl(image_oss);
+                            }
+                        } else {
+                            partner.setPartnerIconUrl(null);
+                        }
+                        String update_where = "";
+                        if (partner.getPartnerIconUrl() != null) {
+                            //update
+                            update_where = " set partner_icon='" + partner_icon + "',Partner_icon_url='" + partner.getPartnerIconUrl() + "',Partner_url='" + partner_url+ "' where _id="+id;
+                        } else {
+                            update_where = " set partner_icon='" + partner_icon + "',Partner_url='" + partner_url+  "' where _id="+id;
+                        }
+                        is_success = laiHuiDB.update("pc_partner", update_where);
+                        if (is_success) {
+                            json = ReturnJsonUtil.returnSuccessJsonString(result, "修改成功！");
+                            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                        }
+                    } else {
+                        //新建
+                        String filePath = Utils.fileImgUpload("img", request);
+                        if (filePath != null && !filePath.trim().equals("")) {
+                            String image_local = filePath.substring(filePath.indexOf("upload"));
+                            String arr[] = image_local.split("\\\\");
+                            String image_oss = arr[arr.length - 1];
+                            try {
+                                if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
+                                    image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
+                                    partner.setPartnerIconUrl(image_oss);
+                                }
+                            } catch (Exception e) {
+                                image_oss = null;
+                                partner.setPartnerIconUrl(image_oss);
+                            }
+                        } else {
+                            partner.setPartnerIconUrl(null);
+                        }
+                        is_success = laiHuiDB.createPartner(partner);
+
+
+                        if (is_success) {
+                            json = ReturnJsonUtil.returnSuccessJsonString(result, "创建成功！");
+                            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                        }
+                    }
+                    json = ReturnJsonUtil.returnFailJsonString(result, "创建失败！");
+                    return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                case "show":
+                    if (request.getParameter("id") != null && !request.getParameter("id").isEmpty()) {
+                        id = Integer.parseInt(request.getParameter("id"));
+                    } else {
+                        id = 0;
+                    }
+                    json = ReturnJsonUtil.returnSuccessJsonString(ReturnJsonUtil.getPartnerJson(laiHuiDB, page, size, id), "数据获取成功");
+                    return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+
+                case "delete":
+                    if (request.getParameter("id") != null && !request.getParameter("id").isEmpty()) {
+                        id = Integer.parseInt(request.getParameter("id"));
+                    } else {
+                        id = 0;
+                    }
+                    String delete_sql = " set is_enable = 0 where _id=" + id;
+                    is_success = laiHuiDB.update("pc_partner", delete_sql);
+                    if (is_success) {
+                        json = ReturnJsonUtil.returnSuccessJsonString(result, "删除成功！");
+                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                    } else {
+                        json = ReturnJsonUtil.returnFailJsonString(result, "删除失败！");
+                        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+                    }
+            }
+                    json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
+                    return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
+            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+        }
+
     }
 }

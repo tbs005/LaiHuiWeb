@@ -687,25 +687,26 @@ public class LaiHuiDB {
     }
 
     //添加pc端车主车单
-    public boolean createDeriverCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int init_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code,int m_id,double price) {
+    public boolean createDeriverCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int init_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code,int m_id,double price,String boarding_longitude,String boarding_latitude,String breakout_longitude,String breakout_latitude,int departure_code,int destination_code) {
         boolean is_success = true;
         int user_id = -Integer.parseInt((new Date().getTime()+"").substring(4,13));
-        String SQL = "insert into pc_driver_publish_info(user_id,mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source,current_seats,m_id,price) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String SQL = "insert into pc_driver_publish_info(user_id,mobile,departure_time,boarding_point,breakout_point,init_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source,current_seats,m_id,price,boarding_longitude,boarding_latitude,breakout_longitude,breakout_latitude,departure_code,destination_code) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            jdbcTemplateObject.update(SQL, new Object[]{user_id, mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, Utils.getCurrentTime(),1,5,init_seats,m_id,price});
+            jdbcTemplateObject.update(SQL, new Object[]{user_id, mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, Utils.getCurrentTime(),1,5,init_seats,m_id,price,boarding_longitude,boarding_latitude,breakout_longitude,breakout_latitude,departure_code,destination_code});
         } catch (Exception e) {
+            e.printStackTrace();
             is_success = false;
         }
         return is_success;
 
     }
 
-    //添加pc端车主车单
-    public boolean createPassengerCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int booking_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code, int m_id,double price) {
+    //添加pc端乘客车单
+    public boolean createPassengerCarList(String mobile, String departure_time, String boarding_point, String breakout_point, int booking_seats, String remark, int departure_address_code, int departure_city_code, int destination_address_code, int destination_city_code, int m_id,double price,String boarding_longitude,String boarding_latitude,String breakout_longitude,String breakout_latitude,int departure_code,int destination_code) {
         boolean is_success = true;
-        String SQL = "insert into pc_passenger_publish_info(user_id,trade_no,departure_time,boarding_point,breakout_point,booking_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source,m_id,price) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String SQL = "insert into pc_passenger_publish_info(user_id,trade_no,departure_time,boarding_point,breakout_point,booking_seats,remark,departure_address_code,departure_city_code,destination_address_code,destination_city_code,create_time,is_enable,source,m_id,price,boarding_longitude,boarding_latitude,breakout_longitude,breakout_latitude,departure_code,destination_code) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            jdbcTemplateObject.update(SQL, new Object[]{-5, mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, Utils.getCurrentTime(),1,5,m_id,price});
+            jdbcTemplateObject.update(SQL, new Object[]{-5, mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, Utils.getCurrentTime(),1,5,m_id,price,boarding_longitude,boarding_latitude,breakout_longitude,breakout_latitude,departure_code,destination_code});
         } catch (Exception e) {
             is_success = false;
         }
@@ -763,6 +764,41 @@ public class LaiHuiDB {
         String SQL="select * from pc_user "+where;
         List<User> users = jdbcTemplateObject.query(SQL,new UserMapper());
         return users;
+    }
+    //添加合作商户
+    public boolean createPartner(Partner partner) {
+        boolean is_success = true;
+        String SQL = "insert into pc_partner(Partner_icon,Partner_icon_url,Partner_url,create_time) VALUES (?,?,?,?)";
+        int count = jdbcTemplateObject.update(SQL, new Object[]{partner.getPartnerIcon(),partner.getPartnerIconUrl(),partner.getPartnerUrl(),Utils.getCurrentTime()});
+        if (count < 1) {
+            is_success = false;
+        }
+
+        return is_success;
+    }
+
+    //得到合作商家列表
+    public List<Partner> getPartnerList(String where) {
+        String SQL = "SELECT * From pc_partner " + where;
+        List<Partner> partnerList = jdbcTemplateObject.query(SQL, new PartnerMapper());
+        return partnerList;
+    }
+
+    //查询新闻列表
+    public  List<News> selectNewsByPage(String where) {
+        String SQL = "SELECT * From pc_news " + where;
+        List<News> NewsList = jdbcTemplateObject.query(SQL, new NewsMapper());
+        return NewsList;
+    }
+
+    public boolean insert(News news) {
+        boolean is_success = true;
+        String SQL = "insert into pc_news(content,description,title,publisher,create_time,update_time) VALUES (?,?,?,?,?,?)";
+        int count = jdbcTemplateObject.update(SQL, new Object[]{news.getContent(),news.getDescription(),news.getTitle(),news.getPublisher(),Utils.getCurrentTime(),Utils.getCurrentTime()});
+        if (count < 1) {
+            is_success = false;
+        }
+        return is_success;
     }
 }
 

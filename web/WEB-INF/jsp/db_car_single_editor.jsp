@@ -6,7 +6,7 @@
   describtion:后台管理--【个人配置】人员基本信息
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"  %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--头部信息--%>
 
@@ -219,7 +219,7 @@
 
 <%--右侧菜单--%>
 <div class="ui_body">
-    <jsp:include page="adminLeft.jsp" flush="true"></jsp:include>
+   <jsp:include page="adminLeft.jsp" flush="true"></jsp:include>
     <div id="ui_right">
         <div class="right_top">
             <div class="right_top_style">
@@ -243,20 +243,22 @@
                                             /*add.set_init(["2", "110000", "110102"]);//初始值*/
                                         </script>
                                     </li>
+                                    <li><div><span>详细地址</span><input type="text" placeholder="请输入具体地址"  class="beginAddress"></div></li>
                                     <li class="destination">
                                         <script>
                                             var add = new AddressCom04();
                                             /*add.set_init(["2", "110000", "110102"]);//初始值*/
                                         </script>
                                     </li>
+                                    <li><div><span>详细地址</span><input type="text" placeholder="请输入具体地址"  class="breakoutAddress"></div></li>
                                 </ul>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-        <%--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
-        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point"></div>--%>
+      <!--  <div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
+        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point"></div>-->
         <div><span>出发时间</span><input class="datainp departure_time" id="datebut01" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut01',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
         <div><span>几人乘车</span><input type="text" placeholder="请说明有几人乘车" class="booking_seats"></div>
         <div><span>备注</span><input type="text" placeholder="*注：是否有行李" class="remark"></div>
@@ -279,20 +281,22 @@
                                             /*add.set_init(["2", "110000", "110102"]);//初始值*/
                                         </script>
                                     </li>
+                                    <li><div><span>详细地址</span><input type="text" placeholder="请输入具体地址" class="beginAddress1"></div></li>
                                     <li class="destination">
                                         <script>
                                             var add = new AddressCom01();
                                             /*add.set_init(["2", "110000", "110102"]);//初始值*/
                                         </script>
                                     </li>
+                                    <li><div><span>详细地址</span><input type="text" placeholder="请输入具体地址" class="breakoutAddress1"></div></li>
                                 </ul>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-        <%--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point1"></div>
-        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point1"></div>--%>
+        <!--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point1"></div>
+        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point1">-->
         <div><span>出发时间</span><input class="datainp departure_time1" id="datebut02" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut02',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
         <div><span>几个座位</span><input type="text" placeholder="请说明邀请几人乘车" class="init_seats"></div>
         <div><span>备注</span><input type="text" placeholder="*注：乘客是否可以携带行李或宠物。" class="remark1"></div>
@@ -349,10 +353,20 @@ var map = new AMap.Map("mapContainer", {
     });
 
     $('#btn_passenger').click(function(){
+        $('#btn_passenger').css('background','#ddd');
+        var boarding_point;
+        var breakout_point;
+        if( $('.beginAddress').val() !==null){
+            boarding_point = $(".boarding_point").val()+$('.beginAddress').val();
+        }else{
+            boarding_point = $(".boarding_point").val();
+        }
 
-        var boarding_point = $(".boarding_point").val();
-        var breakout_point = $(".breakout_point").val();
-
+        if($('.breakoutAddress').val() !==null){
+            breakout_point = $(".breakout_point").val()+$('.breakoutAddress').val();
+        }else{
+            breakout_point = $(".breakout_point").val();
+        }
     var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
         pageSize: 5,
         pageIndex: 1,
@@ -375,7 +389,7 @@ var map = new AMap.Map("mapContainer", {
         obj.latitude=data.location.lat;
         objstr = JSON.stringify(obj);
         aa = objstr;
-        console.log(aa);
+        console.log(obj);
     });
 
     var placeSearch1 = new AMap.PlaceSearch({ //构造地点查询类
@@ -400,7 +414,7 @@ var map = new AMap.Map("mapContainer", {
         obj.latitude=data.location.lat;
         objstr1 = JSON.stringify(obj);
         bb = objstr1;
-        console.log(bb);
+        console.log(obj);
     });
 
     setTimeout(function () {
@@ -439,9 +453,20 @@ var map = new AMap.Map("mapContainer", {
 
 
     $('#btn_driver').click(function(){
+        $('#btn_driver').css('background','#ddd');
+         var boarding_point;
+        var breakout_point;
+        if( $('.beginAddress1').val() !==null){
+            boarding_point = $(".boarding_point").val()+$('.beginAddress1').val();
+        }else{
+            boarding_point = $(".boarding_point").val();
+        }
 
-        var boarding_point = $(".boarding_point1").val();
-        var breakout_point = $(".breakout_point1").val();
+        if($('.breakoutAddress1').val() !==null){
+            breakout_point = $(".breakout_point").val()+$('.breakoutAddress1').val();
+        }else{
+            breakout_point = $(".breakout_point").val();
+        }
 
         var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
             pageSize: 5,
@@ -465,7 +490,7 @@ var map = new AMap.Map("mapContainer", {
             obj.latitude=data.location.lat;
             objstr = JSON.stringify(obj);
             aa = objstr;
-            console.log(aa);
+            console.log(obj);
         });
 
         var placeSearch1 = new AMap.PlaceSearch({ //构造地点查询类
@@ -490,7 +515,7 @@ var map = new AMap.Map("mapContainer", {
             obj.latitude=data.location.lat;
             objstr1 = JSON.stringify(obj);
             bb = objstr1;
-            console.log(bb);
+            console.log(obj);
         });
 
         setTimeout(function () {

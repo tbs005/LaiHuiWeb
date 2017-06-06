@@ -27,9 +27,9 @@
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/dist/css/wangEditor.min.css">
   <script type="text/javascript" src="${pageContext.request.contextPath}/resource/dist/js/wangEditor.min.js"></script>
 
-  <link rel="stylesheet" href="/resource/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/resource/css/bootstrap.min.css">
   <link href="/resource/css/manage_css.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="/resource/css/component.css" />
+  <link rel="stylesheet" type="text/css" href="/resource/css/component.css"/>
   <style type="text/css">
     /*加载动画*/
     .loading_animation {

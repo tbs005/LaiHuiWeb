@@ -148,7 +148,9 @@
             <span>广告与活动</span>
         </div>
         <ul class="menu_context_ul">
-
+            <li class="menu_context_li partner_list">
+                <a href="/db/partner">商户图标设置</a>
+            </li>
             <li class="menu_context_li carousel_list">
                 <a href="/db/carousel">轮播图设置</a>
             </li>
@@ -161,6 +163,7 @@
             <li class="menu_context_li splash_screen">
                 <a href="/db/splash_screen">闪屏设置</a>
             </li>
+
         </ul>
     </div>
     <div class="menu_context">

@@ -403,6 +403,7 @@ public class ValidateController {
         if(is_logined){
             return "db_car_single_editor";
         }else {
+
             model.asMap().clear();
             return "redirect:/db/login";
         }

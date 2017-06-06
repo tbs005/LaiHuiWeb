@@ -1517,4 +1517,34 @@ public class ReturnJsonUtil {
         result_json.put("slides",dataArray);
         return result_json;
     }
+    //得到合作商家json
+    public static JSONObject getPartnerJson(LaiHuiDB laiHuiDB, int page, int size, int id) {
+        JSONObject result_json=new JSONObject();
+        JSONArray dataArray=new JSONArray();
+        //pc_image_create_time DESC,
+        String where = " where is_enable = 1";
+        int offset=page*size;
+        int count=1;
+        if(id==0){
+            count=laiHuiDB.getPartnerList(where).size();
+            where=where+" limit "+offset+","+size;
+        }else {
+            where=" where _id="+id;
+        }
+        List<Partner> partnerList=laiHuiDB.getPartnerList(where);
+        for(Partner partner:partnerList){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("partner_icon",partner.getPartnerIcon());
+            jsonObject.put("partner_icon_url",partner.getPartnerIconUrl());
+            jsonObject.put("partner_url",partner.getPartnerUrl());
+            jsonObject.put("create_time",partner.getCreateTime().substring(0,19));
+            jsonObject.put("id",partner.getId());
+            dataArray.add(jsonObject);
+        }
+        result_json.put("count",count);
+        result_json.put("page",page);
+        result_json.put("size",size);
+        result_json.put("data",dataArray);
+        return result_json;
+    }
 }

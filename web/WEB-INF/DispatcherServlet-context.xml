@@ -65,8 +65,13 @@
     <bean id="ossConfigure" class="com.cyparty.laihui.utilities.OssConfigure">
         <property name="accessKeyId" value="LTAIBylxOP12jqp2"/>
         <property name="accessKeySecret" value="mkjn9cKyGx8mxG0tvMUyO7ceRTIw61"/>
-        <property name="accessUrl" value="laihuipincheoss.oss-cn-qingdao.aliyuncs.com"/>
-        <property name="bucketName" value="laihuipincheoss"/>
+
+        <!--正式-->
+        <!--<property name="accessUrl" value="laihuipincheoss.oss-cn-qingdao.aliyuncs.com/"/>-->
+        <!--<property name="bucketName" value="laihuipincheoss"/>-->
+        <!--测试-->
+        <property name="accessUrl" value="laihuitest.oss-cn-qingdao.aliyuncs.com/"/>
+        <property name="bucketName" value="laihuitest"/>
         <property name="endpoint" value="http://oss-cn-qingdao.aliyuncs.com"/>
     </bean>
     <bean id="ossUtil" class="com.cyparty.laihui.utilities.OssUtil">

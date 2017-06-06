@@ -53,19 +53,27 @@ public class PcPublicInfoController {
         int departure_city_code = 0;
         int destination_address_code = 0;
         int destination_city_code = 0;
+        int departure_code = 0;
+        int destination_code = 0;
+        String s_longitude = "";
+        String s_latitude = "";
+        String e_longitude = "";
+        String e_latitude = "";
         try {
             JSONObject boardingObject = JSONObject.parseObject(boarding_point);
             departure_address_code = boardingObject.getIntValue("adCode");
             departure_city_code = Integer.parseInt((departure_address_code + "").substring(0, 4) + "00");
+            departure_code = Integer.parseInt((departure_address_code + "").substring(0, 4));
             JSONObject breakoutObject = JSONObject.parseObject(breakout_point);
             destination_address_code = breakoutObject.getIntValue("adCode");
             destination_city_code = Integer.parseInt((destination_address_code + "").substring(0, 4) + "00");
+            destination_code = Integer.parseInt((destination_address_code + "").substring(0, 4));
             //起点经纬度
-            String s_longitude = "".equals(boardingObject.get("longitude").toString()) ? "-256.18" : boardingObject.get("longitude").toString();
-            String s_latitude = "".equals(boardingObject.get("latitude").toString()) ? "-256.18" : boardingObject.get("latitude").toString();
+            s_longitude = "".equals(boardingObject.get("longitude").toString()) ? "-256.18" : boardingObject.get("longitude").toString();
+            s_latitude = "".equals(boardingObject.get("latitude").toString()) ? "-256.18" : boardingObject.get("latitude").toString();
             //终点经纬度
-            String e_longitude = "".equals(breakoutObject.get("longitude").toString()) ? "-256.18" : breakoutObject.get("longitude").toString();
-            String e_latitude = "".equals(breakoutObject.get("latitude").toString()) ? "-256.18" : breakoutObject.get("latitude").toString();
+            e_longitude = "".equals(breakoutObject.get("longitude").toString()) ? "-256.18" : breakoutObject.get("longitude").toString();
+            e_latitude = "".equals(breakoutObject.get("latitude").toString()) ? "-256.18" : breakoutObject.get("latitude").toString();
             if (!s_longitude.equals("-256.18") && !s_latitude.equals("-256.18") && !e_longitude.equals("-256.18") && !e_latitude.equals("-256.18")) {
                 //计算价格
                 String origin_location = s_longitude + "," + s_latitude;
@@ -77,15 +85,15 @@ public class PcPublicInfoController {
             json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
-        boolean is_success = laiHuiDB.createDeriverCarList(mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price);
+        boolean is_success = laiHuiDB.createDeriverCarList(mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price,s_longitude,s_latitude,e_longitude,e_latitude,departure_code,destination_code);
         if (is_success) {
             json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
             String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
             List<User> userList = laiHuiDB.getUsersByMobile(where);
             if (userList.size() > 0){
                 JSONObject activity = new JSONObject();
-                notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
-                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
+ //               notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
+//                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
             }else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
@@ -120,19 +128,27 @@ public class PcPublicInfoController {
         int departure_city_code = 0;
         int destination_address_code = 0;
         int destination_city_code = 0;
+        int departure_code = 0;
+        int destination_code = 0;
+        String s_longitude = "";
+        String s_latitude = "";
+        String e_longitude = "";
+        String e_latitude = "";
         try {
             JSONObject boardingObject = JSONObject.parseObject(boarding_point);
             departure_address_code = boardingObject.getIntValue("adCode");
             departure_city_code = Integer.parseInt((departure_address_code + "").substring(0, 4) + "00");
+            departure_code = Integer.parseInt((departure_address_code + "").substring(0, 4));
             JSONObject breakoutObject = JSONObject.parseObject(breakout_point);
             destination_address_code = breakoutObject.getIntValue("adCode");
             destination_city_code = Integer.parseInt((destination_address_code + "").substring(0, 4) + "00");
+            destination_code = Integer.parseInt((destination_address_code + "").substring(0, 4));
             //起点经纬度
-            String s_longitude = "".equals(boardingObject.get("longitude").toString()) ? "-256.18" : boardingObject.get("longitude").toString();
-            String s_latitude = "".equals(boardingObject.get("latitude").toString()) ? "-256.18" : boardingObject.get("latitude").toString();
+            s_longitude = "".equals(boardingObject.get("longitude").toString()) ? "-256.18" : boardingObject.get("longitude").toString();
+            s_latitude = "".equals(boardingObject.get("latitude").toString()) ? "-256.18" : boardingObject.get("latitude").toString();
             //终点经纬度
-            String e_longitude = "".equals(breakoutObject.get("longitude").toString()) ? "-256.18" : breakoutObject.get("longitude").toString();
-            String e_latitude = "".equals(breakoutObject.get("latitude").toString()) ? "-256.18" : breakoutObject.get("latitude").toString();
+            e_longitude = "".equals(breakoutObject.get("longitude").toString()) ? "-256.18" : breakoutObject.get("longitude").toString();
+            e_latitude = "".equals(breakoutObject.get("latitude").toString()) ? "-256.18" : breakoutObject.get("latitude").toString();
             if (!s_longitude.equals("-256.18") && !s_latitude.equals("-256.18") && !e_longitude.equals("-256.18") && !e_latitude.equals("-256.18")) {
                 //计算价格
                 String origin_location = s_longitude + "," + s_latitude;
@@ -144,15 +160,15 @@ public class PcPublicInfoController {
             json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
-        boolean is_success = laiHuiDB.createPassengerCarList(mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price);
+        boolean is_success = laiHuiDB.createPassengerCarList(mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price,s_longitude,s_latitude,e_longitude,e_latitude,departure_code,destination_code);
         if (is_success) {
             json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
             String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
             List<User> userList = laiHuiDB.getUsersByMobile(where);
             if (userList.size() > 0){
                 JSONObject activity = new JSONObject();
-                notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
-                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
+//                notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
+//                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
             }else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
