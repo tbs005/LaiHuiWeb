@@ -13,13 +13,21 @@ public class News {
 
     private String createTime;
 
-    private String deleteTime;
+    private Integer isDel;
 
     private String updateTime;
 
     private String publisher;
 
     private String content;
+
+    public Integer getIsDel() {
+        return isDel;
+    }
+
+    public void setIsDel(Integer isDel) {
+        this.isDel = isDel;
+    }
 
     public Integer getId() {
         return id;
@@ -53,13 +61,6 @@ public class News {
         this.createTime = createTime == null ? null : createTime.trim();
     }
 
-    public String getDeleteTime() {
-        return deleteTime;
-    }
-
-    public void setDeleteTime(String deleteTime) {
-        this.deleteTime = deleteTime == null ? null : deleteTime.trim();
-    }
 
     public String getUpdateTime() {
         return updateTime;

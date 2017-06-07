@@ -18,7 +18,7 @@ public class NewsMapper implements RowMapper<News> {
         news.setDescription(resultSet.getString("description"));
         news.setContent(resultSet.getString("content"));
         news.setCreateTime(resultSet.getString("create_time"));
-        news.setDeleteTime(resultSet.getString("delete_time"));
+        news.setIsDel(resultSet.getInt("isdel"));
         news.setUpdateTime(resultSet.getString("update_time"));
         news.setPublisher(resultSet.getString("publisher"));
         return news;

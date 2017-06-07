@@ -257,7 +257,7 @@
                     </div>
                 </div>
             </div>
-      <!--  <div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
+      <!-- <div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
         <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point"></div>-->
         <div><span>出发时间</span><input class="datainp departure_time" id="datebut01" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut01',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
         <div><span>几人乘车</span><input type="text" placeholder="请说明有几人乘车" class="booking_seats"></div>
@@ -296,7 +296,7 @@
                 </div>
             </div>
         <!--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point1"></div>
-        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point1">-->
+        <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point1"></div>%>-->
         <div><span>出发时间</span><input class="datainp departure_time1" id="datebut02" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut02',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
         <div><span>几个座位</span><input type="text" placeholder="请说明邀请几人乘车" class="init_seats"></div>
         <div><span>备注</span><input type="text" placeholder="*注：乘客是否可以携带行李或宠物。" class="remark1"></div>
@@ -353,7 +353,8 @@ var map = new AMap.Map("mapContainer", {
     });
 
     $('#btn_passenger').click(function(){
-        $('#btn_passenger').css('background','#ddd');
+        $('#btn_passenger').attr("disabled","disabled");
+        $('#btn_passenger').css("background-color","#dec4c4");
         var boarding_point;
         var breakout_point;
         if( $('.beginAddress').val() !==null){
@@ -377,6 +378,10 @@ var map = new AMap.Map("mapContainer", {
     var aa;
     placeSearch.search(boarding_point, function(status, result) {
         var data=result.poiList.pois[0];
+        if(typeof(data) == 'undefined'){
+            alert("定位失败，请检查！");
+            return;
+        }
         var obj={};
         obj.adCode=data.adcode;
         obj.cityCode=data.citycode;
@@ -402,6 +407,10 @@ var map = new AMap.Map("mapContainer", {
     var bb;
     placeSearch1.search(breakout_point, function(status, result) {
         var data=result.poiList.pois[0];
+        if(typeof(data) == 'undefined'){
+            alert("定位失败，请检查！");
+            return;
+        }
         var obj={};
         obj.adCode=data.adcode;
         obj.cityCode=data.citycode;
@@ -426,7 +435,37 @@ var map = new AMap.Map("mapContainer", {
         var re = /^1[3456789]\d{9}$/;
         if(!re.test(mobile)){
             alert("手机号输入有误！");
+             $('.mobile').val('');
+            $("#btn_passenger").removeAttr("disabled");//要变成Enable，JQuery只能这么写
+            $('#btn_passenger').css("background-color","#FF8F0c");
+            return;
         }else{
+
+             if(!aa){
+                alert('请输入起点');
+                 $("#btn_passenger").removeAttr("disabled");//要变成Enable，JQuery只能这么写
+                 $('#btn_passenger').css("background-color","#FF8F0c");
+                return;
+            }
+            if(!bb){
+                alert('请输入终点');
+                $("#btn_passenger").removeAttr("disabled");//要变成Enable，JQuery只能这么写
+                $('#btn_passenger').css("background-color","#FF8F0c");
+                return;
+            }
+            if(!$('.booking_seats')){
+                alert('请输入出发时间');
+                $("#btn_passenger").removeAttr("disabled");//要变成Enable，JQuery只能这么写
+                $('#btn_passenger').css("background-color","#FF8F0c");
+                return;
+            }
+            if(!$('.remark')){
+                alert('请输入乘车人数');
+                $("#btn_passenger").removeAttr("disabled");//要变成Enable，JQuery只能这么写
+                $('#btn_passenger').css("background-color","#FF8F0c");
+                return;
+            }
+            $('#btn_passenger').val("提交中...");
             setTimeout(function () {
                 $.ajax({
                     type: 'POST',
@@ -434,12 +473,15 @@ var map = new AMap.Map("mapContainer", {
                     data:  {'mobile':mobile ,'boarding_point':aa,'breakout_point':bb,'departure_time':departure_time,'booking_seats':booking_seats,'remark':remark,'m_id':m_id},
                     dataType:'json',
                     success:function(data){
+                        $('#btn_passenger').val("添加");
                         alert(data.message);
                         console.log(data);
-                        window.location.reload()
+                        window.location.reload();
                     },
                     error: function(){
                         $('.content_record_p').html("查询失败");
+                        $("#btn_passenger").removeAttr("disabled");//要变成Enable，JQuery只能这么写
+                        $('#btn_passenger').css("background-color","#FF8F0c");
                     }
                 })
             }, 500);
@@ -448,24 +490,34 @@ var map = new AMap.Map("mapContainer", {
     }, 1000);
 
   });
+    function clearData() {
+        $('.mobile').val('');
+        $('.boarding_point').val('');
+        $('.breakout_point').val('');
+        $('.departure_time').val('');
+        $('.booking_seats').val('');
+        $('.remark').val('');
+
+    }
 
 //  ********车主***************
 
 
     $('#btn_driver').click(function(){
-        $('#btn_driver').css('background','#ddd');
+        $('#btn_driver').attr("disabled","disabled");
+        $('#btn_driver').css('background','#dec4c4');
          var boarding_point;
         var breakout_point;
         if( $('.beginAddress1').val() !==null){
-            boarding_point = $(".boarding_point").val()+$('.beginAddress1').val();
+            boarding_point = $(".boarding_point1").val()+$('.beginAddress1').val();
         }else{
-            boarding_point = $(".boarding_point").val();
+            boarding_point = $(".boarding_point1").val();
         }
 
         if($('.breakoutAddress1').val() !==null){
-            breakout_point = $(".breakout_point").val()+$('.breakoutAddress1').val();
+            breakout_point = $(".breakout_point1").val()+$('.breakoutAddress1').val();
         }else{
-            breakout_point = $(".breakout_point").val();
+            breakout_point = $(".breakout_point1").val();
         }
 
         var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
@@ -479,6 +531,10 @@ var map = new AMap.Map("mapContainer", {
         placeSearch.search(boarding_point, function(status, result) {
             var data=result.poiList.pois[0];
             var obj={};
+            if(typeof(data) == 'undefined'){
+                alert("定位失败，请检查！");
+                return;
+            }
             obj.adCode=data.adcode;
             obj.cityCode=data.citycode;
             obj.city=data.cityname;
@@ -490,7 +546,7 @@ var map = new AMap.Map("mapContainer", {
             obj.latitude=data.location.lat;
             objstr = JSON.stringify(obj);
             aa = objstr;
-            console.log(obj);
+            console.log(aa);
         });
 
         var placeSearch1 = new AMap.PlaceSearch({ //构造地点查询类
@@ -503,6 +559,10 @@ var map = new AMap.Map("mapContainer", {
         var bb;
         placeSearch1.search(breakout_point, function(status, result) {
             var data=result.poiList.pois[0];
+            if(typeof(data) == 'undefined'){
+                alert("定位失败，请检查！");
+                return;
+            }
             var obj={};
             obj.adCode=data.adcode;
             obj.cityCode=data.citycode;
@@ -527,8 +587,35 @@ var map = new AMap.Map("mapContainer", {
             var re = /^1[3456789]\d{9}$/;
             if(!re.test(mobile)){
                 alert("手机号输入有误！");
-                console.log("dsfasf");
+                 $('.mobile').val('');
+                 $('#btn_driver').removeAttr('disabled');
+                 $('#btn_driver').css('background','#FF8F0c');
             }else{
+                if(!aa){
+                    alert('请输入起点')
+                    $('#btn_driver').removeAttr('disabled');
+                    $('#btn_driver').css('background','#FF8F0c');
+                    return;
+                }
+                if(!bb){
+                    alert('请输入终点');
+                    $('#btn_driver').removeAttr('disabled');
+                    $('#btn_driver').css('background','#FF8F0c');
+                    return;
+                }
+                if(!$('.departure_time1')){
+                    alert('请输入出发时间');
+                    $('#btn_driver').removeAttr('disabled');
+                    $('#btn_driver').css('background','#FF8F0c');
+                    return;
+                }
+                if(!$('.init_seats')){
+                    alert('请输入乘车人数');
+                    $('#btn_driver').removeAttr('disabled');
+                    $('#btn_driver').css('background','#FF8F0c');
+                    return;
+                }
+                $('#btn_driver').val("提交中...")
                 setTimeout(function () {
                     $.ajax({
                         type: 'POST',
@@ -536,20 +623,35 @@ var map = new AMap.Map("mapContainer", {
                         data:  {'mobile':mobile ,'boarding_point':aa,'breakout_point':bb,'departure_time':departure_time,'init_seats':init_seats,'remark':remark,'m_id':m_id},
                         dataType:'json',
                         success:function(data){
+                            $('#btn_driver').val("添加");
                             alert(data.message);
                             console.log(data);
                             window.location.reload()
                         },
                         error: function(){
                             $('.content_record_p').html("查询失败");
+                            $('#btn_driver').removeAttr('disabled');
+                            $('#btn_driver').css('background','#FF8F0c');
                         }
                     })
                 }, 500);
+
+
             }
 
         }, 1000);
 
     });
+
+    function clearData1() {
+        $('.mobile1').val('');
+        $('.boarding_point').val('');
+        $('.breakout_point').val('');
+        $('.departure_time1').val('');
+        $('.init_seats').val('');
+        $('.remark1').val('');
+
+    }
 </script>
 <script type="text/javascript" src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
 <%--底部--%>

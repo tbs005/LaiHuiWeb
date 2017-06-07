@@ -164,6 +164,9 @@
             <li class="menu_context_li splash_screen">
                 <a href="/db/splash_screen">闪屏设置</a>
             </li>
+            <li class="menu_context_li partner_list">
+                <a href="/db/partner">合作商户图标设置</a>
+            </li>
         </ul>
     </div>
     <c:if test="${manager.mobile != ConfigUtils.SUB_ADMIN}">
