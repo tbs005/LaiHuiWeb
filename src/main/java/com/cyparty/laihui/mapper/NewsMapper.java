@@ -18,9 +18,14 @@ public class NewsMapper implements RowMapper<News> {
         news.setDescription(resultSet.getString("description"));
         news.setContent(resultSet.getString("content"));
         news.setCreateTime(resultSet.getString("create_time"));
-        news.setIsDel(resultSet.getInt("isdel"));
         news.setUpdateTime(resultSet.getString("update_time"));
         news.setPublisher(resultSet.getString("publisher"));
+        news.setIsDel(resultSet.getInt("isDel"));
+        news.setType_id(resultSet.getInt("type_id"));
+        news.setType(resultSet.getInt("type"));
+        news.setType_name(resultSet.getString("type_name"));
+        news.setIs_enable(resultSet.getInt("is_enable"));
+        news.setImage(resultSet.getString("image"));
         return news;
     }
 }

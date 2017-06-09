@@ -16,12 +16,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="/resource/images/pc_logo.ico"/>
+  <link href="${pageContext.request.contextPath}/resource/css/pagination.css" rel="stylesheet" type="text/css">
   <script src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js" type="text/javascript"></script>
+  <script src="${pageContext.request.contextPath}/resource/js/jquery.pagination.js"></script>
   <script src="/resource/js/manage.js" type="text/javascript"></script>
-
-  <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
-  <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath}/ueditor/ueditor.all.min.js"></script>
-  <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath}/ueditor/lang/zh-cn/zh-cn.js"></script>
 
   <!--引入wangEditor.css-->
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resource/dist/css/wangEditor.min.css">

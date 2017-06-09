@@ -786,19 +786,31 @@ public class LaiHuiDB {
 
     //查询新闻列表
     public  List<News> selectNewsByPage(String where) {
-        String SQL = "SELECT * From pc_news " + where;
+        String SQL = "SELECT * From pc_news a join pc_news_type b on a.type = b.type_id" + where;
         List<News> NewsList = jdbcTemplateObject.query(SQL, new NewsMapper());
         return NewsList;
     }
 
-    public boolean insert(News news) {
+    public boolean insertNews(News news) {
         boolean is_success = true;
-        String SQL = "insert into pc_news(content,description,title,publisher,create_time,update_time) VALUES (?,?,?,?,?,?)";
-        int count = jdbcTemplateObject.update(SQL, new Object[]{news.getContent(),news.getDescription(),news.getTitle(),news.getPublisher(),Utils.getCurrentTime(),Utils.getCurrentTime()});
+        String SQL = "insert into pc_news(type,content,description,title,publisher,create_time,image) VALUES (?,?,?,?,?,?,?)";
+        int count = jdbcTemplateObject.update(SQL, new Object[]{news.getType(),news.getContent(),news.getDescription(),news.getTitle(),news.getPublisher(),Utils.getCurrentTime(),news.getImage()});
         if (count < 1) {
             is_success = false;
         }
         return is_success;
+    }
+
+    public int selectNewsCount(String count_where) {
+        String SQL = "SELECT * From pc_news a join pc_news_type b on a.type = b.type_id" + count_where;
+        List<News> partnerList = jdbcTemplateObject.query(SQL, new NewsMapper());
+        return partnerList.size();
+    }
+
+    public List<News> selectNewsTypeList(String where) {
+        String SQL = "SELECT * FROM pc_news_type" + where;
+        List<News> newsList = jdbcTemplateObject.query(SQL,new NewsTypeMapper());
+        return newsList;
     }
 }
 

@@ -13,19 +13,69 @@ public class News {
 
     private String createTime;
 
-    private Integer isDel;
-
     private String updateTime;
 
     private String publisher;
 
     private String content;
 
-    public Integer getIsDel() {
+    private String image;
+
+    private int isDel;
+
+    private Integer type_id;
+
+    private String type_name;
+
+    private int type;
+
+    private int is_enable;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Integer getType_id() {
+        return type_id;
+    }
+
+    public void setType_id(Integer type_id) {
+        this.type_id = type_id;
+    }
+
+    public String getType_name() {
+        return type_name;
+    }
+
+    public void setType_name(String type_name) {
+        this.type_name = type_name;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getIs_enable() {
+        return is_enable;
+    }
+
+    public void setIs_enable(int is_enable) {
+        this.is_enable = is_enable;
+    }
+
+    public int getIsDel() {
         return isDel;
     }
 
-    public void setIsDel(Integer isDel) {
+    public void setIsDel(int isDel) {
         this.isDel = isDel;
     }
 
@@ -60,7 +110,6 @@ public class News {
     public void setCreateTime(String createTime) {
         this.createTime = createTime == null ? null : createTime.trim();
     }
-
 
     public String getUpdateTime() {
         return updateTime;

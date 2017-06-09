@@ -167,6 +167,9 @@
             <li class="menu_context_li partner_list">
                 <a href="/db/partner">合作商户图标设置</a>
             </li>
+            <li class="menu_context_li">
+                <a href="/db/news/manage">新闻管理</a>
+            </li>
         </ul>
     </div>
     <c:if test="${manager.mobile != ConfigUtils.SUB_ADMIN}">
