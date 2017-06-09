@@ -3,6 +3,7 @@ package com.cyparty.laihui.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
+import com.cyparty.laihui.domain.Manager;
 import com.cyparty.laihui.domain.User;
 import com.cyparty.laihui.utilities.*;
 import org.jsoup.helper.StringUtil;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,11 +26,23 @@ import java.util.List;
  */
 @Controller
 public class PcPublicInfoController {
+    private boolean is_logined;
     @Autowired
     LaiHuiDB laiHuiDB;
 
     @Autowired
     NotifyPush notifyPush;
+
+    @RequestMapping("/db/single/count")
+    public String index(Model model, HttpServletRequest request) {
+        is_logined = Utils.isLogined(request);
+        if (is_logined) {
+            return "db_editor_cumulate";
+        } else {
+            model.asMap().clear();
+            return "redirect:/db/login";
+        }
+    }
 
     @ResponseBody
     @RequestMapping(value = "/pc/deriver/date", method = RequestMethod.POST)
@@ -85,16 +99,16 @@ public class PcPublicInfoController {
             json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
-        boolean is_success = laiHuiDB.createDeriverCarList(mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price,s_longitude,s_latitude,e_longitude,e_latitude,departure_code,destination_code);
+        boolean is_success = laiHuiDB.createDeriverCarList(mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price, s_longitude, s_latitude, e_longitude, e_latitude, departure_code, destination_code);
         if (is_success) {
             json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
             String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
             List<User> userList = laiHuiDB.getUsersByMobile(where);
-            if (userList.size() > 0){
+            if (userList.size() > 0) {
                 JSONObject activity = new JSONObject();
- //               notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
+                //               notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
 //                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
-            }else {
+            } else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
@@ -160,16 +174,16 @@ public class PcPublicInfoController {
             json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
-        boolean is_success = laiHuiDB.createPassengerCarList(mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price,s_longitude,s_latitude,e_longitude,e_latitude,departure_code,destination_code);
+        boolean is_success = laiHuiDB.createPassengerCarList(mobile, departure_time, boarding_point, breakout_point, booking_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price, s_longitude, s_latitude, e_longitude, e_latitude, departure_code, destination_code);
         if (is_success) {
             json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
             String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
             List<User> userList = laiHuiDB.getUsersByMobile(where);
-            if (userList.size() > 0){
+            if (userList.size() > 0) {
                 JSONObject activity = new JSONObject();
 //                notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
 //                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
-            }else {
+            } else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
@@ -245,15 +259,65 @@ public class PcPublicInfoController {
      * 统计今天录入车单的情况，统计到今天为止车单录入的情况
      */
     @ResponseBody
-    @RequestMapping(value = "/single/count", method = RequestMethod.POST)
-    public ResponseEntity<String> SingleCount(HttpServletRequest request) {
+    @RequestMapping(value = "/pc/car/statistics", method = RequestMethod.POST)
+    public ResponseEntity<String> carStatistics(HttpServletRequest request) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
+        JSONArray jsonArray = new JSONArray();
         JSONObject result = new JSONObject();
         String json = "";
-        String id = request.getParameter("m_id");
-        if (StringUtil.isBlank(id) && "null".equals(id)) {
+        String where = "";
+
+        int today_all_count = 0;
+        int all_count = 0;
+        int driver_Count = 0;
+        int passenger_Count = 0;
+        int driver_allCount = 0;
+        int passenger_allCount = 0;
+        int mId = 0;
+        String userName = "";
+        String mobile = "";
+        List<Manager> managerList = laiHuiDB.getManager(where);
+        if (managerList.size() == 0) {
+            json = ReturnJsonUtil.returnSuccessJsonString(result, "管理员为空！");
+            return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
+        }
+        for (Manager manager : managerList) {
+            JSONObject jsonObject = new JSONObject();
+            mId = manager.getM_id();
+            userName = manager.getName();
+            mobile = manager.getMobile();
+            driver_allCount = laiHuiDB.getTotalCount("pc_driver_publish_info", " where m_id=" + mId);
+            passenger_allCount = laiHuiDB.getTotalCount("pc_passenger_publish_info", " where m_id=" + mId);
+            driver_Count = laiHuiDB.getTotalCount("pc_driver_publish_info", " where m_id=" + mId + " and to_days(create_time) = to_days(now())");
+            passenger_Count = laiHuiDB.getTotalCount("pc_passenger_publish_info", " where m_id=" + mId + " and to_days(create_time) = to_days(now())");
+            today_all_count = driver_Count + passenger_Count;
+            all_count = driver_allCount + passenger_allCount;
+            jsonObject.put("name", userName);
+            jsonObject.put("mobile", mobile);
+            jsonObject.put("day_count", today_all_count);
+            jsonObject.put("all_count", all_count);
+            jsonArray.add(jsonObject);
+        }
+        result.put("data", jsonArray);
+        json = ReturnJsonUtil.returnSuccessJsonString(result, "统计成功！");
+        return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
+    }
+
+    /**
+     * 统计今天录入车单的情况，统计到今天为止车单录入的情况
+     */
+    @ResponseBody
+    @RequestMapping(value = "/single/count", method = RequestMethod.POST)
+    public ResponseEntity<String>SingleCount(HttpServletRequest request) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        JSONObject result =new JSONObject();
+        String json ="";
+        String  id = request.getParameter("m_id");
+        if(StringUtil.isBlank(id) && "null".equals(id)){
             json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
@@ -264,18 +328,20 @@ public class PcPublicInfoController {
         int p_allCount = 0;
         int d_todayCount = 0;
         int p_todayCount = 0;
-        d_allCount = laiHuiDB.getTotalCount("pc_driver_publish_info", " where m_id=" + m_id);
-        d_todayCount = laiHuiDB.getTotalCount("pc_driver_publish_info", " where m_id=" + m_id + " and to_days(create_time) = to_days(now())");
-        p_allCount = laiHuiDB.getTotalCount("pc_passenger_publish_info", " where m_id=" + m_id);
-        p_todayCount = laiHuiDB.getTotalCount("pc_passenger_publish_info", " where m_id=" + m_id + " and to_days(create_time) = to_days(now())");
+        d_allCount = laiHuiDB.getTotalCount("pc_driver_publish_info"," where m_id="+m_id);
+        d_todayCount = laiHuiDB.getTotalCount("pc_driver_publish_info"," where m_id="+m_id+" and to_days(create_time) = to_days(now())");
+        p_allCount = laiHuiDB.getTotalCount("pc_passenger_publish_info"," where m_id="+m_id);
+        p_todayCount = laiHuiDB.getTotalCount("pc_passenger_publish_info"," where m_id="+m_id+" and to_days(create_time) = to_days(now())");
         all_count = d_allCount + p_allCount;
         today_count = d_todayCount + p_todayCount;
-        result.put("all_count", all_count);
-        result.put("today_count", today_count);
+        result.put("all_count",all_count);
+        result.put("today_count",today_count);
         json = ReturnJsonUtil.returnSuccessJsonString(result, "统计成功！");
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
-    }
 
+
+
+    }
     /**
      * 五一活动给每个用户都发送一条活动消息
      */
@@ -335,4 +401,10 @@ public class PcPublicInfoController {
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @RequestMapping(value = "/w")
+    public String w() {
+        return "w";
+    }
+
 }

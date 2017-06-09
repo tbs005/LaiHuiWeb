@@ -232,6 +232,9 @@
                 <li class="menu_context_li order_editor">
                     <a href="/db/car/editor">车单编辑</a>
                 </li>
+                <%--<li class="menu_context_li order_editor">--%>
+                    <%--<a href="/db/single/count">车单统计</a>--%>
+                <%--</li>--%>
             </ul>
         </div>
     </c:if>

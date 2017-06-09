@@ -228,7 +228,7 @@
         loadPage.checkUserPrivilege(count, insertUserMessage);
     }
     function insertUserMessage() {
-        $('.user_container').remove();
+
         for (var i = 0; i < global_data.data.length; i++) {
             var user_avatar = global_data.data[i].avatar;
             var user_mobile = global_data.data[i].mobile;
