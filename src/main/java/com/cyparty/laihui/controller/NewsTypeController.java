@@ -3,6 +3,7 @@ package com.cyparty.laihui.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.domain.News;
+import com.cyparty.laihui.domain.NewsType;
 import com.cyparty.laihui.utilities.OssConfigure;
 import com.cyparty.laihui.utilities.OssUtil;
 import com.cyparty.laihui.utilities.Utils;
@@ -17,14 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * 新闻管理
+ * 新闻类型
  * Created by YangGuang on 2017/6/6.
  */
 @Controller
-public class NewsController {
+public class NewsTypeController {
 
     private boolean is_logined;
 
@@ -35,11 +38,11 @@ public class NewsController {
     @Autowired
     OssConfigure ossConfigure;
 
-    @RequestMapping("/db/news/manage")
+    @RequestMapping("/db/news/type")
     public String db_validate(Model model, HttpServletRequest request) {
         is_logined = Utils.isLogined(request);
         if (is_logined) {
-            return "news_manage_list";
+            return "news_type_list";
         } else {
             model.asMap().clear();
             return "redirect:/db/login";
@@ -51,7 +54,7 @@ public class NewsController {
      * 查询列表
      */
     @ResponseBody
-    @RequestMapping(value = "/news/list",method = RequestMethod.POST)
+    @RequestMapping(value = "/type/list",method = RequestMethod.POST)
     public ResponseEntity<String> newsList(HttpServletRequest request){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
@@ -60,10 +63,9 @@ public class NewsController {
         String json = "";
         int page = Integer.parseInt(request.getParameter("page"));
         int size = Integer.parseInt(request.getParameter("size")!=null?  request.getParameter("size"): "10");
-        String where = " where a.isDel = 1 and b.is_enable = 1 order by a.create_time desc limit " + page*size + "," + size;
-        List<News> newsList = laiHuiDB.selectNewsByPage(where);
-        String count_where = " where a.isDel = 1 and b.is_enable = 1";
-        int count = laiHuiDB.selectNewsCount(count_where);
+        String where = " where b.dictionary_type = 'enable' order by create_time desc limit " + page*size + "," + size;
+        List<NewsType> newsList = laiHuiDB.selectNewsTypeByPage(where);
+        int count = laiHuiDB.selectNewsTypeCount();
         if (newsList.size() > 0){
             pageJson.put("result",newsList);
             pageJson.put("page",page);
@@ -77,20 +79,17 @@ public class NewsController {
     /**
      * 跳转新增页面
      */
-    @RequestMapping("/news/toAdd")
-    public String toAdd(News news,Model model){
-        String where = " where is_enable = 1";
-        List<News> typeList = laiHuiDB.selectNewsTypeList(where);
+    @RequestMapping("/type/toAdd")
+    public String toAdd(NewsType news,Model model){
         model.addAttribute("news",news);
-        model.addAttribute("typeList",typeList);
-        return "news_manage_add";
+        return "news_type_add";
     }
 
     /**
      *  新增新闻
      */
-    @RequestMapping("news/add")
-    public String add(News news,HttpServletRequest request){
+    @RequestMapping("type/add")
+    public String add(NewsType news,HttpServletRequest request){
         String filePath = Utils.fileImgUpload("img", request);
         if (filePath != null && !filePath.trim().equals("")) {
             String image_local = filePath.substring(filePath.indexOf("upload"));
@@ -99,36 +98,33 @@ public class NewsController {
             try {
                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
                     image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
-                    news.setImage(image_oss);
+                    news.setLogo(image_oss);
                 }
             } catch (Exception e) {
                 image_oss = null;
-                news.setImage(image_oss);
+                news.setLogo(image_oss);
             }
         }
-        laiHuiDB.insertNews(news);
-        return "redirect:/db/news/manage";
+        laiHuiDB.insertNewsType(news);
+        return "redirect:/db/news/type";
     }
 
     /**
      * 跳转编辑页面
      */
-    @RequestMapping("/news/toUpdate")
+    @RequestMapping("/type/toUpdate")
     public String toUpdate(Model model,HttpServletRequest request){
-        String where = " where is_enable = 1";
-        List<News> typeList = laiHuiDB.selectNewsTypeList(where);
-        String where1 = " where a._id = " + request.getParameter("id");
-        List<News> newsList = laiHuiDB.selectNewsByPage(where1);
+        String where = " where b.dictionary_type = 'enable' and a.type_id = " + request.getParameter("typeId");
+        List<NewsType> newsList = laiHuiDB.selectNewsTypeByPage(where);
         model.addAttribute("news",newsList.get(0));
-        model.addAttribute("typeList",typeList);
-        return "news_manage_update";
+        return "news_type_update";
     }
 
     /**
      *  编辑新闻
      */
-    @RequestMapping("news/update")
-    public String update(News news,HttpServletRequest request){
+    @RequestMapping("type/update")
+    public String update(NewsType news,HttpServletRequest request){
         String filePath = Utils.fileImgUpload("img", request);
         String where = "";
         if (filePath != null && !filePath.trim().equals("")) {
@@ -138,54 +134,50 @@ public class NewsController {
             try {
                 if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
                     image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
-                    news.setImage(image_oss);
+                    news.setLogo(image_oss);
                 }
             } catch (Exception e) {
                 image_oss = null;
-                news.setImage(image_oss);
+                news.setLogo(image_oss);
             }
-            where = " set title = '" + news.getTitle() + "',description = '" + news.getDescription() + "',image = '" +
-                    news.getImage() + "',content = '" + news.getContent() + "',update_time = '" + Utils.getCurrentTime() +
-                    "' where _id = " + news.getId();
+            where = " set type_name = '" + news.getTypeName() + "',logo = '" +
+                    news.getLogo() + "',update_time = '" + Utils.getCurrentTime() +
+                    "' where type_id = " + news.getTypeId();
         }else {
-            where = " set title = '" + news.getTitle() + "',description = '" + news.getDescription() +
-                    "',content = '" + news.getContent() + "',update_time = '" + Utils.getCurrentTime() +
-                    "' where _id = " + news.getId();
+            where = " set type_name = '" + news.getTypeName() + "',update_time = '" + Utils.getCurrentTime() +
+                    "' where type_id = " + news.getTypeId();
         }
-        laiHuiDB.update("pc_news",where);
-        return "redirect:/db/news/manage";
+        laiHuiDB.update("pc_news_type",where);
+        return "redirect:/db/news/type";
     }
 
     /**
      * 删除新闻
      */
-    @RequestMapping("/news/delete")
+    @RequestMapping("/type/delete")
     public String delete(HttpServletRequest request){
-        String where = " set isDel = 0 where _id = " + request.getParameter("id");
-        laiHuiDB.update("pc_news",where);
-        return "redirect:/db/news/manage";
+        String where = " where type_id = " + request.getParameter("typeId");
+        laiHuiDB.delete("pc_news_type",where);
+        return "redirect:/db/news/type";
     }
 
     /**
-     * 富文本上传图片
+     * 启用禁用
      */
     @ResponseBody
-    @RequestMapping("/news/upload")
-    public String uploadPhoto(HttpServletRequest request){
-        String filePath = Utils.fileImgUpload("myFileName", request);
-        String image_oss = "";
-        if (filePath != null && !filePath.trim().equals("")) {
-            String image_local = filePath.substring(filePath.indexOf("upload"));
-            String arr[] = image_local.split("\\\\");
-            image_oss = arr[arr.length - 1];
-            try {
-                if (ossUtil.uploadFileWithResult(request, image_oss, image_local)) {
-                    image_oss = "https://"+ ossConfigure.getAccessUrl() + image_oss;
-                }
-            } catch (Exception e) {
-                image_oss = null;
-            }
-        }
-        return image_oss;
+    @RequestMapping("/type/enable")
+    public  ResponseEntity<String> enable(NewsType newsType){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        JSONObject result = new JSONObject();
+        String json = "";
+        Map<String,Object> map = new HashMap<>();
+        String where = " set is_enable = " + newsType.getIsEnable() + " where type_id = " + newsType.getTypeId();
+        map.put("flag",laiHuiDB.update("pc_news_type", where));
+        map.put("code",newsType.getIsEnable());
+        result.put("result",map);
+        json = result.toJSONString();
+        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
     }
 }

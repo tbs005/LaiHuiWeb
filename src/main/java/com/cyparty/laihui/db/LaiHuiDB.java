@@ -791,6 +791,13 @@ public class LaiHuiDB {
         return NewsList;
     }
 
+    //查询新闻类型列表
+    public  List<NewsType> selectNewsTypeByPage(String where) {
+        String SQL = "SELECT * FROM pc_news_type a JOIN dictionary b ON a.is_enable = b.dictionary_code" + where;
+        List<NewsType> NewsList = jdbcTemplateObject.query(SQL, new TypeMapper());
+        return NewsList;
+    }
+
     public boolean insertNews(News news) {
         boolean is_success = true;
         String SQL = "insert into pc_news(type,content,description,title,publisher,create_time,image) VALUES (?,?,?,?,?,?,?)";
@@ -801,9 +808,25 @@ public class LaiHuiDB {
         return is_success;
     }
 
+    public boolean insertNewsType(NewsType news) {
+        boolean is_success = true;
+        String SQL = "insert into pc_news_type(type_name,logo,create_time) VALUES (?,?,?)";
+        int count = jdbcTemplateObject.update(SQL, new Object[]{news.getTypeName(),news.getLogo(),news.getCreateTime()});
+        if (count < 1) {
+            is_success = false;
+        }
+        return is_success;
+    }
+
     public int selectNewsCount(String count_where) {
         String SQL = "SELECT * From pc_news a join pc_news_type b on a.type = b.type_id" + count_where;
         List<News> partnerList = jdbcTemplateObject.query(SQL, new NewsMapper());
+        return partnerList.size();
+    }
+
+    public int selectNewsTypeCount() {
+        String SQL = "SELECT * FROM pc_news_type a JOIN dictionary b ON a.is_enable = b.dictionary_code where b.dictionary_type = 'enable'";
+        List<NewsType> partnerList = jdbcTemplateObject.query(SQL, new TypeMapper());
         return partnerList.size();
     }
 

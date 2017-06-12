@@ -170,6 +170,9 @@
             <li class="menu_context_li">
                 <a href="/db/news/manage">新闻管理</a>
             </li>
+            <li class="menu_context_li">
+                <a href="/db/news/type">新闻标题管理</a>
+            </li>
         </ul>
     </div>
     <c:if test="${manager.mobile != ConfigUtils.SUB_ADMIN}">
