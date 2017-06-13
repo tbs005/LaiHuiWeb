@@ -146,11 +146,11 @@ public class NewsController {
             }
             where = " set title = '" + news.getTitle() + "',description = '" + news.getDescription() + "',image = '" +
                     news.getImage() + "',content = '" + news.getContent() + "',update_time = '" + Utils.getCurrentTime() +
-                    "' where _id = " + news.getId();
+                    "',set type = "+news.getType_id()+" where _id = " + news.getId();
         }else {
             where = " set title = '" + news.getTitle() + "',description = '" + news.getDescription() +
                     "',content = '" + news.getContent() + "',update_time = '" + Utils.getCurrentTime() +
-                    "' where _id = " + news.getId();
+                    "',set type = "+news.getType_id()+" where _id = " + news.getId();
         }
         laiHuiDB.update("pc_news",where);
         return "redirect:/db/news/manage";
