@@ -108,7 +108,7 @@ public class PcPublicInfoController {
             if (userList.size() > 0) {
                 JSONObject activity = new JSONObject();
                 notifyPush.pinCheNotifiy("29", mobile, "有用户发布了与您路线相近的行程，快去看看吧！", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
-                laiHuiDB.createPush(0,0,"有用户发布了与您路线相近的行程，快去看看吧！",29,1,null,0,null);
+                laiHuiDB.createPush(0,userList.get(0).getUser_id(),"有用户发布了与您路线相近的行程，快去看看吧！",29,1,null,2,null);
             } else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
@@ -187,10 +187,9 @@ public class PcPublicInfoController {
             String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
             List<User> userList = laiHuiDB.getUsersByMobile(where);
             if (userList.size() > 0) {
-//                JSONObject activity = new JSONObject();
-//
-//                notifyPush.pinCheNotifiy("29", mobile, "有用户发布了与您路线相近的行程，快去看看吧！", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
-//                laiHuiDB.createPush(0, 0, "有用户发布了与您路线相近的行程，快去看看吧！", 29, 1, null, 0, null);
+                JSONObject activity = new JSONObject();
+                notifyPush.pinCheNotifiy("29", mobile, "有用户发布了与您路线相近的行程，快去看看吧！", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
+                laiHuiDB.createPush(0, userList.get(0).getUser_id(), "有用户发布了与您路线相近的行程，快去看看吧！", 29, 1, null, 2, null);
             } else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
