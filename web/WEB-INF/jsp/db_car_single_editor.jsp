@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--头部信息--%>
 
-<script type="text/javascript" src="/resource/js/jedate.js"></script>
+<%--<script type="text/javascript" src="/resource/js/jedate.js"></script>--%>
 <link rel="stylesheet" href="/resource/css/jedate.css"/>
 <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css?v=1.0"/>
 <script type="text/javascript"src="http://webapi.amap.com/maps?v=1.3&key=7a7787dd18e73bf0e5a350f6be459b35"></script>
@@ -259,7 +259,7 @@
             </div>
       <!-- <div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
         <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point"></div>-->
-        <div><span>出发时间</span><input class="datainp departure_time" id="datebut01" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut01',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
+        <div><span>出发时间</span><input class="datainp departure_time" id="datebut01" type="datetime-local" value="2017-01-01T00:00:00" ></div>
         <div><span>几人乘车</span><input type="text" placeholder="请说明有几人乘车" class="booking_seats"></div>
         <div><span>备注</span><input type="text" placeholder="*注：是否有行李" class="remark"></div>
         <input type="button" value="添加" id="btn_passenger">
@@ -297,7 +297,7 @@
             </div>
         <!--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point1"></div>
         <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point1"></div>%>-->
-        <div><span>出发时间</span><input class="datainp departure_time1" id="datebut02" type="text" placeholder="例如：2017-04-14 15:00:00"  readonly onClick="jeDate({dateCell:'#datebut02',isTime:true,format:'YYYY-MM-DD hh:mm:ss'})"></div>
+        <div><span>出发时间</span><input class="datainp departure_time1" id="datebut02" type="datetime-local" value="2017-01-01T00:00:00"></div>
         <div><span>几个座位</span><input type="text" placeholder="请说明邀请几人乘车" class="init_seats"></div>
         <div><span>备注</span><input type="text" placeholder="*注：乘客是否可以携带行李或宠物。" class="remark1"></div>
         <input type="button" value="添加" id="btn_driver">
@@ -429,6 +429,7 @@ var map = new AMap.Map("mapContainer", {
     setTimeout(function () {
         var mobile = $(".mobile").val();
         var departure_time = $(".departure_time").val();
+        departure_time =departure_time.split('T')[0]+' '+departure_time.split('T')[1]+':00';
         var booking_seats = $(".booking_seats").val();
         var remark = $(".remark").val();
         var m_id = ${manager.m_id};
@@ -490,15 +491,6 @@ var map = new AMap.Map("mapContainer", {
     }, 1000);
 
   });
-    function clearData() {
-        $('.mobile').val('');
-        $('.boarding_point').val('');
-        $('.breakout_point').val('');
-        $('.departure_time').val('');
-        $('.booking_seats').val('');
-        $('.remark').val('');
-
-    }
 
 //  ********车主***************
 
@@ -581,6 +573,7 @@ var map = new AMap.Map("mapContainer", {
         setTimeout(function () {
             var mobile = $(".mobile1").val()
             var departure_time = $(".departure_time1").val()
+            departure_time =departure_time.split('T')[0]+' '+departure_time.split('T')[1]+':00';
             var init_seats = $(".init_seats").val()
             var remark = $(".remark1").val();
             var m_id = ${manager.m_id};
@@ -643,15 +636,6 @@ var map = new AMap.Map("mapContainer", {
 
     });
 
-    function clearData1() {
-        $('.mobile1').val('');
-        $('.boarding_point').val('');
-        $('.breakout_point').val('');
-        $('.departure_time1').val('');
-        $('.init_seats').val('');
-        $('.remark1').val('');
-
-    }
 </script>
 <script type="text/javascript" src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
 <%--底部--%>
