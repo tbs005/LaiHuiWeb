@@ -99,6 +99,7 @@ public class PcPublicInfoController {
             json = JsonUtils.returnFailJsonString(result, "发布失败！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
         }
+
         boolean is_success = laiHuiDB.createDeriverCarList(mobile, departure_time, boarding_point, breakout_point, init_seats, remark, departure_address_code, departure_city_code, destination_address_code, destination_city_code, m_id, price, s_longitude, s_latitude, e_longitude, e_latitude, departure_code, destination_code);
         if (is_success) {
             json = JsonUtils.returnSuccessJsonString(result, "发布成功！");
@@ -106,8 +107,8 @@ public class PcPublicInfoController {
             List<User> userList = laiHuiDB.getUsersByMobile(where);
             if (userList.size() > 0) {
                 JSONObject activity = new JSONObject();
-                //               notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
-//                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
+                notifyPush.pinCheNotifiy("29", mobile, "有用户发布了与您路线相近的行程，快去看看吧！", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
+                laiHuiDB.createPush(0,0,"有用户发布了与您路线相近的行程，快去看看吧！",29,1,null,0,null);
             } else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
@@ -128,16 +129,16 @@ public class PcPublicInfoController {
         JSONObject result = new JSONObject();
         double price = 0.0;
         String json = "";
-        String mobile = request.getParameter("mobile");
-        String departure_time = request.getParameter("departure_time");
-        String boarding_point = request.getParameter("boarding_point");
-        String breakout_point = request.getParameter("breakout_point");
-        int booking_seats = Integer.parseInt(request.getParameter("booking_seats"));
-        int m_id = Integer.parseInt(request.getParameter("m_id"));
         String remark = "乘客轻装简行";
         if (request.getParameter("remark") != null && !request.getParameter("remark").isEmpty()) {
             remark = request.getParameter("remark");
         }
+        String mobile = "";
+        String departure_time = "";
+        int m_id = 0;
+        int booking_seats = 0;
+        String boarding_point = "";
+        String breakout_point = "";
         int departure_address_code = 0;
         int departure_city_code = 0;
         int destination_address_code = 0;
@@ -149,6 +150,12 @@ public class PcPublicInfoController {
         String e_longitude = "";
         String e_latitude = "";
         try {
+            mobile = request.getParameter("mobile");
+            departure_time = request.getParameter("departure_time");
+            boarding_point = request.getParameter("boarding_point");
+            breakout_point = request.getParameter("breakout_point");
+            booking_seats = Integer.parseInt(request.getParameter("booking_seats"));
+            m_id = Integer.parseInt(request.getParameter("m_id"));
             JSONObject boardingObject = JSONObject.parseObject(boarding_point);
             departure_address_code = boardingObject.getIntValue("adCode");
             departure_city_code = Integer.parseInt((departure_address_code + "").substring(0, 4) + "00");
@@ -180,9 +187,10 @@ public class PcPublicInfoController {
             String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
             List<User> userList = laiHuiDB.getUsersByMobile(where);
             if (userList.size() > 0) {
-                JSONObject activity = new JSONObject();
-//                notifyPush.pinCheNotifiy("29", mobile, "测试推送", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
-//                laiHuiDB.createPush(0,0,"测试推送",29,1,null,1,null);
+//                JSONObject activity = new JSONObject();
+//
+//                notifyPush.pinCheNotifiy("29", mobile, "有用户发布了与您路线相近的行程，快去看看吧！", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
+//                laiHuiDB.createPush(0, 0, "有用户发布了与您路线相近的行程，快去看看吧！", 29, 1, null, 0, null);
             } else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
@@ -310,14 +318,14 @@ public class PcPublicInfoController {
      */
     @ResponseBody
     @RequestMapping(value = "/single/count", method = RequestMethod.POST)
-    public ResponseEntity<String>SingleCount(HttpServletRequest request) {
+    public ResponseEntity<String> SingleCount(HttpServletRequest request) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
-        JSONObject result =new JSONObject();
-        String json ="";
-        String  id = request.getParameter("m_id");
-        if(StringUtil.isBlank(id) && "null".equals(id)){
+        JSONObject result = new JSONObject();
+        String json = "";
+        String id = request.getParameter("m_id");
+        if (StringUtil.isBlank(id) && "null".equals(id)) {
             json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
@@ -328,20 +336,20 @@ public class PcPublicInfoController {
         int p_allCount = 0;
         int d_todayCount = 0;
         int p_todayCount = 0;
-        d_allCount = laiHuiDB.getTotalCount("pc_driver_publish_info"," where m_id="+m_id);
-        d_todayCount = laiHuiDB.getTotalCount("pc_driver_publish_info"," where m_id="+m_id+" and to_days(create_time) = to_days(now())");
-        p_allCount = laiHuiDB.getTotalCount("pc_passenger_publish_info"," where m_id="+m_id);
-        p_todayCount = laiHuiDB.getTotalCount("pc_passenger_publish_info"," where m_id="+m_id+" and to_days(create_time) = to_days(now())");
+        d_allCount = laiHuiDB.getTotalCount("pc_driver_publish_info", " where m_id=" + m_id);
+        d_todayCount = laiHuiDB.getTotalCount("pc_driver_publish_info", " where m_id=" + m_id + " and to_days(create_time) = to_days(now())");
+        p_allCount = laiHuiDB.getTotalCount("pc_passenger_publish_info", " where m_id=" + m_id);
+        p_todayCount = laiHuiDB.getTotalCount("pc_passenger_publish_info", " where m_id=" + m_id + " and to_days(create_time) = to_days(now())");
         all_count = d_allCount + p_allCount;
         today_count = d_todayCount + p_todayCount;
-        result.put("all_count",all_count);
-        result.put("today_count",today_count);
+        result.put("all_count", all_count);
+        result.put("today_count", today_count);
         json = ReturnJsonUtil.returnSuccessJsonString(result, "统计成功！");
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
 
 
-
     }
+
     /**
      * 五一活动给每个用户都发送一条活动消息
      */
