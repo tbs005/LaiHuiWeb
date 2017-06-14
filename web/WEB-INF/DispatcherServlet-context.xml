@@ -35,6 +35,9 @@
         <property name="url" value="jdbc:mysql://rm-m5e1a87u05v50r8vs.mysql.rds.aliyuncs.com:3306/copy_laihui"/>
         <property name="username" value="laihuitest"/>
         <property name="password" value="lldd22EE"/>
+        <!--<property name="url" value="jdbc:mysql://rm-m5e1a87u05v50r8vs.mysql.rds.aliyuncs.com:3306/laihui_version1"/>-->
+        <!--<property name="username" value="laihuidb2"/>-->
+        <!--<property name="password" value="fjdkjfeyuHHH3267222^^^7()*^h"/>-->
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="1"/>
         <property name="minIdle" value="1"/>
@@ -67,11 +70,11 @@
         <property name="accessKeySecret" value="mkjn9cKyGx8mxG0tvMUyO7ceRTIw61"/>
 
         <!--正式-->
-        <!--<property name="accessUrl" value="laihuipincheoss.oss-cn-qingdao.aliyuncs.com/"/>-->
-        <!--<property name="bucketName" value="laihuipincheoss"/>-->
+        <property name="accessUrl" value="laihuipincheoss.oss-cn-qingdao.aliyuncs.com/"/>
+        <property name="bucketName" value="laihuipincheoss"/>
         <!--测试-->
-        <property name="accessUrl" value="laihuitest.oss-cn-qingdao.aliyuncs.com/"/>
-        <property name="bucketName" value="laihuitest"/>
+        <!--<property name="accessUrl" value="laihuitest.oss-cn-qingdao.aliyuncs.com/"/>-->
+        <!--<property name="bucketName" value="laihuitest"/>-->
         <property name="endpoint" value="http://oss-cn-qingdao.aliyuncs.com"/>
     </bean>
     <bean id="ossUtil" class="com.cyparty.laihui.utilities.OssUtil">

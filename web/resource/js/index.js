@@ -27,7 +27,7 @@ var AddressCom = function(suffix){
 			type:"GET",  
 			url:"http://www.lpaiche.com/Index/address?level=0",  
 			dataType: "jsonp",  
-			success: function(res){  
+			success: function(res){
 				$.each(res.data,function(i,item){  
 					$(".arer-sheng_"+rand_id+" ul").append("<li code='"+item.city_code+"'>"+item.city_name+"</li>");
 				})  
@@ -105,67 +105,25 @@ var AddressCom = function(suffix){
 			
 		}	
 		
-		function shi_sel(){  
-			 $(".arer-shi_"+rand_id+" ul li").each(function(){
-				 var city=this;
-				$(city).click(function(event){
-					 address_level_info[1]=$(this).html();
-					 address_level_codes[1]=$(this).attr('code');	
-					 onchange(getvals());		 
-					 //console.log($(city).html());
-					 event.stopPropagation();
-					 var li_id = $(this).attr("code");
-					 $(this).parent().parent().hide();
-					 $(".arer-qu_"+rand_id+"").show();
-					 $(".arer-qu_"+rand_id+" ul").html("");
-					 var zhixiashi = ['北京','上海','天津','重庆'];				    
-				    $(".city .area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]);	
-					 $.ajax({  
-							type:"GET",  
-							url:"http://www.lpaiche.com/Index/address?pid="+li_id, 
-							cache:true, 
-							dataType: "jsonp",  
-							success: function(res){  
-								$.each(res.data,function(i,item){
-									$(".arer-qu_"+rand_id+" ul").append("<li code='"+item.city_code+"'>"+item.city_name+"</li>");
-								});  
-								qu_sel();
-								$.each(res.data,function(i,item){
-									if(item.city_code == address_level_codes[2]) {
-										$(".arer-qu_"+rand_id+" ul li").eq(i).click();
-										return;
-									}
-								});
-							   $.each(res.data,function(i,item){
-									if(item.city_name == address_level_info[2]) {
-										$(".arer-qu_"+rand_id+" ul li").eq(i).click();
-										return;
-									}
-								});
-							}  
-					  })  
-				 })
-		   })
-		}		
-		function qu_sel(){ 
-			 $(".arer-qu_"+rand_id+" ul li").click(function(){
-				   address_level_info[2]=$(this).html()
-				   address_level_codes[2]=$(this).attr('code');
-				   onchange(getvals());
-				   $(this).parent().parent().hide();
-				   var zhixiashi = ['北京','上海','天津','重庆'];				    
-				   $(".area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]+"-"+address_level_info[2]);	
+		function shi_sel(){
+            $(".arer-shi_"+rand_id+" ul li").click(function(){
+                address_level_info[1]=$(this).html()
+                address_level_codes[1]=$(this).attr('code');
+                onchange(getvals());
+                $(this).parent().parent().hide();
+                var zhixiashi = ['北京','上海','天津','重庆'];
+                $(".area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]);
 
-				   var vals = [],data=getvals();								
-				    $.each(data,function(i,n){ 
-						vals.push(i);
-					});
-					var adds = [$('#province_'+rand_id+''),$('#city_'+rand_id+''),$('#area_'+rand_id+'')];
-					$.each(adds,function(i,n){
-						adds[i].val(vals[i]);
-					})
+                var vals = [],data=getvals();
+                $.each(data,function(i,n){
+                    vals.push(i);
+                });
+                var adds = [$('#province_'+rand_id+''),$('#city_'+rand_id+'')];
+                $.each(adds,function(i,n){
+                    adds[i].val(vals[i]);
+                })
 
-			 })
+            })
 		}
 	}
 	
@@ -218,13 +176,12 @@ var AddressCom = function(suffix){
 
 	function init_html(){
 		var html='<input type="hidden" id="province_'+rand_id+'"  name="province'+suffix+'" value="" />'+
-					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'+
-					'<input type="hidden" id="area_'+rand_id+'"  name="area'+suffix+'" value="" />'
+					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'
 		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>起点</span>'+
 		 	'<input type="text" placeholder="请输入起点" class="boarding_point1"/>'+
 		 	'<div class="arer-sheng_'+rand_id+' arer-sheng"><ul></ul></div>'+
 		 	'<div class="arer-shi_'+rand_id+' arer-shi" ><ul></ul></div>'+
-		 	'<div class="arer-qu_'+rand_id+' arer-qu"><ul></ul></div></div>';
+		 	'</div>';
 		 return html;
 	};
 	document.write(init_html());
@@ -321,67 +278,26 @@ var AddressCom01 = function(suffix){
 		}
 
 		function shi_sel(){
-			 $(".arer-shi_"+rand_id+" ul li").each(function(){
-				 var city=this;
-				$(city).click(function(event){
-					 address_level_info[1]=$(this).html();
-					 address_level_codes[1]=$(this).attr('code');
-					 onchange(getvals());
-					 //console.log($(city).html());
-					 event.stopPropagation();
-					 var li_id = $(this).attr("code");
-					 $(this).parent().parent().hide();
-					 $(".arer-qu_"+rand_id+"").show();
-					 $(".arer-qu_"+rand_id+" ul").html("");
-					 var zhixiashi = ['北京','上海','天津','重庆'];
-				    $(".city .area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]);
-					 $.ajax({
-							type:"GET",
-							url:"http://www.lpaiche.com/Index/address?pid="+li_id,
-							cache:true,
-							dataType: "jsonp",
-							success: function(res){
-								$.each(res.data,function(i,item){
-									$(".arer-qu_"+rand_id+" ul").append("<li code='"+item.city_code+"'>"+item.city_name+"</li>");
-								});
-								qu_sel();
-								$.each(res.data,function(i,item){
-									if(item.city_code == address_level_codes[2]) {
-										$(".arer-qu_"+rand_id+" ul li").eq(i).click();
-										return;
-									}
-								});
-							   $.each(res.data,function(i,item){
-									if(item.city_name == address_level_info[2]) {
-										$(".arer-qu_"+rand_id+" ul li").eq(i).click();
-										return;
-									}
-								});
-							}
-					  })
-				 })
-		   })
-		}
-		function qu_sel(){
-			 $(".arer-qu_"+rand_id+" ul li").click(function(){
-				   address_level_info[2]=$(this).html()
-				   address_level_codes[2]=$(this).attr('code');
-				   onchange(getvals());
-				   $(this).parent().parent().hide();
-				   var zhixiashi = ['北京','上海','天津','重庆'];
-				   $(".area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]+"-"+address_level_info[2]);
+            $(".arer-shi_"+rand_id+" ul li").click(function(){
+                address_level_info[1]=$(this).html()
+                address_level_codes[1]=$(this).attr('code');
+                onchange(getvals());
+                $(this).parent().parent().hide();
+                var zhixiashi = ['北京','上海','天津','重庆'];
+                $(".area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]);
 
-				   var vals = [],data=getvals();
-				    $.each(data,function(i,n){
-						vals.push(i);
-					});
-					var adds = [$('#province_'+rand_id+''),$('#city_'+rand_id+''),$('#area_'+rand_id+'')];
-					$.each(adds,function(i,n){
-						adds[i].val(vals[i]);
-					})
+                var vals = [],data=getvals();
+                $.each(data,function(i,n){
+                    vals.push(i);
+                });
+                var adds = [$('#province_'+rand_id+''),$('#city_'+rand_id+'')];
+                $.each(adds,function(i,n){
+                    adds[i].val(vals[i]);
+                })
 
-			 })
+            })
 		}
+
 	}
 
 	$(function(){
@@ -433,13 +349,12 @@ var AddressCom01 = function(suffix){
 
 	function init_html(){
 		var html='<input type="hidden" id="province_'+rand_id+'"  name="province'+suffix+'" value="" />'+
-					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'+
-					'<input type="hidden" id="area_'+rand_id+'"  name="area'+suffix+'" value="" />'
+					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'
 		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>终点</span>'+
 		 	'<input type="text" placeholder="请输入终点" class="breakout_point1"/>'+
 		 	'<div class="arer-sheng_'+rand_id+' arer-sheng"><ul></ul></div>'+
 		 	'<div class="arer-shi_'+rand_id+' arer-shi" ><ul></ul></div>'+
-		 	'<div class="arer-qu_'+rand_id+' arer-qu"><ul></ul></div></div>';
+		 	'</div>';
 		 return html;
 	};
 	document.write(init_html());
@@ -536,67 +451,27 @@ var AddressCom03 = function(suffix){
 		}
 
 		function shi_sel(){
-			 $(".arer-shi_"+rand_id+" ul li").each(function(){
-				 var city=this;
-				$(city).click(function(event){
-					 address_level_info[1]=$(this).html();
-					 address_level_codes[1]=$(this).attr('code');
-					 onchange(getvals());
-					 //console.log($(city).html());
-					 event.stopPropagation();
-					 var li_id = $(this).attr("code");
-					 $(this).parent().parent().hide();
-					 $(".arer-qu_"+rand_id+"").show();
-					 $(".arer-qu_"+rand_id+" ul").html("");
-					 var zhixiashi = ['北京','上海','天津','重庆'];
-				    $(".city .area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]);
-					 $.ajax({
-							type:"GET",
-							url:"http://www.lpaiche.com/Index/address?pid="+li_id,
-							cache:true,
-							dataType: "jsonp",
-							success: function(res){
-								$.each(res.data,function(i,item){
-									$(".arer-qu_"+rand_id+" ul").append("<li code='"+item.city_code+"'>"+item.city_name+"</li>");
-								});
-								qu_sel();
-								$.each(res.data,function(i,item){
-									if(item.city_code == address_level_codes[2]) {
-										$(".arer-qu_"+rand_id+" ul li").eq(i).click();
-										return;
-									}
-								});
-							   $.each(res.data,function(i,item){
-									if(item.city_name == address_level_info[2]) {
-										$(".arer-qu_"+rand_id+" ul li").eq(i).click();
-										return;
-									}
-								});
-							}
-					  })
-				 })
-		   })
-		}
-		function qu_sel(){
-			 $(".arer-qu_"+rand_id+" ul li").click(function(){
-				   address_level_info[2]=$(this).html()
-				   address_level_codes[2]=$(this).attr('code');
-				   onchange(getvals());
-				   $(this).parent().parent().hide();
-				   var zhixiashi = ['北京','上海','天津','重庆'];
-				   $(".area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]+"-"+address_level_info[2]);
 
-				   var vals = [],data=getvals();
-				    $.each(data,function(i,n){
-						vals.push(i);
-					});
-					var adds = [$('#province_'+rand_id+''),$('#city_'+rand_id+''),$('#area_'+rand_id+'')];
-					$.each(adds,function(i,n){
-						adds[i].val(vals[i]);
-					})
+            $(".arer-shi_"+rand_id+" ul li").click(function(){
+                address_level_info[1]=$(this).html()
+                address_level_codes[1]=$(this).attr('code');
+                onchange(getvals());
+                $(this).parent().parent().hide();
+                var zhixiashi = ['北京','上海','天津','重庆'];
+                $(".area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]);
 
-			 })
+                var vals = [],data=getvals();
+                $.each(data,function(i,n){
+                    vals.push(i);
+                });
+                var adds = [$('#province_'+rand_id+''),$('#city_'+rand_id+'')];
+                $.each(adds,function(i,n){
+                    adds[i].val(vals[i]);
+                })
+
+            })
 		}
+
 	}
 
 	$(function(){
@@ -648,13 +523,12 @@ var AddressCom03 = function(suffix){
 
 	function init_html(){
 		var html='<input type="hidden" id="province_'+rand_id+'"  name="province'+suffix+'" value="" />'+
-					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'+
-					'<input type="hidden" id="area_'+rand_id+'"  name="area'+suffix+'" value="" />'
-		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>起点</span>'+
+					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'
+		    html='<div class="'+'area_'+rand_id+' area">'+'<span>起点</span>'+
 		 	'<input type="text" placeholder="请输入起点" class="boarding_point"/>'+
 		 	'<div class="arer-sheng_'+rand_id+' arer-sheng"><ul></ul></div>'+
 		 	'<div class="arer-shi_'+rand_id+' arer-shi" ><ul></ul></div>'+
-		 	'<div class="arer-qu_'+rand_id+' arer-qu"><ul></ul></div></div>';
+		 	'</div>';
 		 return html;
 	};
 	document.write(init_html());
@@ -751,67 +625,26 @@ var AddressCom04 = function(suffix){
 		}
 
 		function shi_sel(){
-			 $(".arer-shi_"+rand_id+" ul li").each(function(){
-				 var city=this;
-				$(city).click(function(event){
-					 address_level_info[1]=$(this).html();
-					 address_level_codes[1]=$(this).attr('code');
-					 onchange(getvals());
-					 //console.log($(city).html());
-					 event.stopPropagation();
-					 var li_id = $(this).attr("code");
-					 $(this).parent().parent().hide();
-					 $(".arer-qu_"+rand_id+"").show();
-					 $(".arer-qu_"+rand_id+" ul").html("");
-					 var zhixiashi = ['北京','上海','天津','重庆'];
-				    $(".city .area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]);
-					 $.ajax({
-							type:"GET",
-							url:"http://www.lpaiche.com/Index/address?pid="+li_id,
-							cache:true,
-							dataType: "jsonp",
-							success: function(res){
-								$.each(res.data,function(i,item){
-									$(".arer-qu_"+rand_id+" ul").append("<li code='"+item.city_code+"'>"+item.city_name+"</li>");
-								});
-								qu_sel();
-								$.each(res.data,function(i,item){
-									if(item.city_code == address_level_codes[2]) {
-										$(".arer-qu_"+rand_id+" ul li").eq(i).click();
-										return;
-									}
-								});
-							   $.each(res.data,function(i,item){
-									if(item.city_name == address_level_info[2]) {
-										$(".arer-qu_"+rand_id+" ul li").eq(i).click();
-										return;
-									}
-								});
-							}
-					  })
-				 })
-		   })
-		}
-		function qu_sel(){
-			 $(".arer-qu_"+rand_id+" ul li").click(function(){
-				   address_level_info[2]=$(this).html()
-				   address_level_codes[2]=$(this).attr('code');
-				   onchange(getvals());
-				   $(this).parent().parent().hide();
-				   var zhixiashi = ['北京','上海','天津','重庆'];
-				   $(".area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]+"-"+address_level_info[2]);
+            $(".arer-shi_"+rand_id+" ul li").click(function(){
+                address_level_info[1]=$(this).html()
+                address_level_codes[1]=$(this).attr('code');
+                onchange(getvals());
+                $(this).parent().parent().hide();
+                var zhixiashi = ['北京','上海','天津','重庆'];
+                $(".area_"+rand_id+" input").val(($.inArray(address_level_info[0],zhixiashi)<0?address_level_info[0]+"-":'')+address_level_info[1]);
 
-				   var vals = [],data=getvals();
-				    $.each(data,function(i,n){
-						vals.push(i);
-					});
-					var adds = [$('#province_'+rand_id+''),$('#city_'+rand_id+''),$('#area_'+rand_id+'')];
-					$.each(adds,function(i,n){
-						adds[i].val(vals[i]);
-					})
+                var vals = [],data=getvals();
+                $.each(data,function(i,n){
+                    vals.push(i);
+                });
+                var adds = [$('#province_'+rand_id+''),$('#city_'+rand_id+'')];
+                $.each(adds,function(i,n){
+                    adds[i].val(vals[i]);
+                })
 
-			 })
+            })
 		}
+
 	}
 
 	$(function(){
@@ -863,13 +696,12 @@ var AddressCom04 = function(suffix){
 
 	function init_html(){
 		var html='<input type="hidden" id="province_'+rand_id+'"  name="province'+suffix+'" value="" />'+
-					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'+
-					'<input type="hidden" id="area_'+rand_id+'"  name="area'+suffix+'" value="" />'
+					'<input type="hidden" id="city_'+rand_id+'"  name="city'+suffix+'" value="" />'
 		    html+='<div class="'+'area_'+rand_id+' area">'+'<span>终点</span>'+
 		 	'<input type="text" placeholder="请输入终点" class="breakout_point"/>'+
 		 	'<div class="arer-sheng_'+rand_id+' arer-sheng"><ul></ul></div>'+
 		 	'<div class="arer-shi_'+rand_id+' arer-shi" ><ul></ul></div>'+
-		 	'<div class="arer-qu_'+rand_id+' arer-qu"><ul></ul></div></div>';
+		 	'</div>';
 		 return html;
 	};
 	document.write(init_html());
