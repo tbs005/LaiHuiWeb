@@ -189,7 +189,7 @@ public class PcPublicInfoController {
             if (userList.size() > 0) {
                 JSONObject activity = new JSONObject();
 
-                JSONObject resoult = notifyPush.pinCheNotifiy("29", mobile, "有用户发布了与您路线相近的行程，快去看看吧！", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
+                notifyPush.pinCheNotifiy("29", mobile, "有用户发布了与您路线相近的行程，快去看看吧！", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
                 laiHuiDB.createPush(0, userList.get(0).getUser_id(), "有用户发布了与您路线相近的行程，快去看看吧！", 29, 1, null, 2, null);
             } else {
                 SendSMSUtil.sendSMSToPc(mobile);
