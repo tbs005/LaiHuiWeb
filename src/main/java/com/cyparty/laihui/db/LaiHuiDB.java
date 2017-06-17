@@ -835,5 +835,18 @@ public class LaiHuiDB {
         List<News> newsList = jdbcTemplateObject.query(SQL,new NewsTypeMapper());
         return newsList;
     }
+
+    //获取必达单列表
+    public List<MustArrive> getMustArriveList(String SQL) {
+        List<MustArrive> list = jdbcTemplateObject.query(SQL, new MustArriveMapper());
+        return list;
+    }
+
+    //查询最近几天必达单数量
+    public List<UserCount> getArriveLine() {
+        String SQL = "SELECT DATE(create_time) AS create_date, COUNT(_id) AS number FROM pc_passenger_publish_info WHERE is_arrive = 1 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(NOW()) GROUP BY DATE(create_time) ORDER BY create_time";
+        List<UserCount> userList = jdbcTemplateObject.query(SQL, new UserCountMapper());
+        return userList;
+    }
 }
 
