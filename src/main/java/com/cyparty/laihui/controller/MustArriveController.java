@@ -2,9 +2,7 @@ package com.cyparty.laihui.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
-import com.cyparty.laihui.utilities.ArriveJsonUtil;
-import com.cyparty.laihui.utilities.ReturnJsonUtil;
-import com.cyparty.laihui.utilities.Utils;
+import com.cyparty.laihui.utilities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by lunwf on 2017/6/16 .
@@ -39,9 +39,14 @@ public class MustArriveController {
         }
     }
 
-        @ResponseBody
-        @RequestMapping(value = "/arrive/list", method = RequestMethod.POST)
-        public ResponseEntity<String> arriveList( HttpServletRequest request){
+    /**
+     * 必达单查询
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/arrive/list", method = RequestMethod.POST)
+    public ResponseEntity<String> arriveList( HttpServletRequest request){
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
             JSONObject result = new JSONObject();
@@ -75,6 +80,7 @@ public class MustArriveController {
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
     }
+
     public static int getPageOrSize(HttpServletRequest request,int type){
         int result=0;
         if(type==0){
@@ -96,7 +102,10 @@ public class MustArriveController {
         }
         return result;
     }
-    //todo:必达单数据折线图
+    /**
+     *必达单数据折线图
+     *
+     */
     @ResponseBody
     @RequestMapping(value = "/arrive/line", method = RequestMethod.POST)
     public ResponseEntity<String> user_count( HttpServletRequest request){
@@ -120,4 +129,146 @@ public class MustArriveController {
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**
+     * 必达单和推送车主手机号关联
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/arrive/pushMess", method = RequestMethod.POST)
+    public ResponseEntity<String> pushMess( HttpServletRequest request){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        JSONObject result = new JSONObject();
+        String json="";
+        String errorMobils = "";
+        boolean flag=true;
+        try {
+            String traderNo = request.getParameter("traderNo");
+            String userId = request.getParameter("userId");
+            String mobiles = request.getParameter("mobiles");
+            String name = request.getParameter("name");
+            String begin = request.getParameter("begin");
+            String end = request.getParameter("end");
+            String time = request.getParameter("time");
+            if(time!=null && !time.equals("")){
+                time=time.trim();
+                time = time.substring(0,9);
+                String[] timeArr = time.split("-");
+                time=timeArr[1]+"月"+timeArr[2]+"日";
+            }
+
+            if(mobiles!=null && !mobiles.equals("")){
+                String mobileArr[] = mobiles.split(",");
+                for(int i=0;i<mobileArr.length;i++){
+                    String passergerMobile = mobileArr[i];
+                    boolean flag2 =true;//短信推送状态
+                    if(passergerMobile==null || passergerMobile.equals("")){
+                        flag2=false;
+                    }else{
+                        if(passergerMobile.length()==11){
+                            try{
+                                Double.parseDouble(passergerMobile);
+                                //推送格式：【来回拼车】#name#正在寻找从#begin#到#end#的顺风车，预计#time#启程，详情请下载 http://dwz.cn/4A6CAt
+                                flag2=SendSMSUtil.sendSMS(passergerMobile,37624,"#name#="+name+"&#begin#="+begin+"&#end#="+end+"&#time#="+time);
+                            }catch (Exception ex){
+                                flag2=false;
+                            }
+                        }else{
+                            flag2=false;
+                        }
+                        //添加车单和车主短信关联关系
+                        if(flag2) {
+                            boolean flag3 = laiHuiDB.createArriveForDriver(traderNo, passergerMobile, userId);
+                            if (!flag3) {
+                                errorMobils += passergerMobile + ",";
+                                flag=false;
+                            }
+                        }else{
+                            errorMobils += passergerMobile + ",";
+                            flag=false;
+                        }
+                    }
+                }
+                String message="";
+                if(flag){
+                    message="车主短信推送成功！";
+                }else{
+                    if(errorMobils.length()>0){
+                        errorMobils=errorMobils.substring(0,errorMobils.length()-1);
+                    }
+                    message="部分车主短信推送失败，"+errorMobils;
+                }
+                json = JsonUtils.returnSuccessJsonString(result, message);
+                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+            }else {
+                json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
+                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
+            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 查询必达单关联的车主手机号
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/arrive/arriveformobile", method = RequestMethod.POST)
+    public ResponseEntity<String> arriveForMobile( HttpServletRequest request){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        JSONObject result = new JSONObject();
+        String json="";
+        try {
+            String traderNo = request.getParameter("traderNo");
+            String userId = request.getParameter("userId");
+            int page=getPageOrSize(request,0);
+            int size=getPageOrSize(request,1);
+
+            json = ReturnJsonUtil.returnSuccessJsonString(ArriveJsonUtil.getArriveForMobile(laiHuiDB, traderNo,userId, page, size), "必达单数据获取成功！");
+            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
+            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 确认退款 修改必达订单状态
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/arrive/confirmRefund", method = RequestMethod.POST)
+    public ResponseEntity<String> confirmRefund( HttpServletRequest request){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        JSONObject result = new JSONObject();
+        String json="";
+        try {
+            String orderId = request.getParameter("orderId");
+            boolean flag = laiHuiDB.confirmRefund(orderId);
+            if(flag){
+                json = JsonUtils.returnSuccessJsonString(result, "操作成功！");
+                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+            }else {
+                json = ReturnJsonUtil.returnFailJsonString(result, "操作失败！");
+                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
+            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }

@@ -848,5 +848,27 @@ public class LaiHuiDB {
         List<UserCount> userList = jdbcTemplateObject.query(SQL, new UserCountMapper());
         return userList;
     }
+    //添加必达单与车主手机关联
+    public boolean createArriveForDriver(String traderNo,String driverMobile,String passergerId) {
+        boolean is_success = true;
+        String SQL = "insert into arrive_driver_relation(order_no,driver_phone,passenger_id,create_time) VALUES (?,?,?,?)";
+        int count = jdbcTemplateObject.update(SQL, new Object[]{traderNo,driverMobile,passergerId,Utils.getCurrentTime()});
+        if (count < 1) {
+            is_success = false;
+        }
+        return is_success;
+    }
+    //必达单退款后，修改必达单状态
+    public boolean confirmRefund(String orderId) {
+        boolean is_success = true;
+        String SQL01 = "UPDATE pc_orders t SET t.order_status=6 WHERE t.order_id=? and t.order_type=0";
+        String SQL02 = "UPDATE pc_passenger_publish_info t SET t.is_enable=0 WHERE t._id=?";
+        int count = jdbcTemplateObject.update(SQL01, new Object[]{orderId});
+        count=count+jdbcTemplateObject.update(SQL02, new Object[]{orderId});
+        if (count < 2) {
+            is_success = false;
+        }
+        return is_success;
+    }
 }
 

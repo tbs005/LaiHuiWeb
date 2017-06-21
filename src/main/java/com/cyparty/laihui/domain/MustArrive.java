@@ -5,8 +5,11 @@ package com.cyparty.laihui.domain;
  */
 public class MustArrive {
     private String order_id;
+    private String trade_no;
     private String user_id;     //乘客ID
     private String username;    //乘客姓名
+    private String sex;    //乘客性别
+    private String isdn;    //乘客身份证
     private String mobile;      //乘客手机号
     private String boarding_point;  //起点信息
     private String breakout_point;  //终点信息
@@ -16,6 +19,32 @@ public class MustArrive {
     private String refuse;           //乘客拒绝推荐订单次数
     private String departure_time;  //乘客出发时间
     private String create_time;      //订单创建时间
+
+
+    public void setTrade_no(String trade_no) {
+        this.trade_no = trade_no;
+    }
+
+    public String getTrade_no() {
+
+        return trade_no;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public void setIsdn(String isdn) {
+        this.isdn = isdn;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public String getIsdn() {
+        return isdn;
+    }
 
     public String getOrder_id() {
         return order_id;
