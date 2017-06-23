@@ -290,7 +290,7 @@ public class ValidateController {
                     }catch (Exception e){
                         e.printStackTrace();
                     }finally {
-                        laiHuiDB.createPush(0,user_id,content,90,1,"",2,"车主认证成功");
+                        laiHuiDB.createPush(0,user_id,content,90,1,"",2,"车主认证成功",null);
                         result.put("data",driverInfo);
                         result.put("msg", "车主认证成功");
                         json = ReturnJsonUtil.returnSuccessJsonString(result, "车主认证成功！");
@@ -316,7 +316,7 @@ public class ValidateController {
                         }catch (Exception e){
                             e.printStackTrace();
                         }finally {
-                            laiHuiDB.createPush(0,user_id,content,90,1,"",2,"审核未通过");
+                            laiHuiDB.createPush(0,user_id,content,90,1,"",2,"审核未通过",null);
                             result.put("data",driverInfo);
                             result.put("msg", "审核未通过");
                             json = ReturnJsonUtil.returnSuccessJsonString(result, "审核未通过！");
@@ -422,7 +422,7 @@ public class ValidateController {
             return "redirect:/db/login";
         }
     }
-    //短信推送
+    //活动推送
     @RequestMapping("/db/activity/push")
     public String activity_push(Model model,HttpServletRequest request){
         is_logined= Utils.isLogined(request);

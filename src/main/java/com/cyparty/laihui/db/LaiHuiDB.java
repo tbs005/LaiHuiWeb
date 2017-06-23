@@ -715,10 +715,10 @@ public class LaiHuiDB {
     }
 
     //将推送消息存入数据库
-    public boolean createPush(int activity_id ,int receive_id,String alert,int type,int status,String link_url,int flag,String title){
+    public boolean createPush(int activity_id ,int receive_id,String alert,int type,int status,String link_url,int flag,String title,String image_url){
         boolean is_success = true;
-        String SQL = "insert into pc_push_notification (activity_id,receive_id,alert,type,time,status,is_enable,link_url,flag,title) VALUES(?,?,?,?,?,?,?,?,?,?)";
-        int count=jdbcTemplateObject.update(SQL, new Object[]{activity_id,receive_id,alert,type,Utils.getCurrentTime(),status,1,link_url,flag,title});
+        String SQL = "insert into pc_push_notification (activity_id,receive_id,alert,type,time,status,is_enable,image_url,link_url,flag,title) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        int count=jdbcTemplateObject.update(SQL, new Object[]{activity_id,receive_id,alert,type,Utils.getCurrentTime(),status,1, image_url,link_url,flag,title});
         if (count<1){
             is_success = false;
         }
