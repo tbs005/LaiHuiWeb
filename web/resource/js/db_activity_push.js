@@ -15,7 +15,7 @@ function submitForm() {
     var data = new FormData($('#pushForm')[0]);
     $.ajax({
         type: "post",
-        url:"http://192.168.1.18:8087/activities/push",
+        url:"/activities/push",
         data:data,
         processData: false,
         contentType: false,
