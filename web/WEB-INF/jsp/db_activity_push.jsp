@@ -271,6 +271,57 @@
         outline: none;
     }
     /*以上是王凡*/
+
+
+    .editor_mid_box {
+        height: 200px;
+        width: 45%;
+        margin: 5px auto;
+        border: 2px dashed #d2d4d5;
+        background-color: #f7f9fa;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        text-align: center;
+        margin-bottom: 20px;
+        display: inline-block;
+        max-width: 92%;
+    }
+
+    .editor_mid_box_img {
+        margin: 66px auto 10px;
+        display: block;
+        background: transparent url("/resource/images/icon_photo.png") -50px 0 no-repeat;
+        width: 50px;
+        height: 48px;
+        color: rgba(0, 0, 0, 0.58);
+        text-shadow: 0 1px 0 #fff;
+    }
+
+    .editor_mid_box_txt {
+        text-align: center;
+        color: #b7bfc5;
+    }
+
+    .editor_mid_box .file_prew {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        cursor: pointer;
+    }
+
+    .editor_cancel {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 4px;
+        right: 0;
+        display: none;
+        background: transparent url("/resource/images/icon_photo.png") -148px 0 no-repeat;
+    }
+
 </style>
 <%--右侧菜单--%>
 <div class="ui_body">
@@ -288,6 +339,20 @@
                 <br>  最大id:<span class = "last"></span> </br>
             </div>
             <form>
+                <div class="editor_mid_box" style="margin-left: -25px;">
+                    <input type="file" title="支持jpg、jpeg、gif、png格式，文件小于2M" size="1"
+                           onchange="loadImageChange(this)" class="file_prew file0" name="img"
+                           accept=".jpg,.png,.gif,.jpeg">
+                    <img src="" class="img0" alt="">
+                    <div class="editor_cancel" onclick="removePicture(this)"></div>
+                    <div class="editor_change">
+                        <div class="editor_mid_box_img">
+                        </div>
+                        <div class="editor_mid_box_txt">
+                            <span>上传轮播图片</span>
+                        </div>
+                    </div>
+                </div>
                 <br> 推送消息：
                 <input type="text" class="message"></br>
                 <br> 推送链接：
@@ -299,7 +364,7 @@
                 <br> 结束id　：
                 <input type="text" class="end"></br>
                 <br>
-                <input type="button" value="推送" id="btn">
+                <input type="button" value="推送" id="btn" style="width: 140px;margin-bottom: 100px;">
                 </br>
             </form>
         </div>
@@ -345,6 +410,64 @@
 
         });
     })
+
+
+    //初始加载图片设置
+    function loadImageChange(obj) {
+        console.log("开始替换图片");
+        var objUrl = getObjectURL(obj.files[0]);
+        console.log('objUrl'+objUrl);
+        if(objUrl!=null){
+            var j = $(obj).parent().children('.img0');
+            j.addClass("add_image");
+            var k = $(obj).parent();
+            if (objUrl) {
+                $(obj).parent().children('.img0').attr("src", objUrl).attr('id',-1);
+            }
+            var i = $(obj).parent().children('.img0').attr("src");
+            imageStyle(i, j, k);
+        }
+    }
+    function imageStyle(i, j, k) {
+        console.log("改变img的框的大小和添加提示图片的显示");
+        if (i == undefined || i == "") {
+            console.log("回复默认设置");
+            k.css({"width": "92%"});
+            k.children('.editor_change').css('display', 'block');
+            k.children('.editor_cancel').css('display', 'none');
+            j.css({"display": "none"});
+        } else {
+            console.log("改变图片设置");
+            k.css({"width": "auto"});
+            k.children('.editor_change').css('display', 'none');
+            k.children('.editor_cancel').css('display', 'block');
+            j.css({"height": "100%", "display": "block"});
+        }
+    }
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        console.log("获取到的url是" + url);
+        return url;
+    }
+
+    //点击删除添加图片设置
+    function removePicture(obj) {
+        var j = $(obj).parent().children('.img0');
+        var k = $(obj).parent();
+        k.css({"width": "45%"});
+        k.children('.editor_change').css('display', 'block');
+        k.children('.editor_cancel').css('display', 'none');
+        j.css({"display": "none"});
+        $(obj).parent().children('.file0').val("");
+    }
 </script>
 <%--底部--%>
 <jsp:include page="footer.jsp" flush="true"></jsp:include>
