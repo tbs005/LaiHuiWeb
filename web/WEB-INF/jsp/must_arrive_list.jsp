@@ -412,6 +412,7 @@
             });
         }
     }
+    setInterval("findMessage()",30000);
     //显示下拉
     function showAddToUserDrop(obj) {
         $(obj).children('.user_list_drop_box_ul').toggle();
@@ -446,6 +447,21 @@
             $(".send_message").show();
         }else{
             $(".send_message").hide();
+        }
+        if(orderStatus=='申请退款'&&isEnable=='可用'&&refuse>=3){
+            $("#refundMessageTr").show();
+            $("#refundMessageTd").text("退款详情：由于用户拒绝车单3次，仅需退还拼车费"+price+"元");
+        }else if(orderStatus=='申请退款'&&isEnable=='可用'&&refuse<3){
+            $("#refundMessageTr").show();
+            $("#refundMessageTd").text("退款详情：在规定期限内没有为用户找到合适车辆，需退还双倍拼车费+服务费"+(price*2+5*1)+"元");
+        }else if(orderStatus=='退款成功'&&isEnable=='不可用'&&refuse>=3){
+            $("#refundMessageTr").show();
+            $("#refundMessageTd").text("退款详情：已退还拼车费"+price+"元");
+        }else if(orderStatus=='退款成功'&&isEnable=='不可用'&&refuse<3){
+            $("#refundMessageTr").show();
+            $("#refundMessageTd").text("退款详情：已退还双倍拼车费+服务费"+(price*2+5*1)+"元")
+        }else{
+            $("#refundMessageTr").hide();
         }
         clearMoblie();
         refreshMustArriveMobile();
@@ -712,6 +728,9 @@
                         <td>拒绝次数：<input type="text" id="refuse" readonly="true" ></td>
                         <td>出发时间：<input type="text" id="departureTime" readonly="true" ></td>
                         <td>创建时间：<input type="text" id="createTime" readonly="true" ></td>
+                    </tr>
+                    <tr id="refundMessageTr" style="height: 30px;">
+                        <td id="refundMessageTd" colspan="3" style="color: red"></td>
                     </tr>
                 </table>
             </div><br/>
