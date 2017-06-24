@@ -35,6 +35,8 @@ public class MustArriveMapper implements RowMapper<MustArrive> {
             arrive.setOrder_status("申请退款");
         }else if(orderStatus==6){
             arrive.setOrder_status("退款成功");
+        }else if(orderStatus==4){
+            arrive.setOrder_status("拼车交易完成");
         }
         int isEnable = resultSet.getInt("is_enable");
         if(isEnable==0){

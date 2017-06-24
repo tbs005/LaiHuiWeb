@@ -374,17 +374,19 @@
     }
     //添加用户列表
     function addArriveDisplay(orderId,traderNo,userId,userName,mobile,sex,boardAdd,boardLatitude,boardLongitude,breakAdd,breakLatitude,breakLongitude,price,orderStatus,isEnable,refuse,departureTime,createTime) {
+        var boardAddShort = boardAdd.length>7 ? boardAdd.substr(0,6)+"... " : boardAdd;
+        var breakAddShort = breakAdd.length>7 ? breakAdd.substr(0,6)+"... " : breakAdd;
         var str = '<li class="user_manage_container_li" orderId='+orderId+' >' +
-            '<span class="userManage_span" style="width:5%;margin: 0px 1px 0 1px;" title="'+orderId+'">'+orderId+'</span>' +
-            '<span class="userManage_span" style="width:5%;margin: 0px 1px 0 1px;" title="'+userName+'">'+userName+'</span>' +
-            '<span class="userManage_span" style="width:14%;margin: 0px 1px 0 1px;" title="'+mobile+'">'+mobile+'</span>' +
-            '<span class="userManage_span" style="width:12%;margin: 0px 1px 0 1px;" title="'+boardAdd+'">'+boardAdd+'</span>' +
-            '<span class="userManage_span" style="width:12%;margin: 0px 1px 0 1px;" title="'+breakAdd+'">'+breakAdd+'</span>' +
-            '<span class="userManage_span" style="width:8%;margin: 0px 1px 0 1px;" title="'+orderStatus+'">'+orderStatus+'</span>' +
-            '<span class="userManage_span" style="width:7%;margin: 0px 1px 0 1px;" title="'+isEnable+'">'+isEnable+'</span>' +
-            '<span class="userManage_span" style="width:7%;margin: 0px 1px 0 1px;" title="'+refuse+'">'+refuse+'</span>' +
-            '<span class="userManage_span" style="width:14%;margin: 0px 1px 0 1px;" title="'+departureTime+'">'+departureTime+'</span>' +
-            '<span class="userManage_span" style="width:12%;margin: 0px 1px 0 1px;">' +
+            '<span class="userManage_span" style="width:5%;margin: 0px 1px 0px 1px;" title="'+orderId+'">'+orderId+'</span>' +
+            '<span class="userManage_span" style="width:5%;margin: 0px 1px 0px 1px;" title="'+userName+'">'+userName+'</span>' +
+            '<span class="userManage_span" style="width:14%;margin: 0px 1px 0px 1px;" title="'+mobile+'">'+mobile+'</span>' +
+            '<span class="userManage_span" style="width:12%;margin: 0px 1px 0px 0px;" title="'+boardAdd+'">'+boardAddShort+'</span>' +
+            '<span class="userManage_span" style="width:12%;margin: 0px 3px 0px 1px;" title="'+breakAdd+'">'+breakAddShort+'</span>' +
+            '<span class="userManage_span" style="width:10%;margin: 0px 2px 0px 1px;" title="'+orderStatus+'">'+orderStatus+'</span>' +
+            '<span class="userManage_span" style="width:7%;margin: 0px 1px 0px 1px;" title="'+isEnable+'">'+isEnable+'</span>' +
+            '<span class="userManage_span" style="width:7%;margin: 0px 3px 0px 2px;" title="'+refuse+'">'+refuse+'</span>' +
+            '<span class="userManage_span" style="width:12%;margin: 0px 3px 0px 1px;" title="'+departureTime+'">'+departureTime+'</span>' +
+            '<span class="userManage_span" style="width:12%;margin: 0px 0px 0px 1px;">' +
                 '<span class="detailAll_tip_yes" onclick="addManagerStyle(\''+orderId+'\',\''+traderNo+'\',\''+userId+'\',\''+userName+'\',\''+mobile+'\',\''+sex+'\',\''+boardAdd+'\',\''+breakAdd+'\',\''+price+'\',\''+orderStatus+'\',\''+isEnable+'\',\''+refuse+'\',\''+departureTime+'\',\''+createTime+'\')">找车</span> ' ;
                 if(orderStatus=='申请退款'&&isEnable=='可用'){
                     str+='<span class="detailAll_tip_yes" onclick="confirmRefund(\''+orderId+'\')">退款</span>' ;
@@ -593,9 +595,10 @@
                     <li class="cat_list_drop_box_li cat_list_style" value_id="100" onclick="selectedCatDropList(this)">司机已抢单</li>
                     <li class="cat_list_drop_box_li cat_list_style" value_id="200" onclick="selectedCatDropList(this)">车单已支付</li>
                     <li class="cat_list_drop_box_li cat_list_style" value_id="300" onclick="selectedCatDropList(this)">同意抢单</li>
+                    <li class="cat_list_drop_box_li cat_list_style" value_id="4" onclick="selectedCatDropList(this)">拼车交易完成</li>
                     <li class="cat_list_drop_box_li cat_list_style" value_id="5" onclick="selectedCatDropList(this)">车单结束</li>
-                    <li class="cat_list_drop_box_li cat_list_style" value_id="-1" onclick="selectedCatDropList(this)">申请退款</li>
                     <li class="cat_list_drop_box_li cat_list_style" value_id="6" onclick="selectedCatDropList(this)">退款成功</li>
+                    <li class="cat_list_drop_box_li cat_list_style" value_id="-1" onclick="selectedCatDropList(this)">申请退款</li>
                 </ul>
                 <div class="down1"></div>
                 <div class="clear"></div>
@@ -657,13 +660,13 @@
                 <li class="userManage_container_li_top">
                     <span class="userManage_span" style="width:5%">单号</span>
                     <span class="userManage_span" style="width:5%">姓名</span>
-                    <span class="userManage_span" style="width:14%">手机号</span>
-                    <span class="userManage_span" style="width:11%">出发地址</span>
+                    <span class="userManage_span" style="width:13%">手机号</span>
+                    <span class="userManage_span" style="width:12%">出发地址</span>
                     <span class="userManage_span" style="width:12%">到达地址</span>
-                    <span class="userManage_span" style="width:8%">订单现状</span>
+                    <span class="userManage_span" style="width:10%">订单现状</span>
                     <span class="userManage_span" style="width:7%">订单状态</span>
                     <span class="userManage_span" style="width:7%">拒绝次数</span>
-                    <span class="userManage_span" style="width:13%">用车时间</span>
+                    <span class="userManage_span" style="width:12%">用车时间</span>
                     <span class="userManage_span" style="width:12%">操作</span>
                 </li>
                 <div class="not_find_message">
