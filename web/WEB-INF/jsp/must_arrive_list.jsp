@@ -388,7 +388,7 @@
             '<span class="userManage_span" style="width:12%;margin: 0px 3px 0px 1px;" title="'+departureTime+'">'+departureTime+'</span>' +
             '<span class="userManage_span" style="width:12%;margin: 0px 0px 0px 1px;">' +
                 '<span class="detailAll_tip_yes" onclick="addManagerStyle(\''+orderId+'\',\''+traderNo+'\',\''+userId+'\',\''+userName+'\',\''+mobile+'\',\''+sex+'\',\''+boardAdd+'\',\''+breakAdd+'\',\''+price+'\',\''+orderStatus+'\',\''+isEnable+'\',\''+refuse+'\',\''+departureTime+'\',\''+createTime+'\')">找车</span> ' ;
-                if(orderStatus=='申请退款'&&isEnable=='可用'){
+                if(orderStatus=='申请退款'&&isEnable=='不可用'){
                     str+='<span class="detailAll_tip_yes" onclick="confirmRefund(\''+orderId+'\')">退款</span>' ;
                 }
             str+='</span>' ;
@@ -450,10 +450,10 @@
         }else{
             $(".send_message").hide();
         }
-        if(orderStatus=='申请退款'&&isEnable=='可用'&&refuse>=3){
+        if(orderStatus=='申请退款'&&isEnable=='不可用'&&refuse>=3){
             $("#refundMessageTr").show();
             $("#refundMessageTd").text("退款详情：由于用户拒绝车单3次，仅需退还拼车费"+price+"元");
-        }else if(orderStatus=='申请退款'&&isEnable=='可用'&&refuse<3){
+        }else if(orderStatus=='申请退款'&&isEnable=='不可用'&&refuse<3){
             $("#refundMessageTr").show();
             $("#refundMessageTd").text("退款详情：在规定期限内没有为用户找到合适车辆，需退还双倍拼车费+服务费"+(price*2+5*1)+"元");
         }else if(orderStatus=='退款成功'&&isEnable=='不可用'&&refuse>=3){

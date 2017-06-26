@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by lunwf on 2017/6/16 .
@@ -59,7 +57,6 @@ public class MustArriveController {
             String id=request.getParameter("order_id");
             String order_status=request.getParameter("order_status");
             String is_enable=request.getParameter("is_enable");
-            String flag = "0";  //车单是否失效   0：全部  1：执行中  2：失效
             int page=getPageOrSize(request,0);
             int size=getPageOrSize(request,1);
 
@@ -69,7 +66,7 @@ public class MustArriveController {
             }
             switch (action){
                 case "show":
-                    json = ReturnJsonUtil.returnSuccessJsonString(ArriveJsonUtil.getArriveList(laiHuiDB, keyword, start_time, end_time, flag, page, size, order_status, is_enable, id), "必达单数据获取成功！");
+                    json = ReturnJsonUtil.returnSuccessJsonString(ArriveJsonUtil.getArriveList(laiHuiDB, keyword, start_time, end_time, page, size, order_status, is_enable, id), "必达单数据获取成功！");
                     return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
             }
             json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
@@ -269,6 +266,21 @@ public class MustArriveController {
             return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
     }
-
+    /**
+     * 统计需要车主认证的信息
+     */
+    @ResponseBody
+    @RequestMapping(value = "/arrive/unhandle", method = RequestMethod.POST)
+    public ResponseEntity<String> unHandle() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        JSONObject result =new JSONObject();
+        String json="";
+        String order_status="200";  //必达单已支付
+        String is_enable="1";   //订单可用
+        json = ReturnJsonUtil.returnSuccessJsonString(ArriveJsonUtil.getArriveList(laiHuiDB, "", "", "", 0, 1, order_status, is_enable, ""), "尚未处理必达单统计成功！");
+        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+    }
 
 }

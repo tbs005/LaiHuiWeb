@@ -23,17 +23,16 @@ public class ArriveJsonUtil {
      * @param keyword
      * @param start_time
      * @param end_time
-     * @param flag
      * @param page
      * @param size
      * @param id
      * @return
      */
-    public static JSONObject getArriveList(LaiHuiDB laiHuiDB,String keyword,String start_time,String end_time,String flag,int page,int size,String order_status,String is_enable,String id){
+    public static JSONObject getArriveList(LaiHuiDB laiHuiDB,String keyword,String start_time,String end_time,int page,int size,String order_status,String is_enable,String id){
         JSONObject result_json=new JSONObject();
         JSONArray dataArray=new JSONArray();
         String sql ="SELECT t1._id order_id, t1.trade_no trade_no, t1.user_id user_id,t2.user_name username,t2.user_mobile mobile,t2.user_idsn user_idsn,t1.boarding_point,t1.breakout_point,t1.price," +
-                "t3.order_status,t1.is_enable,t1.refuse,date_format(t1.departure_time,'%Y-%c-%d %h:%i' ) as departure_time,date_format(t1.create_time,'%Y-%c-%d %h:%i' ) as create_time  " +
+                "t3.order_status,t1.is_enable,t1.refuse,date_format(t1.departure_time,'%Y-%c-%d %H:%i' ) as departure_time,date_format(t1.create_time,'%Y-%c-%d %H:%i' ) as create_time  " +
                 "from pc_passenger_publish_info t1, pc_user t2, pc_orders t3 where t1.user_id=t2._id and t1._id = t3.order_id and t2._id = t3.user_id and is_arrive = 1 ";
         String where ="";
         if(id==null || id.equals("")){
@@ -153,8 +152,8 @@ public class ArriveJsonUtil {
         JSONObject result_json=new JSONObject();
         JSONArray dataArray=new JSONArray();
         String sql ="SELECT t.r_id order_id, t.order_no trade_no, t.driver_phone mobile, " +
-                "date_format(t.create_time,'%Y-%c-%d %h:%i') departure_time, t.is_del is_enable, t2._id user_id," +
-                "date_format(t2.user_create_time,'%Y-%c-%d %h:%i') create_time, " +
+                "date_format(t.create_time,'%Y-%c-%d %H:%i') departure_time, t.is_del is_enable, t2._id user_id," +
+                "date_format(t2.user_create_time,'%Y-%c-%d %H:%i') create_time, " +
                 " '' user_idsn,'' username,'' boarding_point,'' breakout_point,'' price,'' order_status,'' refuse " +
                 "from arrive_driver_relation t LEFT JOIN pc_user t2 ON t.driver_phone = t2.user_mobile where t.order_no='"+traderNo+"' and t.passenger_id='"+userId+"' ";
 

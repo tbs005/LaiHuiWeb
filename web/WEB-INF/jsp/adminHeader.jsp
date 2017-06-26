@@ -212,6 +212,11 @@
     display: none;
     z-index: 10000;
   }
+  .tishi_must{width:200px;height:130px;border:1px solid #aaaaaa;overflow: hidden;
+    position:fixed;top:100%;right:50px;
+    display: none;
+    z-index: 10000;
+  }
   .tishi_m{padding:5px;background:#63a35c;text-align: center;}
   .caoZuo button{padding:2px 10px;margin:0 10px;background: #AEDEF4;border-radius: 5px;cursor: pointer;}
   .tishi>p:nth-child(2){padding:10px;}
@@ -221,10 +226,18 @@
 <body>
 <div class="tishi">
   <p class="tishi_m">消息提醒</p>
-  <p>你有<span class="count">2</span>条新的消息</p>
+  <p>您有<span class="count">2</span>条新的消息</p>
   <div class="caoZuo" style="text-align: center;margin:20px 0">
     <button class="xiangQing" onclick="chakan()">查 看</button>
     <button class="close_t" onclick="close_t1()">取 消</button>
+  </div>
+</div>
+<div class="tishi_must"><%--必达车单提示消息--%>
+  <p class="tishi_m">消息提醒</p>
+  <p>您有<span class="count_must"></span>条必达车单尚未处理</p>
+  <div class="caoZuo" style="text-align: center;margin:20px 0">
+    <button class="xiangQing" onclick="chakan_must()">查 看</button>
+    <button class="close_t" onclick="close_must()">取 消</button>
   </div>
 </div>
 <%--<script src="js/jquery-1.11.3.min.js"></script>--%>
@@ -265,6 +278,42 @@
     read();
     setInterval(function () {
         read();
-    },120000)
+    },120000);
+    /*必达车单操作*/
+    function open_must(){
+        $('.tishi_must').show();
+        $('.tishi_must').animate({"top":"82%"},1000);
+
+    }
+
+    function close_must() {
+        $('.tishi_must').hide();
+    }
+
+    function chakan_must() {
+        window.location.href="/db/must_arrive";
+        close_must();
+    }
+
+    function read_must() {
+        var privilege = 0;
+        privilege = ${manager.privilege};
+        $.ajax({
+            type: 'POST',
+            url: '/arrive/unhandle',
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                if(privilege ==5 &&data.result.count>0){
+                    $('.count_must').html(data.result.count);
+                    open_must();
+                }else{
+                    close_must();
+                }
+            }
+        });
+    }
+    read_must();
+    setInterval("read_must()",60000);
 
 </script>
