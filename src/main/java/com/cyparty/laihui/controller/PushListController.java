@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.domain.User;
 import com.cyparty.laihui.utilities.*;
+import com.google.gson.Gson;
 import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 推送模块
@@ -49,11 +52,12 @@ public class PushListController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         JSONObject result = new JSONObject();
+        Gson gson = new Gson();
         String json = "";
         String time = request.getParameter("time");
         int type = 50;
         String startTime = Utils.getCurrentTime();
-        JSONObject birth = new JSONObject();
+        Map birth = new HashMap();
         String content = "";
         Date date = new Date();
         String brithday;
@@ -75,10 +79,29 @@ public class PushListController {
                         "得不到的都释怀\n" +
                         "愿你被世界温柔以待\n" +
                         "来回拼车祝你生日快乐";
+
+                Map<String, String> extrasParam = new HashMap<String, String>();
+                extrasParam.put("title","来回拼车");
+                extrasParam.put("badge","Increment");
+                extrasParam.put("action","com.laihui.pinche.push");
+                //把自定义数据添加进去
+                extrasParam.put("alert",content);
+                extrasParam.put("notify_type",String.valueOf(type));
+                extrasParam.put("id",String.valueOf(user.getUser_id()));
+                extrasParam.put("badge","1");
+                extrasParam.put("sound",type+".caf");
+                birth.put("push_time",startTime);
+                birth.put("content",content);
                 birth.put("type", type);
                 birth.put("mobile", user.getUser_mobile());
                 birth.put("content", content);
-                notifyPush.pinCheNotifiy(String.valueOf(type), user.getUser_mobile(), content, user.getUser_id(), birth, startTime);
+                extrasParam.put("push",gson.toJson(birth));
+                //将抢单信息通知给乘客
+                JpushClientUtil.getInstance(ConfigUtils.JPUSH_APP_KEY,
+                        ConfigUtils.JPUSH_MASTER_SECRET)
+                        .sendToRegistrationId(String.valueOf(type), user.getUser_mobile(),
+                                content, content, content,
+                                extrasParam);
                 laiHuiDB.createPush(0, user.getUser_id(), content, 50, 1, "", 2, "生日快乐",null);
             }
             result.put("data", birth);

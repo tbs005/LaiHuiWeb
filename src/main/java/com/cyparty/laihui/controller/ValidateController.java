@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.domain.*;
 import com.cyparty.laihui.utilities.*;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhu on 2016/5/11.
@@ -267,6 +270,7 @@ public class ValidateController {
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         String json = "";
         JSONObject result = new JSONObject();
+        Gson gson = new Gson();
         String id = request.getParameter("id");
         String is_enable = request.getParameter("is_enable");
         boolean is_true = false;
@@ -286,7 +290,30 @@ public class ValidateController {
                     JSONObject driverInfo = ValidateUtils.getContent(user,content);
                     String startTime = Utils.getCurrentTime();
                     try{
-                        notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
+                        Map activity = new HashMap();
+                        int type = 29;
+                        Map<String, String> extrasParam = new HashMap<String, String>();
+                        extrasParam.put("title","来回拼车");
+                        extrasParam.put("badge","Increment");
+                        extrasParam.put("action","com.laihui.pinche.push");
+                        //把自定义数据添加进去
+                        extrasParam.put("alert",content);
+                        extrasParam.put("notify_type",String.valueOf(type));
+                        extrasParam.put("id",String.valueOf(userList.get(0).getUser_id()));
+                        extrasParam.put("badge","1");
+                        extrasParam.put("sound",type+".caf");
+                        activity.put("push_time",Utils.getCurrentTime());
+                        activity.put("content",content);
+                        activity.put("type", type);
+                        activity.put("mobile", user.getUser_mobile());
+                        activity.put("content", content);
+                        extrasParam.put("push",gson.toJson(activity));
+                        //将抢单信息通知给乘客
+                        JpushClientUtil.getInstance(ConfigUtils.JPUSH_APP_KEY,
+                                ConfigUtils.JPUSH_MASTER_SECRET)
+                                .sendToRegistrationId(String.valueOf(type), user.getUser_mobile(),
+                                        content, content, content,
+                                        extrasParam);
                     }catch (Exception e){
                         e.printStackTrace();
                     }finally {
@@ -312,7 +339,30 @@ public class ValidateController {
                         JSONObject driverInfo = ValidateUtils.getContent(user,content);
                         String startTime = Utils.getCurrentTime();
                         try{
-                            notifyPush.pinCheNotifiy("90", user.getUser_mobile(), content, user.getUser_id(), driverInfo, startTime);
+                            Map activity = new HashMap();
+                            int type = 29;
+                            Map<String, String> extrasParam = new HashMap<String, String>();
+                            extrasParam.put("title","来回拼车");
+                            extrasParam.put("badge","Increment");
+                            extrasParam.put("action","com.laihui.pinche.push");
+                            //把自定义数据添加进去
+                            extrasParam.put("alert",content);
+                            extrasParam.put("notify_type",String.valueOf(type));
+                            extrasParam.put("id",String.valueOf(userList.get(0).getUser_id()));
+                            extrasParam.put("badge","1");
+                            extrasParam.put("sound",type+".caf");
+                            activity.put("push_time",Utils.getCurrentTime());
+                            activity.put("content",content);
+                            activity.put("type", type);
+                            activity.put("mobile", user.getUser_mobile());
+                            activity.put("content", content);
+                            extrasParam.put("push",gson.toJson(activity));
+                            //将抢单信息通知给乘客
+                            JpushClientUtil.getInstance(ConfigUtils.JPUSH_APP_KEY,
+                                    ConfigUtils.JPUSH_MASTER_SECRET)
+                                    .sendToRegistrationId(String.valueOf(type), user.getUser_mobile(),
+                                            content, content, content,
+                                            extrasParam);
                         }catch (Exception e){
                             e.printStackTrace();
                         }finally {

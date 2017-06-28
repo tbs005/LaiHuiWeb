@@ -6,6 +6,7 @@ import com.cyparty.laihui.db.LaiHuiDB;
 import com.cyparty.laihui.domain.Manager;
 import com.cyparty.laihui.domain.User;
 import com.cyparty.laihui.utilities.*;
+import com.google.gson.Gson;
 import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -51,6 +54,7 @@ public class PcPublicInfoController {
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         JSONObject result = new JSONObject();
+        Gson gson = new Gson();
         String json = "";
         double price = 0.0;
         String mobile = request.getParameter("mobile");
@@ -106,9 +110,32 @@ public class PcPublicInfoController {
             String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
             List<User> userList = laiHuiDB.getUsersByMobile(where);
             if (userList.size() > 0) {
-                JSONObject activity = new JSONObject();
-                notifyPush.pinCheNotifiy("29", mobile, "有用户发布了与您路线相近的行程，快去看看吧！", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
-                laiHuiDB.createPush(0,userList.get(0).getUser_id(),"有用户发布了与您路线相近的行程，快去看看吧！",29,1,null,2,null,null);
+                Map activity = new HashMap();
+                String content = "有用户发布了与您路线相近的行程，快去看看吧！";
+                int type = 29;
+                Map<String, String> extrasParam = new HashMap<String, String>();
+                extrasParam.put("title","来回拼车");
+                extrasParam.put("badge","Increment");
+                extrasParam.put("action","com.laihui.pinche.push");
+                //把自定义数据添加进去
+                extrasParam.put("alert",content);
+                extrasParam.put("notify_type",String.valueOf(type));
+                extrasParam.put("id",String.valueOf(userList.get(0).getUser_id()));
+                extrasParam.put("badge","1");
+                extrasParam.put("sound",type+".caf");
+                activity.put("push_time",Utils.getCurrentTime());
+                activity.put("content",content);
+                activity.put("type", type);
+                activity.put("mobile", mobile);
+                activity.put("content", content);
+                extrasParam.put("push",gson.toJson(activity));
+                //将抢单信息通知给乘客
+                JpushClientUtil.getInstance(ConfigUtils.JPUSH_APP_KEY,
+                        ConfigUtils.JPUSH_MASTER_SECRET)
+                        .sendToRegistrationId(String.valueOf(type), mobile,
+                                content, content, content,
+                                extrasParam);
+                laiHuiDB.createPush(0,userList.get(0).getUser_id(),content,29,1,null,2,null,null);
             } else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
@@ -127,6 +154,7 @@ public class PcPublicInfoController {
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         JSONObject result = new JSONObject();
+        Gson gson = new Gson();
         double price = 0.0;
         String json = "";
         String remark = "乘客轻装简行";
@@ -187,10 +215,32 @@ public class PcPublicInfoController {
             String where = " where user_mobile = '" + mobile + "' and is_car_owner = 1 and is_validated = 1";
             List<User> userList = laiHuiDB.getUsersByMobile(where);
             if (userList.size() > 0) {
-                JSONObject activity = new JSONObject();
-
-                notifyPush.pinCheNotifiy("29", mobile, "有用户发布了与您路线相近的行程，快去看看吧！", userList.get(0).getUser_id(), activity, Utils.getCurrentTime());
-                laiHuiDB.createPush(0, userList.get(0).getUser_id(), "有用户发布了与您路线相近的行程，快去看看吧！", 29, 1, null, 2, null,null);
+                Map activity = new HashMap();
+                String content = "有用户发布了与您路线相近的行程，快去看看吧！";
+                int type = 29;
+                Map<String, String> extrasParam = new HashMap<String, String>();
+                extrasParam.put("title","来回拼车");
+                extrasParam.put("badge","Increment");
+                extrasParam.put("action","com.laihui.pinche.push");
+                //把自定义数据添加进去
+                extrasParam.put("alert",content);
+                extrasParam.put("notify_type",String.valueOf(type));
+                extrasParam.put("id",String.valueOf(userList.get(0).getUser_id()));
+                extrasParam.put("badge","1");
+                extrasParam.put("sound",type+".caf");
+                activity.put("push_time",Utils.getCurrentTime());
+                activity.put("content",content);
+                activity.put("type", type);
+                activity.put("mobile", mobile);
+                activity.put("content", content);
+                extrasParam.put("push",gson.toJson(activity));
+                //将抢单信息通知给乘客
+                JpushClientUtil.getInstance(ConfigUtils.JPUSH_APP_KEY,
+                        ConfigUtils.JPUSH_MASTER_SECRET)
+                        .sendToRegistrationId(String.valueOf(type), mobile,
+                                content, content, content,
+                                extrasParam);
+                laiHuiDB.createPush(0, userList.get(0).getUser_id(),content , 29, 1, null, 2, null,null);
             } else {
                 SendSMSUtil.sendSMSToPc(mobile);
             }
