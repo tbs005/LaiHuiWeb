@@ -153,6 +153,8 @@ public class PushListController {
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         JSONObject result = new JSONObject();
+        JSONArray action = new JSONArray();
+        Gson gson = new Gson();
         String json = "";
         String image_url = "";
         String filePath = Utils.fileImgUpload("img", request);
@@ -194,15 +196,60 @@ public class PushListController {
             json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
             return new ResponseEntity<>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
-        boolean success= laiHuiDB.createPush(0, 0, content, Integer.parseInt(type), 1, url, 1, title,image_url);
-        if (success){
-            json = ReturnJsonUtil.returnSuccessJsonString(result, "精选活动添加成功！");
-            return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
+        List<User> users = laiHuiDB.getMobileUsers(" where _id >"+start+"  and _id <= "+end+ " ORDER BY _id ASC");
+        if(users.size()>0 ) {
+            int a = 1;
+            for (User user : users) {
+                String mobile = user.getUser_mobile();
+                String startTime = Utils.getCurrentTime();
+                List<User> userlist = laiHuiDB.getUserList("  where user_mobile ='" + mobile + "'");
+                if (userlist.size() > 0) {
+                    try {
+                        Map activity = new HashMap();
+                        Map<String, String> extrasParam = new HashMap<String, String>();
+                        extrasParam.put("title","来回拼车");
+                        extrasParam.put("badge","Increment");
+                        extrasParam.put("action","com.laihui.pinche.push");
+                        //把自定义数据添加进去
+                        extrasParam.put("alert",content);
+                        extrasParam.put("notify_type",String.valueOf(type));
+                        extrasParam.put("id",String.valueOf(user.getUser_id()));
+                        extrasParam.put("badge","1");
+                        extrasParam.put("sound",type+".caf");
+                        activity.put("push_time",Utils.getCurrentTime());
+                        activity.put("content",content);
+                        activity.put("type", type);
+                        activity.put("mobile", mobile);
+                        activity.put("content", content);
+                        activity.put("user_id", userlist.get(0).getUser_id());
+                        activity.put("a", a++);
+                        action.add(gson.toJson(activity));
+                        extrasParam.put("push",gson.toJson(activity));
+                        //将抢单信息通知给乘客
+                        JpushClientUtil.getInstance(ConfigUtils.JPUSH_APP_KEY,
+                                ConfigUtils.JPUSH_MASTER_SECRET)
+                                .sendToRegistrationId(String.valueOf(type), mobile,
+                                        content, content, content,
+                                        extrasParam);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        continue;
+                    }
+                }
+            }
+            boolean success = laiHuiDB.createPush(0, 0, content, Integer.parseInt(type), 1, url, 1, title, image_url);
+            if (success) {
+                result.put("data",action);
+                json = ReturnJsonUtil.returnSuccessJsonString(result, "精选活动推送成功！");
+                return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
+            } else {
+                json = ReturnJsonUtil.returnFailJsonString(result, "精选活动推送失败！");
+                return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
+            }
         }else {
-            json = ReturnJsonUtil.returnFailJsonString(result, "精选活动添加失败！");
-            return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
+            json = ReturnJsonUtil.returnFailJsonString(result, "参数错误！");
+            return new ResponseEntity<>(json, responseHeaders, HttpStatus.BAD_REQUEST);
         }
-
     }
 }
 
