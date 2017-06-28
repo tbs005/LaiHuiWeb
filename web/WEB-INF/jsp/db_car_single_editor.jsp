@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css?v=1.0"/>
 <script type="text/javascript"src="http://webapi.amap.com/maps?v=1.3&key=7a7787dd18e73bf0e5a350f6be459b35"></script>
 <script src="/resource/js/jquery-1.11.3.min.js" type="text/javascript"></script>
-
+<script type="text/javascript" src="/resource/js/My97DatePicker/WdatePicker.js"></script>
 <link type="text/css" rel="stylesheet" href="/resource/css/common.css" />
 <script src="/resource/js/index.js" type="text/javascript"></script>
 <jsp:include page="adminHeader.jsp" flush="true"></jsp:include>
@@ -240,14 +240,14 @@
                                     <li class="departure">
                                         <script>
                                             var add = new AddressCom03();
-                                            /*add.set_init(["2", "110000", "110102"]);//初始值*/
+					    /*add.set_init(["2", "110000", "110102"]);//初始值*/
                                         </script>
                                     </li>
                                     <li><div><span>详细地址</span><input type="text" placeholder="请输入具体地址"  class="beginAddress"></div></li>
                                     <li class="destination">
                                         <script>
                                             var add = new AddressCom04();
-                                            /*add.set_init(["2", "110000", "110102"]);//初始值*/
+					    /*add.set_init(["2", "110000", "110102"]);//初始值*/
                                         </script>
                                     </li>
                                     <li><div><span>详细地址</span><input type="text" placeholder="请输入具体地址"  class="breakoutAddress"></div></li>
@@ -257,9 +257,9 @@
                     </div>
                 </div>
             </div>
-      <!-- <div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
+	<!-- <div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point"></div>
         <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point"></div>-->
-        <div><span>出发时间</span><input class="datainp departure_time" id="datebut01" type="datetime-local" value="2017-01-01T00:00:00" ></div>
+        <div><span>出发时间</span><input wigketTypeName="datePicker" class="datainp departure_time Wdate" id="datebut01" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/></div>
         <div><span>几人乘车</span><input type="text" placeholder="请说明有几人乘车" class="booking_seats"></div>
         <div><span>备注</span><input type="text" placeholder="*注：是否有行李" class="remark"></div>
         <input type="button" value="添加" id="btn_passenger">
@@ -278,14 +278,14 @@
                                     <li class="departure">
                                         <script>
                                             var add = new AddressCom();
-                                            /*add.set_init(["2", "110000", "110102"]);//初始值*/
+					    /*add.set_init(["2", "110000", "110102"]);//初始值*/
                                         </script>
                                     </li>
                                     <li><div><span>详细地址</span><input type="text" placeholder="请输入具体地址" class="beginAddress1"></div></li>
                                     <li class="destination">
                                         <script>
                                             var add = new AddressCom01();
-                                            /*add.set_init(["2", "110000", "110102"]);//初始值*/
+					    /*add.set_init(["2", "110000", "110102"]);//初始值*/
                                         </script>
                                     </li>
                                     <li><div><span>详细地址</span><input type="text" placeholder="请输入具体地址" class="breakoutAddress1"></div></li>
@@ -295,9 +295,9 @@
                     </div>
                 </div>
             </div>
-        <!--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point1"></div>
+	<!--<div><span>起点：</span><input type="text" placeholder="请输入起点" class="boarding_point1"></div>
         <div><span>终点：</span><input type="text" placeholder="请输入终点" class="breakout_point1"></div>%>-->
-        <div><span>出发时间</span><input class="datainp departure_time1" id="datebut02" type="datetime-local" value="2017-01-01T00:00:00"></div>
+        <div><span>出发时间</span><input wigketTypeName="datePicker" class="datainp departure_time1 Wdate" id="datebut02" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/></div>
         <div><span>几个座位</span><input type="text" placeholder="请说明邀请几人乘车" class="init_seats"></div>
         <div><span>备注</span><input type="text" placeholder="*注：乘客是否可以携带行李或宠物。" class="remark1"></div>
         <input type="button" value="添加" id="btn_driver">
@@ -312,7 +312,7 @@
 </div>
 
 <script>
-    $("#datebut01").focus(function () {
+    /*$("#datebut01").focus(function () {
         var time = new Date()
         var m = time.getMonth() + 1;
         var d = time.getDate();
@@ -341,9 +341,9 @@
         c =(c<10 ? "0"+c:c);
         var t = time.getFullYear() + "-" + m + "-"     + d + " " + h + ":"     + mm + ":" + c;
         $("#datebut02").val(t)
-    });
+    });*/
 
-var map = new AMap.Map("mapContainer", {
+    var map = new AMap.Map("mapContainer", {
         resizeEnable: true
     });
     AMap.service('AMap.PlaceSearch',function(){//回调函数
@@ -429,7 +429,7 @@ var map = new AMap.Map("mapContainer", {
     setTimeout(function () {
         var mobile = $(".mobile").val();
         var departure_time = $(".departure_time").val();
-        departure_time =departure_time.split('T')[0]+' '+departure_time.split('T')[1]+':00';
+        /*departure_time =departure_time.split('T')[0]+' '+departure_time.split('T')[1]+':00';*/
         var booking_seats = $(".booking_seats").val();
         var remark = $(".remark").val();
         var m_id = ${manager.m_id};
@@ -573,7 +573,7 @@ var map = new AMap.Map("mapContainer", {
         setTimeout(function () {
             var mobile = $(".mobile1").val()
             var departure_time = $(".departure_time1").val()
-            departure_time =departure_time.split('T')[0]+' '+departure_time.split('T')[1]+':00';
+            /*departure_time =departure_time.split('T')[0]+' '+departure_time.split('T')[1]+':00';*/
             var init_seats = $(".init_seats").val()
             var remark = $(".remark1").val();
             var m_id = ${manager.m_id};
