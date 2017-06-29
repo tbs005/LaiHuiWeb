@@ -1,7 +1,11 @@
 $(document).ready(function () {
     // 菜单切换
-    $('.menu_context_li').removeClass('active_li');
-    $('.carousel_list').addClass('active_li');
+    $('.menu_body').removeClass('open_menu_body');
+    $('.menu_head').removeClass('current');
+    $('.menu_body a').removeClass('change_menu');
+    $('#newsActivities_head').addClass('current');
+    $('#newsActivities_body').addClass('open_menu_body');
+    $('#newsCarousel_menu').addClass('change_menu');
     load();
     swiper();
 });

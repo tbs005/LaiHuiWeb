@@ -556,8 +556,13 @@
     $(document).ready(function () {
         pageSet.setPageNumber();
         checkId();
-        $('.menu_context_li').removeClass('active_li');
-        $('.pay_driver_orders').addClass('active_li');
+
+        $('.menu_body').removeClass('open_menu_body');
+        $('.menu_head').removeClass('current');
+        $('.menu_body a').removeClass('change_menu');
+        $('#carList_head').addClass('current');
+        $('#carList_body').addClass('open_menu_body');
+        $('#carList_menu').addClass('change_menu');
         // 绑定键盘按下事件
         $(document).keypress(function (e) {
             // 回车键事件

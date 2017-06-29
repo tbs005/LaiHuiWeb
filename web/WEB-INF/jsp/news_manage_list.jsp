@@ -84,6 +84,13 @@
            }
           window.location.href="${pageContext.request.contextPath}/news/delete?id=" + obj;
       }
+
+      $('.menu_body').removeClass('open_menu_body');
+      $('.menu_head').removeClass('current');
+      $('.menu_body a').removeClass('change_menu');
+      $('#newsActivities_head').addClass('current');
+      $('#newsActivities_body').addClass('open_menu_body');
+      $('#newsManager_menu').addClass('change_menu');
   </script>
   <div  id="ui_right">
       <div class="right_top">

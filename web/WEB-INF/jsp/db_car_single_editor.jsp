@@ -636,6 +636,14 @@
 
     });
 
+    $('.menu_body').removeClass('open_menu_body');
+    $('.menu_head').removeClass('current');
+    $('.menu_body a').removeClass('change_menu');
+    $('#carEditor_head').addClass('current');
+    $('#carEditor_body').addClass('open_menu_body');
+    $('#carEditor_menu').addClass('change_menu');
+
+
 </script>
 <script type="text/javascript" src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
 <%--底部--%>

@@ -125,8 +125,13 @@
     $(document).ready(function () {
         loadSummaryMessage();
         loadCumulateMessage();
-        $('.menu_context_li').removeClass('active_li');
-        $('.db_cumulate').addClass('active_li');
+
+        $('.menu_body').removeClass('open_menu_body');
+        $('.menu_head').removeClass('current');
+        $('.menu_body a').removeClass('change_menu');
+        $('#pcxxhCumulate_head').addClass('current');
+        $('#pcxxhCumulate_body').addClass('open_menu_body');
+        $('#pcxxhCumulate_menu').addClass('change_menu');
 
     });
 

@@ -322,6 +322,13 @@
 
         });
     })
+
+    $('.menu_body').removeClass('open_menu_body');
+    $('.menu_head').removeClass('current');
+    $('.menu_body a').removeClass('change_menu');
+    $('#pushManage_head').addClass('current');
+    $('#pushManage_body').addClass('open_menu_body');
+    $('#smsPush_menu').addClass('change_menu');
 </script>
 <%--底部--%>
 <jsp:include page="footer.jsp" flush="true"></jsp:include>

@@ -242,6 +242,13 @@
 </div>
 <script src="/resource/js/jquery-1.11.3.min.js"></script>
 <script>
+    $('.menu_body').removeClass('open_menu_body');
+    $('.menu_head').removeClass('current');
+    $('.menu_body a').removeClass('change_menu');
+    $('#extensionManage_head').addClass('current');
+    $('#extensionManage_body').addClass('open_menu_body');
+    $('#addExtensioner_menu').addClass('change_menu');
+
     $('#btn').click(function (){
         var val=$('.tel').val();
         console.log(val);

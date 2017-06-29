@@ -12,7 +12,7 @@
 <jsp:include page="adminHeader.jsp" flush="true"></jsp:include>
 <link rel="stylesheet" href="/resource/css/db_activity_push.css" >
 <script src="/resource/js/db_activity_push.js" type="text/javascript"></script>
-<%--右侧菜单--%>
+
 <div class="ui_body">
     <jsp:include page="adminLeft.jsp" flush="true"></jsp:include>
     <div id="ui_right">
@@ -62,5 +62,14 @@
     </div>
     <div class="clear"></div>
 </div>
+<%--右侧菜单--%>
+<script>
+    $('.menu_body').removeClass('open_menu_body');
+    $('.menu_head').removeClass('current');
+    $('.menu_body a').removeClass('change_menu');
+    $('#pushManage_head').addClass('current');
+    $('#pushManage_body').addClass('open_menu_body');
+    $('#activityPush_menu').addClass('change_menu');
+</script>
 <%--底部--%>
 <jsp:include page="footer.jsp" flush="true"></jsp:include>

@@ -235,7 +235,7 @@
 
  .WdateDiv #dpQS {
  	float:left;
-	margin-right:3px;
+	margin-right:60px;
 	margin-top:3px;
 	background:url(img.gif) no-repeat 0px -16px;
 	width:20px;
@@ -248,7 +248,7 @@
 }
 .WdateDiv .dpButton{ 
 	height:20px;
-	width:45px;
+	width:70px;
 	margin-top:2px;
 	border:#38B1B9 1px solid;
 	background-color:#CFEBEE;

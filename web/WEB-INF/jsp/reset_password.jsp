@@ -154,8 +154,14 @@
         loadUser()
         </c:if>
         <%--console.log("${manager.m_id}");--%>
-        $('.menu_context_li').removeClass('active_li');
-        $('.reset_password').addClass('active_li');
+
+        $('.menu_body').removeClass('open_menu_body');
+        $('.menu_head').removeClass('current');
+        $('.menu_body a').removeClass('change_menu');
+        $('#personalConf_head').addClass('current');
+        $('#personalConf_body').addClass('open_menu_body');
+        $('#personalInfo_head').addClass('change_menu');
+
         $(".col-3 input").val("");
         $(".input-effect input").focusout(function () {
             if ($(this).val() != "") {
