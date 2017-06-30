@@ -455,7 +455,7 @@
         $('#departureTime').val(departureTime);
         $('#createTime').val(createTime);
         name2 = userName.substr(0,1)+sex;
-        $('#messContext').text(name2+"正在寻找从"+boardAdd+"到"+breakAdd+"的顺风车，预定"+seats+"个车位，已预付车费"+price+"元，预计"+departureTime+"启程，详情请下载 http://dwz.cn/4A6CAt 进行抢单");
+        $('#messContext').text(name2+"正在寻找从"+boardAdd+"到"+breakAdd+"的顺风车，预定"+seats+"个座位，已预付车费"+price+"元，预计"+departureTime+"启程，详情请下载 http://dwz.cn/4A6CAt 进行抢单");
         if(isEnable=='可用'&&orderStatus=='车单已支付'){
             $(".send_message").show();
         }else{
