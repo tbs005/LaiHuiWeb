@@ -363,26 +363,27 @@
             var orderId = global_data.data[i].orderId;
             var traderNo = global_data.data[i].traderNo;
             var sex = global_data.data[i].sex;
-            var userId = global_data.data[i].userId;    //
-            var userName = global_data.data[i].userName;//
-            var mobile=global_data.data[i].mobile;      //
-            var boardAdd=global_data.data[i].boardAdd;  //
-            var boardLatitude=global_data.data[i].boardLatitude;//
-            var boardLongitude=global_data.data[i].boardLongitude;//
-            var breakAdd=global_data.data[i].breakAdd;          //
-            var breakLatitude=global_data.data[i].breakLatitude;//
-            var breakLongitude=global_data.data[i].breakLongitude;//
-            var price=global_data.data[i].price;            //
-            var orderStatus=global_data.data[i].orderStatus;//
-            var isEnable=global_data.data[i].isEnable;     //
-            var refuse=global_data.data[i].refuse;          //
-            var departureTime=global_data.data[i].departureTime;//
-            var createTime=global_data.data[i].createTime;      //
-            addArriveDisplay(orderId,traderNo,userId,userName,mobile,sex,boardAdd,boardLatitude,boardLongitude,breakAdd,breakLatitude,breakLongitude,price,orderStatus,isEnable,refuse,departureTime,createTime);
+            var userId = global_data.data[i].userId;
+            var userName = global_data.data[i].userName;
+            var mobile=global_data.data[i].mobile;
+            var boardAdd=global_data.data[i].boardAdd;
+            var boardLatitude=global_data.data[i].boardLatitude;
+            var boardLongitude=global_data.data[i].boardLongitude;
+            var breakAdd=global_data.data[i].breakAdd;
+            var breakLatitude=global_data.data[i].breakLatitude;
+            var breakLongitude=global_data.data[i].breakLongitude;
+            var price=global_data.data[i].price;
+            var seats=global_data.data[i].seats;
+            var orderStatus=global_data.data[i].orderStatus;
+            var isEnable=global_data.data[i].isEnable;
+            var refuse=global_data.data[i].refuse;
+            var departureTime=global_data.data[i].departureTime;
+            var createTime=global_data.data[i].createTime;
+            addArriveDisplay(orderId,traderNo,userId,userName,mobile,sex,boardAdd,boardLatitude,boardLongitude,breakAdd,breakLatitude,breakLongitude,price,seats,orderStatus,isEnable,refuse,departureTime,createTime);
         }
     }
     //添加用户列表
-    function addArriveDisplay(orderId,traderNo,userId,userName,mobile,sex,boardAdd,boardLatitude,boardLongitude,breakAdd,breakLatitude,breakLongitude,price,orderStatus,isEnable,refuse,departureTime,createTime) {
+    function addArriveDisplay(orderId,traderNo,userId,userName,mobile,sex,boardAdd,boardLatitude,boardLongitude,breakAdd,breakLatitude,breakLongitude,price,seats,orderStatus,isEnable,refuse,departureTime,createTime) {
         var boardAddShort = boardAdd.length>7 ? boardAdd.substr(0,6)+"... " : boardAdd;
         var breakAddShort = breakAdd.length>7 ? breakAdd.substr(0,6)+"... " : breakAdd;
         var str = '<li class="user_manage_container_li" orderId='+orderId+' >' +
@@ -396,7 +397,7 @@
             '<span class="userManage_span" style="width:7%;margin: 0px 3px 0px 2px;" title="'+refuse+'">'+refuse+'</span>' +
             '<span class="userManage_span" style="width:12%;margin: 0px 3px 0px 1px;" title="'+departureTime+'">'+departureTime+'</span>' +
             '<span class="userManage_span" style="width:12%;margin: 0px 0px 0px 1px;">' +
-                '<span class="detailAll_tip_yes" onclick="addManagerStyle(\''+orderId+'\',\''+traderNo+'\',\''+userId+'\',\''+userName+'\',\''+mobile+'\',\''+sex+'\',\''+boardAdd+'\',\''+breakAdd+'\',\''+price+'\',\''+orderStatus+'\',\''+isEnable+'\',\''+refuse+'\',\''+departureTime+'\',\''+createTime+'\')">找车</span> ' ;
+                '<span class="detailAll_tip_yes" onclick="addManagerStyle(\''+orderId+'\',\''+traderNo+'\',\''+userId+'\',\''+userName+'\',\''+mobile+'\',\''+sex+'\',\''+boardAdd+'\',\''+breakAdd+'\',\''+price+'\',\''+seats+'\',\''+orderStatus+'\',\''+isEnable+'\',\''+refuse+'\',\''+departureTime+'\',\''+createTime+'\')">找车</span> ' ;
                 if(orderStatus=='申请退款'&&isEnable=='不可用'){
                     str+='<span class="detailAll_tip_yes" onclick="confirmRefund(\''+orderId+'\')">退款</span>' ;
                 }
@@ -437,7 +438,7 @@
         findMessage();
     }
     var name2;//姓氏+先生/女士
-    function addManagerStyle(orderId,traderNo,userId,userName,mobile,sex,boardAdd,breakAdd,price,orderStatus,isEnable,refuse,departureTime,createTime){
+    function addManagerStyle(orderId,traderNo,userId,userName,mobile,sex,boardAdd,breakAdd,price,seats,orderStatus,isEnable,refuse,departureTime,createTime){
         $('.slide_container').animate({"top":"0.5%","opacity":"1"},300);
         $('#orderId').val(orderId);
         $('#traderNo').val(traderNo);
@@ -447,13 +448,14 @@
         $('#boardAdd').val(boardAdd);
         $('#breakAdd').val(breakAdd);
         $('#price').val(price);
+        $('#seats').val(seats);
         $('#orderStatus').val(orderStatus);
         $('#isEnable').val(isEnable);
         $('#refuse').val(refuse);
         $('#departureTime').val(departureTime);
         $('#createTime').val(createTime);
         name2 = userName.substr(0,1)+sex;
-        $('#messContext').text(name2+"正在寻找从"+boardAdd+"到"+breakAdd+"的顺风车，预计"+departureTime+"启程，详情请下载 http://dwz.cn/4A6CAt");
+        $('#messContext').text(name2+"正在寻找从"+boardAdd+"到"+breakAdd+"的顺风车，预定"+seats+"个车位，已预付车费"+price+"元，预计"+departureTime+"启程，详情请下载 http://dwz.cn/4A6CAt 进行抢单");
         if(isEnable=='可用'&&orderStatus=='车单已支付'){
             $(".send_message").show();
         }else{
@@ -497,6 +499,8 @@
         var userId = $("#userId").val();
         var begin = $('#boardAdd').val();
         var end = $('#breakAdd').val();
+        var seats = $('#seats').val();
+        var price = $('#price').val();
         var time = $('#departureTime').val();
         var driverMobile01=$("input[name='driverMobile']")[0].value;
         var driverMobile02=$("input[name='driverMobile']")[1].value;
@@ -517,7 +521,7 @@
         $.ajax({
             type: 'POST',
             url: '/arrive/pushMess',
-            data:{"traderNo":traderNo,"userId":userId,"mobiles":driverMobiles,"name":name2,"begin":begin,"end":end,"time":time},
+            data:{"traderNo":traderNo,"userId":userId,"mobiles":driverMobiles,"name":name2,"begin":begin,"end":end,"seats":seats,"price":price,"time":time},
             dataType:'json',
             success:function(data){
                 alert(data.message);
@@ -726,10 +730,12 @@
                         <td>手&nbsp;&nbsp;机&nbsp;&nbsp;号：<input type="text" id="mobile" readonly="true" ></td>
                     </tr>
                     <tr style="height: 30px;">
-                        <td colspan="3">出发地点：<input type="text" id="boardAdd" readonly="true" style="width:755px;" ></td>
+                        <td colspan="2">出发地点：<input type="text" id="boardAdd" readonly="true" style="width:455px;" ></td>
+                        <td></td>
                     </tr>
                     <tr style="height: 30px;">
-                        <td colspan="3">到达地点：<input type="text" id="breakAdd" readonly="true" style="width:755px;"></td>
+                        <td colspan="2">到达地点：<input type="text" id="breakAdd" readonly="true" style="width:455px;"></td>
+                        <td>预定座位：<input type="text" id="seats" readonly="true" ></td>
                     </tr>
                     <tr style="height: 30px;">
                         <td>订单价格：<input type="text" id="price" readonly="true" ></td>

@@ -25,7 +25,8 @@
     .menu_head img {
         margin-right: 8px;
         margin-top: -2px;
-        width: 24px;
+        width: 20px;
+        height: 20px;
     }
     .ui_left .current{ color: #FF8F0C; background: url(/resource/images/pro_down.png) center right 10px  no-repeat;}
     .menu_body{
@@ -33,10 +34,10 @@
         display:none
         /*padding: 0 0 0 32px;*/
     }
-    .menu_body a{display:block;height:38px;line-height:38px;padding-left:70px;color:#777777;text-decoration:none;}
+    .menu_body a{display:block;height:38px;line-height:38px;padding-left:66px;color:#777777;text-decoration:none;}
     .menu_body a:hover{text-decoration:none;}
     .open_menu_body{display:block}
-    .change_menu{background-color: #F3F3F3 ;border-left: 2px solid #FF8F0C;}
+    .change_menu{background-color: #F3F3F3 ;border-left: 2px solid #FF8F0C;padding-left:64px !important;}
     .change_menu hover{ background-color: #FF8F0C;}
 </style>
 <%--<script src="js/jquery.js"></script>--%>
@@ -143,7 +144,7 @@
     </c:if>
 
     <c:if test="${manager !=null && manager.privilege>=4}">
-        <h3 id="pushManage_head" class="menu_head "><img src="/resource/images/pc_icon_menu_content.png" alt=""><span>推送管理</span></h3>
+        <h3 id="pushManage_head" class="menu_head "><img src="/resource/images/pc_icon_menu_send.png" alt=""><span>推送管理</span></h3>
         <div id="pushManage_body" class="menu_body">
             <a id="smsPush_menu" href="/db/sms/push">短信推送</a>
             <a id="activityPush_menu" href="/db/activity/push">活动推送</a>

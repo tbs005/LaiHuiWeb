@@ -211,15 +211,19 @@
     position:fixed;top:100%;right:50px;
     display: none;
     z-index: 10000;
+    background-color: #FFFFFF;
   }
   .tishi_must{width:200px;height:130px;border:1px solid #aaaaaa;overflow: hidden;
     position:fixed;top:100%;right:50px;
     display: none;
-    z-index: 10000;
+    z-index: 19000;
+    background-color: #FFFFFF;
   }
   .tishi_m{padding:5px;background:#63a35c;text-align: center;}
   .caoZuo button{padding:2px 10px;margin:0 10px;background: #AEDEF4;border-radius: 5px;cursor: pointer;}
-  .tishi>p:nth-child(2){padding:10px;}
+  /*.tishi>p:nth-child(2){padding:10px;}*/
+  .tishi>p:nth-child(2){padding-left:10px;}
+  .tishi_must>p:nth-child(2){padding-left:10px;}
   .xiangQing:hover{background:#00E080;}
   .close_t:hover{background:#DF6A10;}
 </style>

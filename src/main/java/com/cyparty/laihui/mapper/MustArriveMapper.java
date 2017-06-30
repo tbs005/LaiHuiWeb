@@ -22,6 +22,7 @@ public class MustArriveMapper implements RowMapper<MustArrive> {
         arrive.setBoarding_point(resultSet.getString("boarding_point"));
         arrive.setBreakout_point(resultSet.getString("breakout_point"));
         arrive.setPrice(resultSet.getString("price"));
+        arrive.setBooking_seats(resultSet.getString("booking_seats"));
         int orderStatus = resultSet.getInt("order_status");
         if(orderStatus==100){
             arrive.setOrder_status("司机已抢单");

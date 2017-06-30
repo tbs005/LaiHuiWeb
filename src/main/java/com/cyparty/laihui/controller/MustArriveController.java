@@ -148,6 +148,8 @@ public class MustArriveController {
             String name = request.getParameter("name");
             String begin = request.getParameter("begin");
             String end = request.getParameter("end");
+            String seats = request.getParameter("seats");
+            String price = request.getParameter("price");
             String time = request.getParameter("time");
             if(time!=null && !time.equals("")){
                 time=time.trim();
@@ -168,7 +170,7 @@ public class MustArriveController {
                             try{
                                 Double.parseDouble(passergerMobile);
                                 //推送格式：【来回拼车】#name#正在寻找从#begin#到#end#的顺风车，预计#time#启程，详情请下载 http://dwz.cn/4A6CAt
-                                flag2=SendSMSUtil.sendSMS(passergerMobile,37624,"#name#="+name+"&#begin#="+begin+"&#end#="+end+"&#time#="+time);
+                                flag2=SendSMSUtil.sendSMS(passergerMobile,37624,"#name#="+name+"&#begin#="+begin+"&#end#="+end+"&#seats#="+seats+"&#price#="+price+"&#time#="+time);
                             }catch (Exception ex){
                                 flag2=false;
                             }

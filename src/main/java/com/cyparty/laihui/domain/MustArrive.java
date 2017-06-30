@@ -14,12 +14,20 @@ public class MustArrive {
     private String boarding_point;  //起点信息
     private String breakout_point;  //终点信息
     private String price;            //价格
+    private String booking_seats;  //座位数
     private String order_status;    //是否已经被抢单 0：否；1：是
     private String is_enable;       //订单是否可用  0：不可用  1：可用
     private String refuse;           //乘客拒绝推荐订单次数
     private String departure_time;  //乘客出发时间
     private String create_time;      //订单创建时间
 
+    public String getBooking_seats() {
+        return booking_seats;
+    }
+
+    public void setBooking_seats(String booking_seats) {
+        this.booking_seats = booking_seats;
+    }
 
     public void setTrade_no(String trade_no) {
         this.trade_no = trade_no;
