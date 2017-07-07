@@ -176,7 +176,6 @@ public class PushListController {
         String content = request.getParameter("content");
         String url = request.getParameter("url");
         String type = request.getParameter("type");
-        long start_time = new Date().getTime();
         int last = NotifyPush.getLast(laiHuiDB);
         int start = Integer.parseInt(request.getParameter("start"));
         int end = Integer.parseInt(request.getParameter("end"));
@@ -216,7 +215,7 @@ public class PushListController {
                         extrasParam.put("id",String.valueOf(user.getUser_id()));
                         extrasParam.put("badge","1");
                         extrasParam.put("sound",type+".caf");
-                        activity.put("push_time",Utils.getCurrentTime());
+                        activity.put("push_time",startTime);
                         activity.put("content",content);
                         activity.put("type", type);
                         activity.put("mobile", mobile);
