@@ -33,7 +33,7 @@
   }
 
   .userManage_span {
-    width: 16%;
+    width: 14%;
     display: inline-block;
     text-align: center;
     height: 40px;
@@ -196,7 +196,15 @@
   .update_message:hover{
     background-color: #FF8F0c;
   }
-
+  .slide_container{
+    width: 900px;
+    height:400px;
+    z-index: 999;
+  }
+  .slide_container_mid{
+    width:850px;
+    margin:0 auto;
+  }
 
 </style>
 <script type="text/javascript">
@@ -447,12 +455,15 @@
   //添加用户列表
   function addUserDisplay(is_validated_passenger,create_time,idsn,is_validated_car,mobile,name,id,last_logined_time,last_login_ip) {
     $(".userManage_container_ul").append('<li class="user_manage_container_li" user_id='+id+' is_validated_car='+is_validated_car+' is_validated_passenger='+is_validated_passenger+' onmouseleave="hideDeleteTip(this)">' +
-            '<span class="userManage_span ">'+name+'</span>' +
-            '<span class="userManage_span ">'+idsn+'</span>' +
-            '<span class="userManage_span ">'+mobile.substr(0, 3) + '****' + mobile.substr(7)+'</span>' +
-            '<span class="userManage_span">'+create_time+'</span>' +
-            '<span class="userManage_span">'+last_logined_time+'</span>' +
-            '<span class="userManage_span">'+last_login_ip.substr(0, last_login_ip.indexOf(".")+1) + '****' + last_login_ip.substr(last_login_ip.lastIndexOf("."))+'</span>' +
+            '<span class="userManage_span" style="width:10%;">'+name+'</span>' +
+            '<span class="userManage_span" style="width:15%;">'+idsn+'</span>' +
+            '<span class="userManage_span" style="width:15%;">'+mobile.substr(0, 3) + '****' + mobile.substr(7)+'</span>' +
+            '<span class="userManage_span" style="width:17%;">'+create_time+'</span>' +
+            '<span class="userManage_span" style="width:17%;">'+last_logined_time+'</span>' +
+            '<span class="userManage_span" style="width:15%;">'+last_login_ip.substr(0, last_login_ip.indexOf(".")+1) + '****' + last_login_ip.substr(last_login_ip.lastIndexOf("."))+'</span>' +
+            '<span class="userManage_span" style="width:10%;">' +
+                '<span class="detailAll_tip_yes" onclick="showUserInfo(\''+id+'\')">查看</span>'+
+            '</span>' +
             '<div class="user_list_checklist_del_active" onclick="showDeleteTip(this)"></div>' +
             '<div class="user_list_select_delete_tip all_tip">'+
             '<div class="detailAll_tip_txt">'+
@@ -489,7 +500,66 @@
   function hideDeleteTip(obj){
     $(obj).children('.user_list_select_delete_tip').hide()
   }
-
+  function showUserInfo(id){
+      $.ajax({
+          type: 'POST',
+          url: '/user/getInfoById',
+          data:{"userId":id},
+          dataType:'json',
+          success:function(data){
+              $('.slide_container').animate({"top":"20%","opacity":"1"},300);
+              fillerUserInfo(data.result);
+          },
+          error: function(data){
+              alert("操作失败！");
+          }
+      });
+  }
+  function fillerUserInfo(result){
+      $('#userName').val(result.name);
+      var mobile =result.mobile;
+      $('#userMobile').val(mobile.substr(0, 3) + '****' + mobile.substr(7));
+      $('#userSex').val(result.sex);
+      var birthday =result.birthday;
+      if(birthday){
+          birthday = birthday.substr(0,4)+"年"+birthday.substr(4,2)+"月"+birthday.substr(6)+"日"
+      }
+      $('#birthday').val(birthday);
+      $('#userIdsn').val(result.idsn);
+      var is_validated ;
+      if(result.is_validated==1){
+          is_validated="通过";
+      }else {
+          is_validated="没通过";
+      }
+      $('#isValidated').val(is_validated);
+      var is_validated_car ;
+      if(result.is_validated_car==1){
+          is_validated_car="是";
+      }else{
+          is_validated_car="否";
+      }
+      $('#isValidatedCar').val(is_validated_car);
+      var source;
+      if(result.source==1){
+          source = "IOS手机";
+      }else if(result.source==0){
+          source="Android手机";
+      }
+      $('#userSource').val(source);
+      $('#signature').val(result.signature);
+      $('#userCompany').val(result.company);
+      $('#liveCity').val(result.live_city);
+      $('#userHome').val(result.home);
+      $('#deliveryAddress').val(result.delivery_address);
+      $('#lastLoginedTime').val(result.last_logined_time);
+      var last_login_ip = result.last_login_ip;
+      $('#lastLoginIP').val(last_login_ip.substr(0, last_login_ip.indexOf(".")+1) + '****' + last_login_ip.substr(last_login_ip.lastIndexOf(".")));
+      $('#createTime').val(result.create_time);
+  }
+  function removeManagerStyle(){
+      $('.slide_container').animate({"top":"-220%","opacity":"0"},300);
+  }
 </script>
 <%--右侧菜单--%>
 <div class="ui_body">
@@ -577,12 +647,13 @@
       </div>
       <ul class="userManage_container_ul">
         <li class="userManage_container_li_top">
-          <span class="userManage_span">用户名</span>
-          <span class="userManage_span">身份证</span>
-          <span class="userManage_span">手机号</span>
-          <span class="userManage_span">加入时间</span>
-          <span class="userManage_span">上次登陆时间</span>
-          <span class="userManage_span">上次登陆IP</span>
+          <span class="userManage_span" style="width:10%;">用户名</span>
+          <span class="userManage_span" style="width:15%;">身份证</span>
+          <span class="userManage_span" style="width:15%;">手机号</span>
+          <span class="userManage_span" style="width:15%;">加入时间</span>
+          <span class="userManage_span" style="width:16%;">上次登陆时间</span>
+          <span class="userManage_span" style="width:15%;">上次登陆IP</span>
+          <span class="userManage_span" style="width:10%;">操作</span>
         </li>
         <div class="not_find_message">
           <img src="/resource/images/eat.gif" alt="">
@@ -617,6 +688,56 @@
   </div>
   <div class="clear"></div>
 </div>
-
+<%--添加新页面--%>
+<div class="slide_container" style=" overflow:scroll;border: 1px solid #F5AD4E;">
+  <div class="slide_container_top">
+    <span class="slide_container_top_title">用户详情</span>
+    <span class="slide_container_top_remove" onclick="removeManagerStyle()">x</span>
+  </div>
+  <div class="slide_container_mid" style="border: 1px dashed #F5AD4E">
+    <input type="hidden" id="userId"/><input type="hidden" id="traderNo"/>
+    <table style="width:800px;margin-left:auto;">
+      <tr style="height: 30px;"><td colspan="3" style="font-weight: bold;color:#F5AD4E;"></td></tr>
+      <tr style="height: 30px;">
+        <td>姓&emsp;&emsp;&emsp;&emsp;名：<input type="text" id="userName" readonly="true" ></td>
+        <td>手&emsp;机&emsp;号：<input type="text" id="userMobile" readonly="true" ></td>
+        <td>性&emsp;&emsp;别：<input type="text" id="userSex" readonly="true" ></td>
+      </tr>
+      <tr style="height: 30px;">
+        <td>生&emsp;&emsp;&emsp;&emsp;日：<input type="text" id="birthday" readonly="true" ></td>
+        <td>身份证号码：<input type="text" id="userIdsn" readonly="true" ></td>
+        <td></td>
+      </tr>
+      <tr style="height: 30px;">
+        <td>实名&emsp;&emsp;认证：<input type="text" id="isValidated" readonly="true" ></td>
+        <td>是否&emsp;车主：<input type="text" id="isValidatedCar" readonly="true" ></td>
+        <td>用户来源：<input type="text" id="userSource" readonly="true" ></td>
+      </tr>
+      <tr style="height: 30px;">
+        <td colspan="2">个性&emsp;&emsp;签名：<input type="text" id="signature" readonly="true" style="width:428px;"></td>
+        <td></td>
+      </tr>
+      <tr style="height: 30px;">
+        <td colspan="2">公&emsp;&emsp;&emsp;&emsp;司：<input type="text" id="userCompany" readonly="true" style="width:428px;"></td>
+        <td></td>
+      </tr>
+      <tr style="height: 30px;">
+        <td>常驻&emsp;&emsp;地址：<input type="text" id="liveCity" readonly="true" ></td>
+        <td>家&emsp;&emsp;&emsp;乡：<input type="text" id="userHome" readonly="true" ></td>
+        <td></td>
+      </tr>
+      <tr style="height: 30px;">
+        <td colspan="2">送货&emsp;&emsp;地址：<input type="text" id="deliveryAddress" readonly="true" style="width:428px;"></td>
+        <td></td>
+      </tr>
+      <tr style="height: 30px;">
+        <td>最近登录日期：<input type="text" id="lastLoginedTime" readonly="true" ></td>
+        <td>最近登录IP：<input type="text" id="lastLoginIP" readonly="true" ></td>
+        <td>创建日期：<input type="text" id="createTime" readonly="true" ></td>
+      </tr>
+      <tr style="height: 30px;"><td colspan="3" style="font-weight: bold;color:#F5AD4E;"></td></tr>
+    </table>
+  </div>
+</div>
 <%--底部--%>
 <jsp:include page="footer.jsp" flush="true"></jsp:include>

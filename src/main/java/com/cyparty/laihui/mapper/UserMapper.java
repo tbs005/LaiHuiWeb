@@ -21,16 +21,21 @@ public class UserMapper implements RowMapper<User> {
         user.setUser_name(Utils.checkNull(resultSet.getString("user_name")));
         String idsn= Utils.checkNull(resultSet.getString("user_idsn"));
         String name= Utils.checkNull(resultSet.getString("user_name"));
+        String sex="";
+        String birthday ="";
         if(!name.isEmpty()) {
             String endName = "";
             if (!idsn.isEmpty()) {
                 if(idsn.length()>=18){
+                    birthday=idsn.substring(6, 14);
                     String sexNum = idsn.substring(16, 17);
                     if (!sexNum.isEmpty()) {
                         if (Integer.parseInt(sexNum) % 2 == 1) {
                             endName = "先生";
+                            sex="男";
                         } else {
                             endName = "女士";
+                            sex="女";
                         }
                     }
                 }else {
@@ -65,6 +70,15 @@ public class UserMapper implements RowMapper<User> {
         user.setUser_last_login_ip(Utils.checkNull(resultSet.getString("user_last_login_ip")));
         user.setAvatar(Utils.checkNull(resultSet.getString("user_avatar")));
         user.setFlag(resultSet.getInt("flag"));
+
+        user.setSource(resultSet.getString("source"));
+        user.setSex(sex);
+        user.setSignature(resultSet.getString("signature"));
+        user.setBirthday(birthday);
+        user.setLive_city(resultSet.getString("live_city"));
+        user.setHome(resultSet.getString("home"));
+        user.setCompany(resultSet.getString("company"));
+        user.setDelivery_address(resultSet.getString("delivery_address"));
         return user;
     }
 }

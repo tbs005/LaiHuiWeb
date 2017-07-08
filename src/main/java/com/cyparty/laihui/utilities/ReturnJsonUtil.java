@@ -1547,4 +1547,37 @@ public class ReturnJsonUtil {
         result_json.put("data",dataArray);
         return result_json;
     }
+
+    /***
+     *
+     * @param laiHuiDB
+     * @param userId
+     * @return
+     */
+    public static JSONObject getUserInfoById(LaiHuiDB laiHuiDB,String userId){
+        JSONObject jsonObject=new JSONObject();
+        String where =" where _id=" + userId;
+        List<User> userList=laiHuiDB.getUserList(where);
+        if(userList!=null && userList.size()>0){
+            User user = userList.get(0);
+            jsonObject.put("mobile",user.getUser_mobile());
+            jsonObject.put("name",user.getUser_name());
+            jsonObject.put("idsn",user.getUser_idsn());
+            jsonObject.put("create_time",user.getUser_create_time());
+            jsonObject.put("last_logined_time",user.getUser_last_login());
+            jsonObject.put("last_login_ip",user.getUser_last_login_ip());
+            jsonObject.put("is_validated",user.getIs_validated());
+            jsonObject.put("is_validated_car",user.getIs_car_owner());
+            jsonObject.put("source",user.getSource());
+            jsonObject.put("sex",user.getSex());
+            jsonObject.put("signature",user.getSignature());
+            jsonObject.put("birthday",user.getBirthday());
+            jsonObject.put("live_city",user.getLive_city());
+            jsonObject.put("home",user.getHome());
+            jsonObject.put("company",user.getCompany());
+            jsonObject.put("delivery_address",user.getDelivery_address());
+            jsonObject.put("flag",user.getFlag());
+        }
+        return jsonObject;
+    }
 }

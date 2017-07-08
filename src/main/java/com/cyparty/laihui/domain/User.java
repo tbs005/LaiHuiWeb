@@ -16,6 +16,14 @@ public class User {
     private String user_idsn;
     private String reason;
     private String avatar;
+    private String source;
+    private String sex;
+    private String signature;
+    private String birthday;
+    private String live_city;
+    private String home;
+    private String company;
+    private String delivery_address;
     private int flag;
 
     public String getUser_nick_name() {
@@ -117,4 +125,68 @@ public class User {
     public int getFlag() {return flag;}
 
     public void setFlag(int flag) {this.flag = flag;}
+
+    public String getSource() {
+        return source;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public String getLive_city() {
+        return live_city;
+    }
+
+    public String getHome() {
+        return home;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public String getDelivery_address() {
+        return delivery_address;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setLive_city(String live_city) {
+        this.live_city = live_city;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public void setDelivery_address(String delivery_address) {
+        this.delivery_address = delivery_address;
+    }
 }

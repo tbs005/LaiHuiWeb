@@ -294,6 +294,28 @@ public class UserController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/user/getInfoById", method = RequestMethod.POST)
+    public ResponseEntity<String> getUserInfoById( HttpServletRequest request){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        JSONObject result = new JSONObject();
+        String json="";
+        try {
+            String userId = request.getParameter("userId");
+            if(userId!=null && !userId.equals("")){
+                json = ReturnJsonUtil.returnSuccessJsonString(ReturnJsonUtil.getUserInfoById(laiHuiDB, userId), "用户信息获取成功！");
+                return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+            }
+            json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
+            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            e.printStackTrace();
+            json = ReturnJsonUtil.returnFailJsonString(result, "获取参数错误");
+            return new ResponseEntity<String>(json, responseHeaders, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     public static int getPageOrSize(HttpServletRequest request,int type){
         int result=0;
         if(type==0){
