@@ -1,0 +1,191 @@
+.userManage_container {
+    width: 902px;
+    margin: 30px auto 0;
+    min-height: 550px;
+    position: relative;
+}
+
+.userManage_container_ul {
+    border: 1px solid #e8e8e8;
+}
+
+.userManage_container_li_top {
+    background-color: #f4f5f9;
+}
+.userManage_container_li_top span{
+    width: 140px;
+}
+
+.userManage_span {
+    width: 14%;
+    display: inline-block;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+}
+
+.user_manage_container_li {
+    border-top: 1px dashed #e8e8e8;
+    cursor:pointer;
+    position: relative;
+}
+.user_manage_container_li:hover{
+    background-color: #f7f7f7;
+
+}
+.user_manage_container_li:hover>.user_list_checklist_del_active{
+    display:block;
+}
+.sub_title_bar{
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+.page_container{
+    padding: 15px 92px;
+}
+
+/*下拉列表*/
+.user_list_drop_box {
+    position: relative;
+    float: left;
+    margin-right: 30px;
+}
+
+.user_list_drop_box:hover > .down1 {
+    transform: rotate(180deg);
+}
+
+.user_list_drop_box_ul {
+    display: none;
+    position: absolute;
+    top: 31px;
+    border: 1px solid #e8e8e8;
+    text-align: center;
+    z-index: 1;
+    background-color: #fff;
+}
+
+.user_list_drop_box_span {
+    line-height: 30px;
+    padding: 0 30px 0 10px;
+    text-align: center;
+    border: 1px solid #e8e8e8;
+    display: inline-block;
+    cursor: pointer;
+    width: 182px;
+}
+
+.cat_list_drop_box_li {
+    width: 180px;
+    line-height: 32px;
+    cursor: pointer;
+    position: relative;
+}
+
+.cat_list_drop_box_li:hover {
+    background-color: #f4f5f9;
+}
+.select_error_message {
+    color: #f5ad4e;
+    position: absolute;
+    left: 30px;
+    display: none;
+}
+
+.user_list_checklist_del_active {
+    background: url("/resource/images/icon_style.png") 0 -3732px no-repeat;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+
+    margin: 10px 10px;
+    position: absolute;
+    right: 0;
+    top: 2px;
+    display: none;
+}
+/*user_list_select_delete_tip*/
+.user_list_select_delete_tip {
+    position: absolute;
+    top: 37px;
+    display: none;
+    right: -54px;
+    width: 170px;
+    height: 110px;
+    border: 1px solid #e8e8e8;
+    z-index: 1;
+    background-color: #fff;
+    padding-top: 18px;
+    text-align: center;
+}
+
+.user_list_select_delete_tip .popover_arrow {
+    position: absolute;
+    left: 55%;
+    margin-left: -8px;
+    margin-top: -8px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-width: 8px;
+    border-style: dashed;
+    border-color: transparent;
+    border-top-width: 0;
+    border-bottom-color: #d9dadc;
+    border-bottom-style: solid;
+}
+
+.user_list_select_delete_tip .popover_arrow_in {
+    border-bottom-color: #fff;
+    top: 1px;
+}
+
+.user_list_select_delete_tip .popover_arrow_out {
+    top: 0;
+}
+
+.detailAll_tip_no {
+    margin-right: 0;
+}
+
+.detailAll_tip_txt {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.detailAll_tip_yes, .detailAll_tip_no {
+    padding: 5px 10px;
+    background-color: #f5ad4e;
+    color: #fff;
+    margin-right: 0px;
+    cursor: pointer;
+}
+.detailAll_tip_no{
+    margin-left: 14px;
+}
+.update_message{
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    z-index: 10;
+    color: #fff;
+    background: #f5ad4e;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+.update_message:hover{
+    background-color: #FF8F0c;
+}
+.slide_container{
+    width: 900px;
+    height:400px;
+    z-index: 999;
+}
+.slide_container_mid{
+    width:850px;
+    margin:0 auto;
+}
