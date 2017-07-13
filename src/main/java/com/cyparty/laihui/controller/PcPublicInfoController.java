@@ -111,7 +111,7 @@ public class PcPublicInfoController {
             List<User> userList = laiHuiDB.getUsersByMobile(where);
             if (userList.size() > 0) {
                 Map activity = new HashMap();
-                String content = "有用户发布了与您路线相近的行程，快去看看吧！";
+                String content = "有乘客发布顺路车单了，快去看看能否结伴同行吧！";
                 int type = 29;
                 Map<String, String> extrasParam = new HashMap<String, String>();
                 extrasParam.put("title","来回拼车");
@@ -216,7 +216,7 @@ public class PcPublicInfoController {
             List<User> userList = laiHuiDB.getUsersByMobile(where);
             if (userList.size() > 0) {
                 Map activity = new HashMap();
-                String content = "有用户发布了与您路线相近的行程，快去看看吧！";
+                String content = "有车主发布顺路车单了，座位有限，快快提前预定吧！";
                 int type = 29;
                 Map<String, String> extrasParam = new HashMap<String, String>();
                 extrasParam.put("title","来回拼车");
